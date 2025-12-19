@@ -86,6 +86,24 @@
             transform: translateY(0);
         }
 
+        /* Modal Transitions */
+        .modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal.open .modal-content {
+            transform: scale(1);
+        }
+
         /* Custom Range Slider */
         input[type=range] {
             -webkit-appearance: none; 
@@ -156,10 +174,11 @@
                     Escolher meu Plano
                     <i data-lucide="arrow-down" class="w-5 h-5"></i>
                 </a>
-                <a href="https://wa.me/5524992592320" class="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-xl font-bold text-lg hover:border-brand-primary hover:text-brand-primary transition-all flex items-center justify-center gap-2">
-                    <i data-lucide="play-circle" class="w-5 h-5"></i>
-                    Ver Demonstração
-                </a>
+                <!-- Updated Button to trigger Scheduling Modal -->
+                <button onclick="toggleScheduler()" class="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-xl font-bold text-lg hover:border-brand-primary hover:text-brand-primary transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    Agendar Demonstração
+                </button>
             </div>
 
             <!-- Dashboard Preview (Abstract) -->
@@ -665,6 +684,33 @@
         </div>
     </footer>
 
+    <!-- Scheduler Modal -->
+    <div id="scheduler-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="toggleScheduler()"></div>
+        
+        <!-- Modal Content -->
+        <div class="modal-content relative bg-white w-full max-w-4xl h-[80vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                    <i data-lucide="calendar-days" class="w-5 h-5 text-brand-primary"></i>
+                    Agendar Demonstração
+                </h3>
+                <button onclick="toggleScheduler()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 bg-slate-100 relative">
+                <iframe 
+                    src="https://calendar.app.google/eEj1gEzBJ6121eAu7" 
+                    class="w-full h-full border-0"
+                    title="Agendamento de Demonstração"
+                ></iframe>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script>
         // Init Lucide Icons
@@ -680,6 +726,29 @@
         }, { threshold: 0.1 });
 
         document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+        // Scheduler Logic
+        function toggleScheduler() {
+            const modal = document.getElementById('scheduler-modal');
+            modal.classList.toggle('open');
+            
+            // Prevent body scroll when modal is open
+            if (modal.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                const modal = document.getElementById('scheduler-modal');
+                if (modal.classList.contains('open')) {
+                    toggleScheduler();
+                }
+            }
+        });
 
         // Calculator Logic
         function switchTab(tab) {
