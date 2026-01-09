@@ -662,30 +662,77 @@
                 <p class="text-slate-500 mt-2">Ferramentas avançadas que vão além da troca de mensagens.</p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
-                <!-- Module 1: Campanhas -->
-                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
-                    <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="megaphone" class="w-6 h-6"></i>
+            <!-- Changed to lg:grid-cols-2 to maintain 2 columns but expanded list -->
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <!-- Module: Kanban de Filas -->
+                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="kanban-square" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Campanhas e Disparos em Massa</h3>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Kanban de Filas</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
-                        Crie listas de transmissão segmentadas e envie promoções para milhares de clientes em poucos cliques. Totalmente seguro e com relatórios de entrega.
+                        Organize visualmente seus atendimentos. Arraste e solte conversas entre colunas personalizáveis como 'Aguardando', 'Em Atendimento' e 'Finalizado' para nunca perder um ticket de vista.
                     </p>
                     <ul class="text-sm text-slate-500 space-y-2">
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>Segmentação por Tags</li>
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>Agendamento de Envio</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>Visualização de Cards</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>Movimentação Drag & Drop</li>
                     </ul>
                 </div>
 
-                <!-- Module 2: Flowbuilder -->
-                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="transition-delay: 0.1s">
+                <!-- Module: Departamentos -->
+                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="transition-delay: 0.1s">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="building-2" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Departamentos</h3>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        Direcione clientes automaticamente para a equipe certa (Comercial, Suporte, Financeiro) com filas de atendimento exclusivas, garantindo que o especialista correto resolva o problema.
+                    </p>
+                    <ul class="text-sm text-slate-500 space-y-2">
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>Roteamento Inteligente</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>Permissões por Equipe</li>
+                    </ul>
+                </div>
+
+                <!-- Module: Agendamentos -->
+                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="transition-delay: 0.2s">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Agendamentos</h3>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        Nunca mais esqueça um cliente. Agende mensagens para datas e horários específicos ou programe lembretes para sua equipe fazer o follow-up no momento exato.
+                    </p>
+                    <ul class="text-sm text-slate-500 space-y-2">
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-amber-500 rounded-full"></div>Envio Programado</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-amber-500 rounded-full"></div>Lembretes Internos</li>
+                    </ul>
+                </div>
+
+                <!-- Module: Tags Automatizadas -->
+                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="transition-delay: 0.3s">
+                    <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="tags" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Tags Automatizadas</h3>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        Classifique leads sem esforço manual. Crie regras que aplicam etiquetas automaticamente baseadas em palavras-chave ditas pelo cliente ou etapas do funil de vendas.
+                    </p>
+                    <ul class="text-sm text-slate-500 space-y-2">
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-rose-500 rounded-full"></div>Regras por Palavras-chave</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-rose-500 rounded-full"></div>Segmentação Automática</li>
+                    </ul>
+                </div>
+
+                <!-- Module: Flowbuilder -->
+                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
                     <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <i data-lucide="git-branch" class="w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Flowbuilder Visual</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
-                        Construa jornadas do cliente complexas arrastando e soltando caixas. Crie menus, submenus e direcionamentos sem escrever uma linha de código.
+                        Construa jornadas do cliente complexas arrastando e soltando caixas. Crie menus, submenus, capturas de dados e direcionamentos sem escrever uma linha de código.
                     </p>
                     <ul class="text-sm text-slate-500 space-y-2">
                         <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>Interface Drag & Drop</li>
@@ -693,35 +740,51 @@
                     </ul>
                 </div>
 
-                <!-- Module 3: Automação Inteligente -->
-                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="transition-delay: 0.2s">
+                <!-- Module: Mensagens de Inatividade e Followup -->
+                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
                     <div class="w-12 h-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <i data-lucide="clock" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Automações de Recorrência</h3>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Inatividade e Follow-up</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
-                        Não deixe o cliente esfriar. Configure mensagens automáticas baseadas em ações. O cliente comprou? O sistema agenda um "Como está o produto?" para daqui 15 dias.
+                        Recupere vendas perdidas automaticamente. O sistema envia mensagens de reengajamento se o cliente parar de responder ou se o ticket ficar inativo por muito tempo.
                     </p>
                     <ul class="text-sm text-slate-500 space-y-2">
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>Gatilhos por Tags</li>
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>Recuperação de Inativos</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>Resgate de Vendas</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>Encerramento Automático</li>
                     </ul>
                 </div>
 
-                <!-- Module 4: Dashboard 360 -->
-                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="transition-delay: 0.3s">
-                    <div class="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="pie-chart" class="w-6 h-6"></i>
+                <!-- Module: Organizador de Tarefas -->
+                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
+                    <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="check-square" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Dashboard de Alta Performance</h3>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Organizador de Tarefas</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
-                        Dados reais para decisões reais. Acompanhe o tempo médio de resposta, taxa de conversão por atendente, NPS e volume de vendas em tempo real.
+                        Transforme conversas em ações. Crie tarefas vinculadas a cada ticket, defina prazos, delegue responsáveis e receba notificações para garantir que nenhum compromisso seja esquecido.
                     </p>
                     <ul class="text-sm text-slate-500 space-y-2">
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>Relatórios Exportáveis</li>
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>Comparativo entre Períodos</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-teal-500 rounded-full"></div>Delegar Responsáveis</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-teal-500 rounded-full"></div>Prazos e Alertas</li>
                     </ul>
                 </div>
+
+                <!-- Module: Campanhas -->
+                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="megaphone" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Campanhas em Massa</h3>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        Crie listas de transmissão segmentadas e envie promoções para milhares de clientes em poucos cliques via API Oficial. Totalmente seguro e com relatórios de entrega.
+                    </p>
+                    <ul class="text-sm text-slate-500 space-y-2">
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>Sem Risco de Banimento</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>Métricas de Abertura</li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </section>
