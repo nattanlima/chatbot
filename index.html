@@ -5,21 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prisme.chatbot | A Plataforma de Atendimento Omnichannel Definitiva</title>
     <meta name="description" content="Centralize WhatsApp, Instagram, Mercado Livre e mais. CRM incluso, automação com IA e implementação completa em 7 dias.">
-    
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/nattanlima/meu-crm-pwa/main/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/nattanlima/meu-crm-pwa/main/icons/favicon-16x16.png">
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/nattanlima/meu-crm-pwa/main/icons/favicon-16x16.ico">
+    <link rel="canonical" href="https://chatbot.prismeapp.com.br/">
+    <meta name="theme-color" content="#1e1b4b">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Lima Consultoria">
+    <!-- Endpoint do Cloudflare Worker que envia o lead por e-mail (ver worker/README.md). -->
+    <meta name="lead-endpoint" content="https://lead.prismesales.com.br">
 
-    <!-- Tailwind CSS -->
+    <!-- Open Graph (Facebook / WhatsApp / LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Prisme.chatbot">
+    <meta property="og:url" content="https://chatbot.prismeapp.com.br/">
+    <meta property="og:title" content="Prisme.chatbot | Atendimento Omnichannel sem dor de cabeça">
+    <meta property="og:description" content="Centralize WhatsApp, Instagram, Mercado Livre e mais. CRM incluso, automação com IA e implementação completa em 7 dias.">
+    <meta property="og:image" content="https://chatbot.prismeapp.com.br/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Prisme.chatbot — Atendimento Omnichannel">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Prisme.chatbot | Atendimento Omnichannel sem dor de cabeça">
+    <meta name="twitter:description" content="Centralize WhatsApp, Instagram, Mercado Livre e mais. CRM, automação com IA e implementação em 7 dias.">
+    <meta name="twitter:image" content="https://chatbot.prismeapp.com.br/og-image.png">
+
+    <!-- Favicons (self-hosted neste repositório) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+
+    <!-- Preconnect para origens externas (acelera DNS/TLS) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
+
+    <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome (Brand Icons) & Lucide -->
+
+    <!-- Google Fonts (Inter — apenas pesos usados) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome (ícones de marca) & Lucide (versão fixada) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@1.17.0/dist/umd/lucide.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -126,8 +157,81 @@
             border-radius: 2px;
         }
     </style>
+
+    <!-- Dados estruturados (SEO / rich results) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://chatbot.prismeapp.com.br/#organization",
+          "name": "Prisme.chatbot",
+          "url": "https://chatbot.prismeapp.com.br/",
+          "logo": "https://chatbot.prismeapp.com.br/logo.webp",
+          "description": "Plataforma de atendimento omnichannel com CRM, automação e IA.",
+          "sameAs": [
+            "https://instagram.com/prisme.sales",
+            "https://www.youtube.com/@fazqvende"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://chatbot.prismeapp.com.br/#website",
+          "url": "https://chatbot.prismeapp.com.br/",
+          "name": "Prisme.chatbot",
+          "inLanguage": "pt-BR",
+          "publisher": { "@id": "https://chatbot.prismeapp.com.br/#organization" }
+        },
+        {
+          "@type": "Product",
+          "name": "Prisme.chatbot",
+          "description": "Atendimento omnichannel: WhatsApp, Instagram, Mercado Livre e TikTok com CRM Kanban e automação por IA.",
+          "brand": { "@id": "https://chatbot.prismeapp.com.br/#organization" },
+          "offers": [
+            { "@type": "Offer", "name": "Essencial", "price": "599.90", "priceCurrency": "BRL", "url": "https://chatbot.prismeapp.com.br/#planos", "availability": "https://schema.org/InStock" },
+            { "@type": "Offer", "name": "Integrador", "price": "799.90", "priceCurrency": "BRL", "url": "https://chatbot.prismeapp.com.br/#planos", "availability": "https://schema.org/InStock" },
+            { "@type": "Offer", "name": "IA Power", "price": "999.90", "priceCurrency": "BRL", "url": "https://chatbot.prismeapp.com.br/#planos", "availability": "https://schema.org/InStock" }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-brand-success selection:text-white">
+
+    <!--
+      ====================================================================
+      ANALYTICS  (cole os IDs e descomente os blocos abaixo para ativar)
+      ====================================================================
+      Google Analytics 4  (troque G_XXXXXXXXXX pelo seu ID):
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G_XXXXXXXXXX"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G_XXXXXXXXXX');
+      </script>
+
+      ====================================================================
+      Meta Pixel  (troque SEU_PIXEL_ID pelo seu ID):
+
+      <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+        document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', 'SEU_PIXEL_ID');
+        fbq('track', 'PageView');
+      </script>
+
+      Os eventos "contato_whatsapp" e "abrir_agendamento" ja sao disparados
+      automaticamente (ver funcao trackEvent no rodape) assim que GA4/Pixel existirem.
+      ====================================================================
+    -->
+
 
     <!-- Header -->
     <header class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all duration-300">
@@ -609,7 +713,7 @@
                         <div class="rounded-[2rem] overflow-hidden w-full h-full bg-white relative">
                             <!-- Notch/Camera -->
                             <div class="absolute top-0 left-1/2 -translate-x-1/2 h-6 w-32 bg-gray-900 rounded-b-xl z-20"></div>
-                            <img src="https://raw.githubusercontent.com/nattanlima/chatbot/refs/heads/main/1.png" class="w-full h-full object-cover" alt="WhatsApp Coexistence">
+                            <img src="./1.webp" width="700" height="1563" loading="lazy" decoding="async" class="w-full h-full object-cover" alt="App da Prisme com WhatsApp em modo Coexistence no celular">
                         </div>
                     </div>
                 </div>
@@ -883,7 +987,7 @@
                                     Conversas de Marketing (Iniciadas pela empresa)
                                     <span class="block text-xs text-slate-500 font-normal">Ex: Disparos, promoções. Custo est. R$ 0,35/conversa (24h)</span>
                                 </label>
-                                <input type="range" min="0" max="10000" step="100" value="1000" id="marketingRange" oninput="updateApiCost()">
+                                <input type="range" min="0" max="10000" step="100" value="1000" id="marketingRange" oninput="updateApiCost()" aria-label="Quantidade de conversas de marketing por mês">
                                 <div class="text-right font-bold text-brand-primary mt-2" id="marketingValue">1.000 conversas</div>
                             </div>
                             <div>
@@ -891,7 +995,7 @@
                                     Conversas de Serviço/Utilidade
                                     <span class="block text-xs text-slate-500 font-normal">Ex: Atualização de pedido, senhas. Custo est. R$ 0,18/conversa (24h)</span>
                                 </label>
-                                <input type="range" min="0" max="10000" step="100" value="500" id="utilityRange" oninput="updateApiCost()">
+                                <input type="range" min="0" max="10000" step="100" value="500" id="utilityRange" oninput="updateApiCost()" aria-label="Quantidade de conversas de serviço ou utilidade por mês">
                                 <div class="text-right font-bold text-brand-primary mt-2" id="utilityValue">500 conversas</div>
                             </div>
                             <div class="bg-blue-50 p-4 rounded-lg text-xs text-blue-800">
@@ -915,7 +1019,7 @@
                                     Média de Atendimentos com IA por dia
                                     <span class="block text-xs text-slate-500 font-normal">Quantas pessoas o robô vai atender totalmente ou pré-qualificar?</span>
                                 </label>
-                                <input type="range" min="0" max="1000" step="10" value="50" id="aiRange" oninput="updateAiCost()">
+                                <input type="range" min="0" max="1000" step="10" value="50" id="aiRange" oninput="updateAiCost()" aria-label="Média de atendimentos com IA por dia">
                                 <div class="text-right font-bold text-brand-accent mt-2" id="aiValue">50 atendimentos/dia</div>
                             </div>
                             
@@ -1049,18 +1153,21 @@
             <!-- Removed 'grayscale' class to keep colors always visible -->
             <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
                 <!-- Image 1 -->
-                <img src="https://raw.githubusercontent.com/nattanlima/chatbot/refs/heads/main/9f4e9f_9dedc72c898b4b7daa61c3d13f3779c0%7Emv2.avif" 
-                     alt="Meta Business Partner" 
+                <img src="./9f4e9f_9dedc72c898b4b7daa61c3d13f3779c0~mv2.avif"
+                     width="416" height="256" loading="lazy" decoding="async"
+                     alt="Meta Business Partner"
                      class="h-20 w-auto object-contain hover:scale-105 transition-transform duration-300">
-                
+
                 <!-- Image 2 -->
-                <img src="https://raw.githubusercontent.com/nattanlima/chatbot/refs/heads/main/images_edited.avif" 
-                     alt="Meta Certified" 
+                <img src="./images_edited.avif"
+                     width="279" height="111" loading="lazy" decoding="async"
+                     alt="Meta Certified"
                      class="h-20 w-auto object-contain hover:scale-105 transition-transform duration-300">
-                
+
                 <!-- Image 3 -->
-                <img src="https://raw.githubusercontent.com/nattanlima/chatbot/refs/heads/main/selo-1.avif" 
-                     alt="Selo de Qualidade" 
+                <img src="./selo-1.avif"
+                     width="438" height="192" loading="lazy" decoding="async"
+                     alt="Selo de Qualidade"
                      class="h-20 w-auto object-contain hover:scale-105 transition-transform duration-300">
             </div>
         </div>
@@ -1071,13 +1178,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-4 gap-8 mb-12">
                 <div class="col-span-1 md:col-span-2">
-                    <img src="https://github.com/nattanlima/chatbot/blob/main/logocrmbranco.png?raw=true" alt="Prisme Chatbot" class="h-12 mb-6 block">
+                    <img src="./logo.webp" width="240" height="240" loading="lazy" decoding="async" alt="Prisme Chatbot" class="h-12 w-auto mb-6 block">
                     <p class="max-w-xs leading-relaxed mb-6">
                         Conectamos sua empresa ao futuro do atendimento. Automação, IA e Humanização em uma única plataforma.
                     </p>
                     <div class="flex gap-4">
-                        <a href="https://instagram.com/prisme.sales" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
-                        <a href="https://www.youtube.com/@fazqvende" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-youtube text-xl"></i></a>
+                        <a href="https://instagram.com/prisme.sales" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Prisme" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xl" aria-hidden="true"></i></a>
+                        <a href="https://www.youtube.com/@fazqvende" target="_blank" rel="noopener noreferrer" aria-label="YouTube da Prisme" class="hover:text-white transition-colors"><i class="fa-brands fa-youtube text-xl" aria-hidden="true"></i></a>
                     </div>
                 </div>
                 <div>
@@ -1104,30 +1211,193 @@
         </div>
     </footer>
 
-    <!-- Scheduler Modal -->
+    <!-- Scheduler Modal (com fluxo de qualificação) -->
     <div id="scheduler-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4">
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="toggleScheduler()"></div>
-        
+
         <!-- Modal Content -->
-        <div class="modal-content relative bg-white w-full max-w-4xl h-[80vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col">
-            <div class="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50">
+        <div class="modal-content relative bg-white w-full max-w-3xl h-[88vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+            <!-- Header -->
+            <div class="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50 shrink-0">
                 <h3 class="font-bold text-slate-800 flex items-center gap-2">
                     <i data-lucide="calendar-days" class="w-5 h-5 text-brand-primary"></i>
                     Agendar Demonstração
                 </h3>
-                <button onclick="toggleScheduler()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                <button onclick="toggleScheduler()" aria-label="Fechar" class="text-slate-400 hover:text-slate-600 transition-colors">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
-            
-            <div class="flex-1 bg-slate-100 relative">
-                <iframe 
-                    src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3qHe5tUeKIoZLpnE6YKD4xmqlMe-dPR5R5f75UwUKM0jeYfcVCXuuR-io1WC0OQejQPG3J88nv?gv=true" 
-                    class="w-full h-full border-0"
-                    title="Agendamento de Demonstração"
-                    allowfullscreen>
-                </iframe>
+
+            <!-- Barra de progresso -->
+            <div id="qual-progress" class="h-1.5 bg-slate-100 shrink-0">
+                <div id="qual-progress-bar" class="h-full bg-brand-success transition-all duration-500" style="width: 25%"></div>
+            </div>
+
+            <!-- Corpo -->
+            <div id="qual-body" class="flex-1 overflow-y-auto">
+
+                <!-- PASSO 1: Decisor -->
+                <div data-step="decisor" class="qual-step p-8 md:p-10">
+                    <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">Pergunta 1 de 4</span>
+                    <h4 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">Você é o decisor (dono) da empresa?</h4>
+                    <p class="text-slate-500 mb-8">Esta é uma <strong>call de apresentação</strong> e, para ser produtiva, precisa da pessoa que decide pela contratação.</p>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <button onclick="qualAnswer('decisor','sim')" class="group text-left p-5 rounded-xl border-2 border-slate-200 hover:border-brand-success hover:bg-emerald-50/50 transition-all flex items-center gap-4">
+                            <div class="w-11 h-11 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0"><i data-lucide="badge-check" class="w-6 h-6"></i></div>
+                            <div><div class="font-bold text-slate-900">Sim, sou o decisor</div><div class="text-xs text-slate-500">Dono ou sócio responsável</div></div>
+                        </button>
+                        <button onclick="qualAnswer('decisor','nao')" class="group text-left p-5 rounded-xl border-2 border-slate-200 hover:border-slate-400 hover:bg-slate-50 transition-all flex items-center gap-4">
+                            <div class="w-11 h-11 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0"><i data-lucide="user" class="w-6 h-6"></i></div>
+                            <div><div class="font-bold text-slate-900">Não sou o decisor</div><div class="text-xs text-slate-500">Colaborador / pesquisando</div></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BLOQUEIO: não é decisor -->
+                <div data-step="block" class="qual-step hidden p-8 md:p-10 text-center flex flex-col items-center justify-center h-full">
+                    <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mb-5"><i data-lucide="lock" class="w-8 h-8"></i></div>
+                    <h4 class="text-2xl font-bold text-slate-900 mb-3">A call precisa ser com o decisor</h4>
+                    <p class="text-slate-500 max-w-md mb-8">Nossa call é uma <strong>apresentação estratégica</strong> da plataforma. Para que ela seja realmente útil, ela só pode ser marcada com o <strong>decisor (dono)</strong> da empresa. Converse com o responsável e retorne para agendar — ou fale com a gente no WhatsApp para dúvidas iniciais.</p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="https://wa.me/5524992592320?text=Tenho%20interesse%20no%20Prisme%20chatbot%20e%20gostaria%20de%20mais%20informacoes" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-brand-success text-white font-bold hover:bg-emerald-600 transition flex items-center justify-center gap-2"><i class="fa-brands fa-whatsapp"></i> Dúvidas no WhatsApp</a>
+                        <button onclick="qualShow('decisor')" class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition">Voltar</button>
+                    </div>
+                </div>
+
+                <!-- PASSO 2: Urgência -->
+                <div data-step="urgencia" class="qual-step hidden p-8 md:p-10">
+                    <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">Pergunta 2 de 4</span>
+                    <h4 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">Qual o nível de urgência para começar?</h4>
+                    <p class="text-slate-500 mb-8">Isso nos ajuda a preparar a melhor proposta para o seu momento.</p>
+                    <div class="space-y-3">
+                        <button onclick="qualAnswer('urgencia','rapido')" class="w-full group text-left p-5 rounded-xl border-2 border-slate-200 hover:border-brand-success hover:bg-emerald-50/50 transition-all flex items-center gap-4">
+                            <div class="w-11 h-11 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0"><i data-lucide="zap" class="w-6 h-6"></i></div>
+                            <div><div class="font-bold text-slate-900">O mais rápido possível</div><div class="text-xs text-slate-500">Quero implementar já</div></div>
+                        </button>
+                        <button onclick="qualAnswer('urgencia','breve')" class="w-full group text-left p-5 rounded-xl border-2 border-slate-200 hover:border-brand-primary hover:bg-indigo-50/50 transition-all flex items-center gap-4">
+                            <div class="w-11 h-11 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0"><i data-lucide="calendar-clock" class="w-6 h-6"></i></div>
+                            <div><div class="font-bold text-slate-900">Em breve</div><div class="text-xs text-slate-500">Nas próximas semanas</div></div>
+                        </button>
+                        <button onclick="qualAnswer('urgencia','pensando')" class="w-full group text-left p-5 rounded-xl border-2 border-slate-200 hover:border-slate-400 hover:bg-slate-50 transition-all flex items-center gap-4">
+                            <div class="w-11 h-11 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0"><i data-lucide="lightbulb" class="w-6 h-6"></i></div>
+                            <div><div class="font-bold text-slate-900">Ainda pensando</div><div class="text-xs text-slate-500">Avaliando possibilidades</div></div>
+                        </button>
+                    </div>
+                    <button onclick="qualShow('decisor')" class="mt-8 text-sm text-slate-400 hover:text-slate-600 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar</button>
+                </div>
+
+                <!-- PASSO 3: Chatbot -->
+                <div data-step="chatbot" class="qual-step hidden p-8 md:p-10">
+                    <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">Pergunta 3 de 4</span>
+                    <h4 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">Você já tem chatbot na operação?</h4>
+                    <p class="text-slate-500 mb-8">Queremos entender seu cenário atual de atendimento.</p>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <button onclick="qualAnswer('chatbot','sim')" class="group text-left p-5 rounded-xl border-2 border-slate-200 hover:border-brand-primary hover:bg-indigo-50/50 transition-all flex items-center gap-4">
+                            <div class="w-11 h-11 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0"><i data-lucide="bot" class="w-6 h-6"></i></div>
+                            <div><div class="font-bold text-slate-900">Sim, já uso</div><div class="text-xs text-slate-500">Quero migrar / melhorar</div></div>
+                        </button>
+                        <button onclick="qualAnswer('chatbot','nao')" class="group text-left p-5 rounded-xl border-2 border-slate-200 hover:border-brand-success hover:bg-emerald-50/50 transition-all flex items-center gap-4">
+                            <div class="w-11 h-11 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0"><i data-lucide="sparkles" class="w-6 h-6"></i></div>
+                            <div><div class="font-bold text-slate-900">Ainda não tenho</div><div class="text-xs text-slate-500">Seria o primeiro</div></div>
+                        </button>
+                    </div>
+                    <button onclick="qualShow('urgencia')" class="mt-8 text-sm text-slate-400 hover:text-slate-600 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar</button>
+                </div>
+
+                <!-- PASSO 4: Quem -->
+                <div data-step="quem" class="qual-step hidden p-8 md:p-10">
+                    <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">Pergunta 4 de 4</span>
+                    <h4 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">Com quem você prefere a call?</h4>
+                    <p class="text-slate-500 mb-8">Escolha o formato que faz mais sentido para você.</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <button onclick="qualAnswer('quem','especialistas')" class="group text-left p-6 rounded-2xl border-2 border-slate-200 hover:border-brand-success hover:bg-emerald-50/40 transition-all flex flex-col">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center"><i data-lucide="users" class="w-6 h-6"></i></div>
+                                <span class="text-xs font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full">Sem custo</span>
+                            </div>
+                            <div class="font-bold text-slate-900 text-lg">Time de Especialistas</div>
+                            <p class="text-sm text-slate-500 mt-1">Call gratuita com nossos consultores de implementação.</p>
+                        </button>
+                        <button onclick="qualAnswer('quem','nattan')" class="group text-left p-6 rounded-2xl border-2 border-slate-200 hover:border-brand-primary hover:bg-indigo-50/40 transition-all flex flex-col">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center"><i data-lucide="crown" class="w-6 h-6"></i></div>
+                                <span class="text-xs font-bold bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-full">R$ 197,90</span>
+                            </div>
+                            <div class="font-bold text-slate-900 text-lg">Direto com Nattan Lima</div>
+                            <p class="text-sm text-slate-500 mt-1">Call exclusiva. O valor é abatido na implementação em caso de fechamento.</p>
+                        </button>
+                    </div>
+                    <button onclick="qualShow('chatbot')" class="mt-8 text-sm text-slate-400 hover:text-slate-600 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar</button>
+                </div>
+
+                <!-- CONFIRMAÇÃO DE CUSTO (Nattan) -->
+                <div data-step="nattan" class="qual-step hidden p-8 md:p-10 text-center flex flex-col items-center justify-center h-full">
+                    <div class="w-16 h-16 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mb-5"><i data-lucide="crown" class="w-8 h-8"></i></div>
+                    <h4 class="text-2xl font-bold text-slate-900 mb-3">Call exclusiva com Nattan Lima</h4>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 max-w-md text-left mb-8 space-y-3">
+                        <div class="flex items-start gap-3"><i data-lucide="dollar-sign" class="w-5 h-5 text-brand-primary shrink-0 mt-0.5"></i><p class="text-sm text-slate-600">Investimento de <strong class="text-slate-900">R$ 197,90</strong> para reservar a agenda.</p></div>
+                        <div class="flex items-start gap-3"><i data-lucide="badge-percent" class="w-5 h-5 text-brand-success shrink-0 mt-0.5"></i><p class="text-sm text-slate-600"><strong class="text-slate-900">Abatido integralmente</strong> no valor da implementação caso você feche conosco.</p></div>
+                        <div class="flex items-start gap-3"><i data-lucide="alert-circle" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5"></i><p class="text-sm text-slate-600">O valor <strong class="text-slate-900">não é reembolsável</strong> em caso de não fechamento.</p></div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+                        <button onclick="qualShow('contato')" class="flex-1 px-6 py-3 rounded-xl bg-brand-primary text-white font-bold hover:bg-indigo-500 transition flex items-center justify-center gap-2">Estou ciente, agendar <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                        <button onclick="qualShow('quem')" class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition">Voltar</button>
+                    </div>
+                </div>
+
+                <!-- CONTATO (coleta antes de abrir a agenda) -->
+                <div data-step="contato" class="qual-step hidden p-8 md:p-10">
+                    <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">Quase lá</span>
+                    <h4 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">Para quem enviamos a confirmação?</h4>
+                    <p class="text-slate-500 mb-8">Deixe seus dados para nossa equipe preparar a sua call.</p>
+                    <form onsubmit="event.preventDefault(); qualSubmitContact();" class="space-y-4" novalidate>
+                        <!-- honeypot anti-spam (invisível para humanos) -->
+                        <input type="text" id="lead-website" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="lead-nome" class="block text-sm font-semibold text-slate-700 mb-1">Nome *</label>
+                                <input id="lead-nome" type="text" autocomplete="name" class="w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none transition" placeholder="Seu nome">
+                            </div>
+                            <div>
+                                <label for="lead-empresa" class="block text-sm font-semibold text-slate-700 mb-1">Empresa</label>
+                                <input id="lead-empresa" type="text" autocomplete="organization" class="w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none transition" placeholder="Nome da empresa">
+                            </div>
+                            <div>
+                                <label for="lead-whatsapp" class="block text-sm font-semibold text-slate-700 mb-1">WhatsApp *</label>
+                                <input id="lead-whatsapp" type="tel" inputmode="tel" autocomplete="tel" class="w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none transition" placeholder="(DDD) 9 9999-9999">
+                            </div>
+                            <div>
+                                <label for="lead-email" class="block text-sm font-semibold text-slate-700 mb-1">E-mail *</label>
+                                <input id="lead-email" type="email" autocomplete="email" class="w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none transition" placeholder="voce@empresa.com">
+                            </div>
+                        </div>
+                        <p id="lead-error" class="hidden text-sm text-red-600 flex items-center gap-1.5"><i data-lucide="alert-circle" class="w-4 h-4"></i><span id="lead-error-msg"></span></p>
+                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                            <button id="lead-submit" type="submit" class="flex-1 px-6 py-3 rounded-xl bg-brand-success text-white font-bold hover:bg-emerald-600 transition flex items-center justify-center gap-2 disabled:opacity-60">
+                                <span id="lead-submit-label">Continuar para a agenda</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                            <button type="button" onclick="qualBackFromContato()" class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition">Voltar</button>
+                        </div>
+                        <p class="text-xs text-slate-400 flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5 shrink-0"></i> Seus dados são enviados com segurança apenas para nossa equipe.</p>
+                    </form>
+                </div>
+
+                <!-- CALENDÁRIO -->
+                <div data-step="calendar" class="qual-step hidden flex flex-col h-full">
+                    <div id="qual-cost-banner" class="hidden bg-indigo-50 border-b border-indigo-100 px-5 py-3 text-sm text-indigo-800 flex items-center gap-2 shrink-0">
+                        <i data-lucide="info" class="w-4 h-4 shrink-0"></i>
+                        <span>Call com <strong>Nattan Lima</strong> — R$ 197,90, abatido na implementação em caso de fechamento (não reembolsável).</span>
+                    </div>
+                    <div class="flex-1 bg-slate-100 relative">
+                        <iframe id="qual-iframe" src="about:blank" class="w-full h-full border-0" title="Agendamento de Demonstração" allowfullscreen></iframe>
+                    </div>
+                    <div class="shrink-0 px-5 py-2 border-t border-slate-200 bg-white">
+                        <button onclick="qualBackFromCalendar()" class="text-sm text-slate-400 hover:text-slate-600 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Trocar tipo de call</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -1136,6 +1406,20 @@
     <script>
         // Init Lucide Icons
         lucide.createIcons();
+
+        // ===== Rastreamento de conversao (seguro: no-op ate configurar GA4/Meta Pixel) =====
+        function trackEvent(name, params) {
+            if (typeof gtag === 'function') gtag('event', name, params || {});
+            if (typeof fbq === 'function') fbq('trackCustom', name, params || {});
+        }
+        // Clique em qualquer botao de WhatsApp (CTAs dos planos / contato)
+        document.addEventListener('click', function (e) {
+            const wa = e.target.closest('a[href*="wa.me"]');
+            if (wa) {
+                const m = wa.href.match(/Plano%20([^&]+)/);
+                trackEvent('contato_whatsapp', { plano: m ? decodeURIComponent(m[1]).trim() : 'geral' });
+            }
+        });
 
         // Animation on Scroll
         const observer = new IntersectionObserver((entries) => {
@@ -1148,13 +1432,147 @@
 
         document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
-        // Scheduler Logic
+        // ===== Scheduler + Fluxo de Qualificacao =====
+        const AGENDAS = {
+            // Agenda gratuita (time de especialistas) - mantida como ja era
+            especialistas: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ3qHe5tUeKIoZLpnE6YKD4xmqlMe-dPR5R5f75UwUKM0jeYfcVCXuuR-io1WC0OQejQPG3J88nv?gv=true',
+            // Agenda paga (Nattan Lima) - R$ 197,90
+            nattan: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2C5-9-rVr5-YXQM-M1gFiSOZQ_ylxMYBCdI_U1W9bkQegl1gsSXEbuNOdLeZcO31npuhk4uykM?gv=true'
+        };
+        const QUAL_FLOW = ['decisor', 'urgencia', 'chatbot', 'quem'];
+        const qualData = { decisor: null, urgencia: null, chatbot: null, quem: null };
+
+        // Mostra um passo do wizard e atualiza a barra de progresso
+        function qualShow(step) {
+            document.querySelectorAll('#scheduler-modal .qual-step').forEach(el => el.classList.add('hidden'));
+            const target = document.querySelector('#scheduler-modal [data-step="' + step + '"]');
+            if (target) target.classList.remove('hidden');
+
+            const idx = QUAL_FLOW.indexOf(step);
+            const wrap = document.getElementById('qual-progress');
+            const bar = document.getElementById('qual-progress-bar');
+            if (idx >= 0) {
+                wrap.classList.remove('hidden');
+                bar.style.width = (((idx + 1) / QUAL_FLOW.length) * 100) + '%';
+            } else {
+                wrap.classList.add('hidden'); // bloqueio / nattan / calendario nao mostram progresso
+            }
+            const body = document.getElementById('qual-body');
+            if (body) body.scrollTop = 0;
+        }
+
+        // Zera o estado e volta ao primeiro passo (chamado ao abrir o modal)
+        function qualReset() {
+            qualData.decisor = qualData.urgencia = qualData.chatbot = qualData.quem = null;
+            const iframe = document.getElementById('qual-iframe');
+            if (iframe) iframe.src = 'about:blank';
+            const banner = document.getElementById('qual-cost-banner');
+            if (banner) banner.classList.add('hidden');
+            const err = document.getElementById('lead-error');
+            if (err) err.classList.add('hidden');
+            qualShow('decisor');
+        }
+
+        // Registra a resposta e decide o proximo passo (roteamento)
+        function qualAnswer(key, value) {
+            qualData[key] = value;
+            if (key === 'decisor') {
+                if (value === 'nao') { trackEvent('agendamento_bloqueado', { motivo: 'nao_decisor' }); qualShow('block'); return; }
+                qualShow('urgencia');
+            } else if (key === 'urgencia') {
+                qualShow('chatbot');
+            } else if (key === 'chatbot') {
+                qualShow('quem');
+            } else if (key === 'quem') {
+                if (value === 'nattan') { qualShow('nattan'); return; } // confirma custo antes
+                qualShow('contato'); // coleta o contato antes de abrir a agenda
+            }
+        }
+
+        // Carrega a agenda correta no iframe e exibe o calendario
+        function qualOpenCalendar(tipo) {
+            qualData.quem = tipo;
+            document.getElementById('qual-iframe').src = AGENDAS[tipo];
+            document.getElementById('qual-cost-banner').classList.toggle('hidden', tipo !== 'nattan');
+            qualShow('calendar');
+            trackEvent('agendamento_qualificado', {
+                agenda: tipo,
+                decisor: qualData.decisor,
+                urgencia: qualData.urgencia,
+                chatbot: qualData.chatbot
+            });
+        }
+
+        // Volta do calendario para a escolha de tipo de call (e descarrega o iframe)
+        function qualBackFromCalendar() {
+            document.getElementById('qual-iframe').src = 'about:blank';
+            qualShow('quem');
+        }
+
+        function qualBackFromContato() { qualShow('quem'); }
+
+        // URL do Worker (lida do <meta>); vazio = nao envia, apenas segue para a agenda
+        function leadEndpoint() {
+            const m = document.querySelector('meta[name="lead-endpoint"]');
+            return (m && m.content ? m.content : '').trim();
+        }
+        function isEmailValido(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+        function showLeadError(msg) {
+            document.getElementById('lead-error-msg').textContent = msg;
+            document.getElementById('lead-error').classList.remove('hidden');
+        }
+
+        // Valida o contato, envia ao Worker (Resend) e abre a agenda escolhida
+        async function qualSubmitContact() {
+            const nome = document.getElementById('lead-nome').value.trim();
+            const whatsapp = document.getElementById('lead-whatsapp').value.trim();
+            const email = document.getElementById('lead-email').value.trim();
+            const empresa = document.getElementById('lead-empresa').value.trim();
+            const honeypot = document.getElementById('lead-website').value;
+
+            if (!nome || !whatsapp || !email) { showLeadError('Preencha nome, WhatsApp e e-mail.'); return; }
+            if (!isEmailValido(email)) { showLeadError('Informe um e-mail válido.'); return; }
+            if (whatsapp.replace(/\D/g, '').length < 10) { showLeadError('Informe um WhatsApp válido com DDD.'); return; }
+            document.getElementById('lead-error').classList.add('hidden');
+
+            qualData.contato = { nome, whatsapp, email, empresa };
+            const payload = {
+                nome: nome, whatsapp: whatsapp, email: email, empresa: empresa,
+                decisor: qualData.decisor, urgencia: qualData.urgencia,
+                chatbot: qualData.chatbot, agenda: qualData.quem,
+                origem: location.href
+            };
+
+            const endpoint = leadEndpoint();
+            // honeypot preenchido = bot: nao envia, mas segue normalmente
+            if (endpoint && !honeypot) {
+                const btn = document.getElementById('lead-submit');
+                const label = document.getElementById('lead-submit-label');
+                btn.disabled = true; label.textContent = 'Enviando...';
+                try {
+                    await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    trackEvent('lead_enviado', { agenda: qualData.quem });
+                } catch (e) {
+                    // a notificacao nao deve bloquear o agendamento do cliente
+                    trackEvent('lead_envio_falhou', { agenda: qualData.quem });
+                } finally {
+                    btn.disabled = false; label.textContent = 'Continuar para a agenda';
+                }
+            }
+            qualOpenCalendar(qualData.quem);
+        }
+
         function toggleScheduler() {
             const modal = document.getElementById('scheduler-modal');
             modal.classList.toggle('open');
-            
-            // Prevent body scroll when modal is open
+
             if (modal.classList.contains('open')) {
+                trackEvent('abrir_agendamento');
+                qualReset();
                 document.body.style.overflow = 'hidden';
             } else {
                 document.body.style.overflow = '';
@@ -1190,7 +1608,7 @@
                 aiTab.classList.add('text-brand-primary', 'bg-white', 'border-b-2', 'border-brand-primary');
                 aiTab.classList.remove('text-slate-500');
                 apiTab.classList.remove('text-brand-primary', 'bg-white', 'border-b-2', 'border-brand-primary');
-                aiTab.classList.add('text-slate-500');
+                apiTab.classList.add('text-slate-500');
 
                 aiContent.classList.remove('hidden');
                 apiContent.classList.add('hidden');

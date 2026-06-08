@@ -1,0 +1,14 @@
+# Dependências de teste (não vão para o GitHub Pages)
+node_modules/
+
+# Segredos locais do Worker (NUNCA versionar)
+.dev.vars
+worker/.dev.vars
+
+# Estado local do wrangler
+.wrangler/
+worker/.wrangler/
+
+# Logs
+npm-debug.log*
+*.log

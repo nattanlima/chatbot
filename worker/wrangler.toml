@@ -1,0 +1,16 @@
+name = "prisme-lead"
+main = "worker.js"
+compatibility_date = "2026-06-01"
+
+# Domínio próprio (a zona prismesales.com.br já está na Cloudflare)
+routes = [
+  { pattern = "lead.prismesales.com.br", custom_domain = true }
+]
+
+[vars]
+TO_EMAIL = "nattan.lima@prismeapp.com.br"
+FROM_EMAIL = "Prisme <call@prismesales.com.br>"
+ALLOWED_ORIGINS = "https://chatbot.prismeapp.com.br"
+
+# A chave do Resend é um SEGREDO e NÃO fica neste arquivo.
+# Defina com:  wrangler secret put RESEND_API_KEY
