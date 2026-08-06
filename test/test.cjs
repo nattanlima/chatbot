@@ -52,6 +52,11 @@ function lastEvent(name) {
   const evs = window.__events.filter(e => e[0] === 'event' && e[1] === name);
   return evs.length ? evs[evs.length - 1][2] : null;
 }
+// chamadas enfileiradas no OpenAI Ads Pixel (oaiq.q, antes do SDK carregar)
+function oaiCalls(evName) {
+  const q = (window.oaiq && window.oaiq.q) ? Array.from(window.oaiq.q).map(a => Array.from(a)) : [];
+  return evName === undefined ? q : q.filter(c => c[0] === 'measure' && c[1] === evName);
+}
 function setEndpoint(v) { doc.querySelector('meta[name="lead-endpoint"]').setAttribute('content', v); }
 function fillContact(o = {}) {
   $('lead-nome').value = 'nome' in o ? o.nome : 'Maria';
@@ -81,6 +86,12 @@ function goToContato(agenda) {
   ['switchTab','toggleScheduler','updateApiCost','updateAiCost','trackEvent','qualShow','qualReset',
    'qualAnswer','qualOpenCalendar','qualBackFromCalendar','qualBackFromContato','qualSubmitContact',
    'leadEndpoint','isEmailValido'].forEach(fn => check('window.'+fn, typeof window[fn] === 'function'));
+
+  console.log('\n[2b] OpenAI Ads Pixel (oaiq) instalado e inicializado');
+  check('window.oaiq definido', typeof window.oaiq === 'function');
+  const oaiInit = oaiCalls().find(c => c[0] === 'init');
+  check('init com pixelId correto', !!oaiInit && oaiInit[1] && oaiInit[1].pixelId === 'Fm75B5NPoYhY18xKckDYmW');
+  check('page_viewed no carregamento', oaiCalls('page_viewed').length === 1);
 
   console.log('\n[3] BUG das abas corrigido (switchTab)');
   window.switchTab('ai');
@@ -146,6 +157,16 @@ function goToContato(agenda) {
   check('banner de custo OCULTO (gratuito)', costBannerHidden());
   check('evento lead_enviado', !!lastEvent('lead_enviado'));
 
+  console.log('\n[9b] OpenAI Ads: conversao apos o cadastro (checkout_started + dedup)');
+  check('payload leva event_id para o Worker', typeof body.event_id === 'string' && body.event_id.length > 0);
+  const cs = oaiCalls('checkout_started');
+  check('checkout_started disparado no cadastro', cs.length > 0);
+  const lastCs = cs[cs.length - 1];
+  check('checkout_started com type contents', !!lastCs[2] && lastCs[2].type === 'contents');
+  check('checkout_started com o MESMO event_id do Worker', !!lastCs[3] && lastCs[3].event_id === body.event_id);
+  check('appointment_scheduled ao abrir a agenda', oaiCalls('appointment_scheduled').length > 0);
+  check('gtag tambem recebeu cadastro_concluido', !!lastEvent('cadastro_concluido'));
+
   console.log('\n[10] Caminho NATTAN: confirmacao -> contato -> agenda paga');
   goToContato('nattan');
   const nattanBtn = doc.querySelector('#scheduler-modal [data-step="nattan"] button');
@@ -161,18 +182,32 @@ function goToContato(agenda) {
   console.log('\n[11] Honeypot e endpoint vazio nao chamam o Worker (mas seguem pra agenda)');
   goToContato('especialistas');
   let n = window.__fetch.length;
+  let nCs = oaiCalls('checkout_started').length;
   fillContact({ website: 'http://bot' }); // honeypot
   await window.qualSubmitContact();
   check('honeypot: nao chamou Worker', window.__fetch.length === n);
   check('honeypot: mesmo assim abriu a agenda', visibleStep() === 'calendar');
+  check('honeypot: NAO conta conversao OpenAI (bot)', oaiCalls('checkout_started').length === nCs);
 
   goToContato('especialistas');
   setEndpoint(''); // endpoint nao configurado
   n = window.__fetch.length;
+  nCs = oaiCalls('checkout_started').length;
   fillContact();
   await window.qualSubmitContact();
   check('endpoint vazio: nao chamou Worker', window.__fetch.length === n);
   check('endpoint vazio: abriu a agenda mesmo assim', visibleStep() === 'calendar');
+  check('endpoint vazio: conversao OpenAI conta mesmo assim', oaiCalls('checkout_started').length === nCs + 1);
+
+  console.log('\n[11b] Clique em CTA de WhatsApp => lead_created (OpenAI) + contato_whatsapp (GA4)');
+  const waLink = doc.querySelector('a[href*="wa.me"]');
+  check('existe CTA de WhatsApp na pagina', !!waLink);
+  if (waLink) {
+    const nLc = oaiCalls('lead_created').length;
+    waLink.dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true }));
+    check('lead_created disparado no oaiq', oaiCalls('lead_created').length === nLc + 1);
+    check('gtag recebeu contato_whatsapp', !!lastEvent('contato_whatsapp'));
+  }
 
   console.log('\n[12] Voltar do contato retorna para a escolha de call');
   goToContato('especialistas');

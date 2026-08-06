@@ -49,6 +49,25 @@ Pronto. Enquanto a meta estiver vazia, o site **não envia** nada e segue direto
 | `FROM_EMAIL` | Remetente verificado no Resend |
 | `ALLOWED_ORIGINS` | Origens liberadas no CORS (separadas por vírgula) |
 | `RESEND_API_KEY` | **Secret** (via `wrangler secret put`, não fica no arquivo) |
+| `OPENAI_ADS_PIXEL_ID` | ID do pixel da OpenAI Ads (mesmo do `oaiq('init')` no site) |
+| `OPENAI_ADS_API_KEY` | **Secret** (opcional) — ativa o envio server-side de conversão |
+
+## OpenAI Ads — Conversions API (opcional)
+
+Quando o secret `OPENAI_ADS_API_KEY` está definido, o Worker reenvia a conversão
+`checkout_started` para `https://bzr.openai.com/v1/events` a cada lead válido,
+usando o **mesmo `event_id`** que o navegador mandou no payload — a OpenAI
+**deduplica** e a conversão conta uma vez só. Isso recupera conversões perdidas
+por bloqueadores de anúncio no navegador.
+
+```bash
+cd worker
+wrangler secret put OPENAI_ADS_API_KEY   # cole a API key da OpenAI Ads (Ads Manager)
+wrangler deploy
+```
+
+Sem o secret, nada muda: só o pixel do navegador reporta (comportamento seguro).
+O envio é *fire-and-forget* (`ctx.waitUntil`): falha da OpenAI **não** afeta o lead.
 
 ## Testar localmente
 

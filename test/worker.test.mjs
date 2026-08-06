@@ -108,6 +108,60 @@ console.log('\n[W7] Falha do Resend => 502 (propaga erro)');
   check('erro resend_failed', j.error === 'resend_failed');
 }
 
+console.log('\n[W8] OpenAI Ads CAPI: com OPENAI_ADS_API_KEY envia checkout_started deduplicado');
+{
+  stubFetchOk();
+  const envOai = { ...ENV, OPENAI_ADS_API_KEY: 'oai_test_key', OPENAI_ADS_PIXEL_ID: 'Fm75B5NPoYhY18xKckDYmW' };
+  const ctx = { promises: [], waitUntil(p) { this.promises.push(p); } };
+  const r = await worker.fetch(req('POST', { ...VALID, event_id: 'evt-dedup-123' }), envOai, ctx);
+  await Promise.all(ctx.promises);
+  check('status 200', r.status === 200);
+  check('2 chamadas: OpenAI + Resend', resendCalls.length === 2);
+  const oai = resendCalls.find(c => String(c.url).includes('bzr.openai.com'));
+  check('URL da Events API com pid', oai?.url === 'https://bzr.openai.com/v1/events?pid=Fm75B5NPoYhY18xKckDYmW');
+  check('Authorization Bearer com a chave OpenAI', oai?.opts?.headers?.['Authorization'] === 'Bearer oai_test_key');
+  const evBody = JSON.parse(oai.opts.body);
+  const ev = evBody.events?.[0] || {};
+  check('validate_only = false', evBody.validate_only === false);
+  check('event_id do navegador reutilizado (dedup)', ev.id === 'evt-dedup-123');
+  check('type = checkout_started', ev.type === 'checkout_started');
+  check('action_source = web', ev.action_source === 'web');
+  check('data.type = contents', ev.data?.type === 'contents');
+  check('timestamp_ms numerico', typeof ev.timestamp_ms === 'number' && ev.timestamp_ms > 0);
+  check('source_url = origem do lead', ev.source_url === VALID.origem);
+}
+
+console.log('\n[W9] OpenAI Ads CAPI: sem event_id gera id; falha da OpenAI nao derruba o lead');
+{
+  stubFetchOk();
+  const envOai = { ...ENV, OPENAI_ADS_API_KEY: 'oai_test_key' };
+  const r = await worker.fetch(req('POST', VALID), envOai); // sem ctx => aguarda inline
+  check('status 200', r.status === 200);
+  const oai = resendCalls.find(c => String(c.url).includes('bzr.openai.com'));
+  const ev = JSON.parse(oai.opts.body).events[0];
+  check('id gerado quando o navegador nao manda', typeof ev.id === 'string' && ev.id.length > 0);
+
+  // OpenAI fora do ar (fetch lanca) => lead segue normalmente
+  resendCalls = [];
+  globalThis.fetch = async (url, opts) => {
+    resendCalls.push({ url, opts });
+    if (String(url).includes('bzr.openai.com')) throw new Error('openai down');
+    return new Response(JSON.stringify({ id: 'email_123' }), { status: 200 });
+  };
+  const r2 = await worker.fetch(req('POST', { ...VALID, event_id: 'evt-x' }), envOai);
+  const j2 = await r2.json();
+  check('OpenAI caiu, lead ainda 200 ok', r2.status === 200 && j2.ok === true);
+  check('Resend ainda foi chamado', resendCalls.some(c => String(c.url).includes('api.resend.com')));
+}
+
+console.log('\n[W10] Sem OPENAI_ADS_API_KEY nao chama a OpenAI (comportamento atual)');
+{
+  stubFetchOk();
+  const r = await worker.fetch(req('POST', { ...VALID, event_id: 'evt-y' }), ENV);
+  check('status 200', r.status === 200);
+  check('apenas o Resend foi chamado', resendCalls.length === 1 && String(resendCalls[0].url).includes('api.resend.com'));
+}
+
 console.log('\n========================================');
 console.log(`WORKER: ${pass} passou, ${fail} falhou`);
 console.log('========================================');

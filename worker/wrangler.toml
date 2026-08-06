@@ -11,6 +11,12 @@ routes = [
 TO_EMAIL = "nattan.lima@prismeapp.com.br"
 FROM_EMAIL = "Prisme <call@prismesales.com.br>"
 ALLOWED_ORIGINS = "https://chatbot.prismeapp.com.br"
+# Pixel da OpenAI Ads (mesmo ID usado no oaiq('init') do index.html)
+OPENAI_ADS_PIXEL_ID = "Fm75B5NPoYhY18xKckDYmW"
 
 # A chave do Resend é um SEGREDO e NÃO fica neste arquivo.
 # Defina com:  wrangler secret put RESEND_API_KEY
+#
+# OpenAI Ads Conversions API (opcional — reforço server-side do checkout_started):
+# a API key é um SEGREDO. Defina com:  wrangler secret put OPENAI_ADS_API_KEY
+# Sem esse secret o Worker simplesmente não envia o evento (só o pixel do navegador conta).

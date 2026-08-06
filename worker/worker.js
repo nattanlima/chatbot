@@ -1,5 +1,32 @@
 // Cloudflare Worker — recebe o lead do site e envia por e-mail via Resend.
 // A chave do Resend fica como SECRET no Worker (nunca no front-end / GitHub Pages).
+// Opcional: reenvia a conversao "checkout_started" para a OpenAI Ads (Conversions API),
+// deduplicada com o evento do navegador pelo mesmo event_id. Ativa ao definir o
+// secret OPENAI_ADS_API_KEY (wrangler secret put OPENAI_ADS_API_KEY).
+
+const OPENAI_ADS_PIXEL_ID = 'Fm75B5NPoYhY18xKckDYmW';
+
+// Envia o evento de conversao server-side para a OpenAI Ads. Nunca lanca erro:
+// a notificacao de anuncio nao pode derrubar o fluxo do lead.
+function sendOpenAIAdsEvent(env, data) {
+  const pid = env.OPENAI_ADS_PIXEL_ID || OPENAI_ADS_PIXEL_ID;
+  const eventId = String(data.event_id || '').slice(0, 64) || crypto.randomUUID();
+  return fetch('https://bzr.openai.com/v1/events?pid=' + encodeURIComponent(pid), {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${env.OPENAI_ADS_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      validate_only: false,
+      events: [{
+        id: eventId,
+        type: 'checkout_started',
+        timestamp_ms: Date.now(),
+        source_url: String(data.origem || 'https://chatbot.prismeapp.com.br/').slice(0, 500),
+        action_source: 'web',
+        data: { type: 'contents' }
+      }]
+    })
+  }).catch(() => {});
+}
 
 const DEFAULT_ALLOWED = [
   'https://chatbot.prismeapp.com.br',
@@ -44,7 +71,7 @@ function esc(s) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get('Origin') || '';
 
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders(origin, env) });
@@ -61,6 +88,12 @@ export default {
     const email = String(data.email || '').slice(0, 160).trim();
     const empresa = String(data.empresa || '').slice(0, 160).trim();
     if (!nome || !whatsapp || !email) return json({ ok: false, error: 'missing_fields' }, 422, origin, env);
+
+    // Conversao OpenAI Ads (fire-and-forget: nao atrasa nem bloqueia a resposta)
+    if (env.OPENAI_ADS_API_KEY) {
+      const capi = sendOpenAIAdsEvent(env, data);
+      if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(capi); else await capi;
+    }
 
     const subject = `Novo lead — ${nome}${empresa ? ' (' + empresa + ')' : ''} • ${label(data.agenda)}`;
     const html =

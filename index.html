@@ -42,6 +42,26 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://bzrcdn.openai.com">
+
+    <!-- OpenAI Ads Pixel (oaiq) — conversões de anúncios no ChatGPT.
+         Eventos padrão são disparados pela função trackEvent (rodapé):
+         checkout_started, lead_created e appointment_scheduled. -->
+    <script>
+        (function (w, d, s, u) {
+            if (w.oaiq) return;
+            var q = function () { q.q.push(arguments); };
+            q.q = [];
+            w.oaiq = q;
+            var js = d.createElement(s);
+            js.async = true;
+            js.src = u;
+            var f = d.getElementsByTagName(s)[0];
+            f.parentNode.insertBefore(js, f);
+        })(window, document, 'script', 'https://bzrcdn.openai.com/sdk/oaiq.min.js');
+        oaiq('init', { pixelId: 'Fm75B5NPoYhY18xKckDYmW' });
+        oaiq('measure', 'page_viewed', { type: 'contents' });
+    </script>
 
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -230,6 +250,9 @@
 
       Os eventos "contato_whatsapp" e "abrir_agendamento" ja sao disparados
       automaticamente (ver funcao trackEvent no rodape) assim que GA4/Pixel existirem.
+
+      OBS: o pixel da OpenAI Ads (oaiq) JA ESTA ATIVO no <head> — nao precisa
+      configurar nada aqui. Mapeamento dos eventos: ver OAI_EVENTS no rodape.
       ====================================================================
     -->
 
@@ -1409,10 +1432,30 @@
         // Init Lucide Icons
         lucide.createIcons();
 
-        // ===== Rastreamento de conversao (seguro: no-op ate configurar GA4/Meta Pixel) =====
+        // ===== Rastreamento de conversao (GA4/Meta: no-op ate configurar; OpenAI Ads: ativo) =====
+        // Mapa: evento interno -> evento padrao do OpenAI Ads Pixel (oaiq).
+        // Eventos fora do mapa (ex.: abrir_agendamento) nao vao para a OpenAI de proposito,
+        // para nao poluir a otimizacao da campanha com sinais fracos de topo de funil.
+        const OAI_EVENTS = {
+            // conversao principal (mesmo evento configurado no Ads Manager):
+            // cadastro inicial preenchido para agendar a call
+            cadastro_concluido:      { name: 'checkout_started',      data: { type: 'contents' } },
+            agendamento_qualificado: { name: 'appointment_scheduled', data: { type: 'customer_action' } },
+            contato_whatsapp:        { name: 'lead_created',          data: { type: 'customer_action' } }
+        };
         function trackEvent(name, params) {
             if (typeof gtag === 'function') gtag('event', name, params || {});
             if (typeof fbq === 'function') fbq('trackCustom', name, params || {});
+            const oai = (typeof oaiq === 'function') ? OAI_EVENTS[name] : null;
+            if (oai) {
+                // event_id permite deduplicar com o mesmo evento enviado pelo Worker (CAPI)
+                if (params && params.event_id) oaiq('measure', oai.name, oai.data, { event_id: params.event_id });
+                else oaiq('measure', oai.name, oai.data);
+            }
+        }
+        function newEventId() {
+            return (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+                : 'ev-' + Date.now().toString(36) + Math.random().toString(36).slice(2);
         }
         // Clique em qualquer botao de WhatsApp (CTAs dos planos / contato)
         document.addEventListener('click', function (e) {
@@ -1538,11 +1581,18 @@
             document.getElementById('lead-error').classList.add('hidden');
 
             qualData.contato = { nome, whatsapp, email, empresa };
+
+            // Conversao principal (OpenAI Ads: checkout_started): cadastro preenchido
+            // para agendar a call. Honeypot preenchido = bot, nao conta conversao.
+            // O event_id segue no payload para o Worker deduplicar o envio server-side.
+            const eventId = newEventId();
+            if (!honeypot) trackEvent('cadastro_concluido', { agenda: qualData.quem, event_id: eventId });
+
             const payload = {
                 nome: nome, whatsapp: whatsapp, email: email, empresa: empresa,
                 decisor: qualData.decisor, urgencia: qualData.urgencia,
                 chatbot: qualData.chatbot, agenda: qualData.quem,
-                origem: location.href
+                origem: location.href, event_id: eventId
             };
 
             const endpoint = leadEndpoint();
