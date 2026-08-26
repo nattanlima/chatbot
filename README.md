@@ -18,7 +18,8 @@ og-image.png           # imagem de compartilhamento (Open Graph 1200x630)
 favicon*.{png,ico}     # favicons + apple-touch-icon
 robots.txt / sitemap.xml
 CNAME                  # domínio do GitHub Pages
-DIAGNOSTICO.md         # auditoria técnica inicial (perf/SEO/a11y) + roadmap
+DIAGNOSTICO.md         # auditoria técnica (perf/SEO/a11y) + roadmap + refinamento de design (§10)
+.impeccable/           # exceções do detector de design (identidade da marca), com justificativas
 worker/                # Cloudflare Worker que recebe o lead e envia por e-mail
 test/                  # testes automatizados (jsdom + worker)
 ```
@@ -133,6 +134,11 @@ são mockados.
 ---
 
 ## Notas de manutenção
+
+- **Design:** a página passou por um refinamento completo em 26/08/2026 (mobile, contraste WCAG AA,
+  modal, tipografia) preservando a identidade indigo/verde — detalhes no [DIAGNOSTICO.md](DIAGNOSTICO.md) §10.
+  As exceções deliberadas do detector de design (gradiente da marca, fonte Inter, paleta indigo/roxo) estão
+  registradas em `.impeccable/config.json`.
 
 - **Imagens:** otimize antes de subir (a `1.png` original tinha 5 MB; virou `1.webp` com 60 KB).
   Sirva por caminho relativo, não por `raw.githubusercontent.com`.

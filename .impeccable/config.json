@@ -1,0 +1,32 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-08-26T21:55:40.322Z",
+        "reason": "Glifo do Instagram nas cores oficiais da marca (bg-clip-text) e gradiente verde->indigo do hero: motivo assinatura da identidade incumbente do site em producao; refinamento preserva"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-08-26T22:04:17.423Z",
+        "reason": "Inter e a fonte incumbente do site em producao; trocar tipografia e decisao de redesign que cabe ao usuario"
+      },
+      {
+        "rule": "ai-color-palette",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-08-26T22:04:17.472Z",
+        "reason": "Indigo escuro (#1e1b4b), indigo (#4F46E5) e roxo (#7C3AED) sao a paleta declarada da marca Prisme em producao (tailwind.config brand.*); refinamento preserva a identidade"
+      }
+    ]
+  }
+}

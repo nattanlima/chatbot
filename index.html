@@ -111,31 +111,60 @@
     </script>
 
     <style>
-        .glass {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
         .glass-dark {
             background: rgba(30, 27, 75, 0.8);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .text-gradient {
+            color: #00C38D; /* fallback quando background-clip: text não estiver disponível */
             background: linear-gradient(135deg, #00C38D 0%, #4F46E5 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
-        /* Reveal Animation Classes */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
+
+        /* Tipografia fina */
+        h1, h2, h3, h4 { text-wrap: balance; }
+        input, textarea { caret-color: #4F46E5; }
+
+        /* Âncoras aterrissam abaixo do header fixo de 80px */
+        section[id] { scroll-margin-top: 6.5rem; }
+
+        /* Foco por teclado tematizado pela paleta */
+        :where(a, button, input, [tabindex]):focus-visible {
+            outline: 2px solid #4F46E5;
+            outline-offset: 3px;
+            border-radius: 4px;
         }
+        .bg-brand-base :where(a, button):focus-visible,
+        .bg-slate-900 :where(a, button):focus-visible,
+        footer :where(a, button):focus-visible {
+            outline-color: #00C38D;
+        }
+
+        /* Esconde a barra nas fileiras de chips roláveis do mockup */
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        /* Reveal Animation Classes — keyframes para não disputar com as
+           utilities de transition dos hovers nos mesmos elementos */
+        .reveal { opacity: 0; }
         .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
+            animation: reveal-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        @keyframes reveal-in {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: none; }
+        }
+        /* Momento autoral: só o mockup do hero entra diferente */
+        .reveal-hero.active {
+            animation-name: reveal-hero;
+            animation-duration: 0.9s;
+        }
+        @keyframes reveal-hero {
+            from { opacity: 0; transform: translateY(40px) scale(0.97); }
+            to   { opacity: 1; transform: none; }
         }
 
         /* Modal Transitions */
@@ -167,15 +196,44 @@
             width: 20px;
             border-radius: 50%;
             background: #00C38D;
+            border: 2px solid #047857;
             cursor: pointer;
-            margin-top: -8px; 
-            box-shadow: 0 0 10px rgba(0, 195, 141, 0.5);
+            margin-top: -8px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.4);
         }
         input[type=range]::-webkit-slider-runnable-track {
             width: 100%;
             height: 4px;
+            background: linear-gradient(to right, #00C38D var(--fill, 0%), #e2e8f0 var(--fill, 0%));
+            border-radius: 2px;
+        }
+        /* Firefox: mesmos valores da versão -webkit */
+        input[type=range]::-moz-range-thumb {
+            height: 20px;
+            width: 20px;
+            border: 2px solid #047857;
+            border-radius: 50%;
+            background: #00C38D;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.4);
+        }
+        input[type=range]::-moz-range-track {
+            height: 4px;
             background: #e2e8f0;
             border-radius: 2px;
+        }
+        input[type=range]::-moz-range-progress {
+            height: 4px;
+            background: #00C38D;
+            border-radius: 2px;
+        }
+
+        /* Movimento reduzido: conteúdo visível, nada anima */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .reveal, .reveal.active { opacity: 1 !important; animation: none !important; transform: none !important; }
+            .animate-float, .animate-blob, .animate-pulse-slow, .animate-pulse { animation: none !important; }
+            .modal, .modal-content { transition-duration: 0.01ms !important; }
         }
     </style>
 
@@ -219,7 +277,7 @@
     }
     </script>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-brand-success selection:text-white">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-brand-primary selection:text-white">
 
     <!--
       ====================================================================
@@ -261,9 +319,12 @@
     <header class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <a href="#" aria-label="Voltar ao topo" class="flex items-center gap-2">
                     <span class="text-2xl font-bold text-slate-900 tracking-tight">Prisme<span class="text-brand-success">.chatbot</span></span>
-                </div>
+                </a>
+                <a href="#planos" class="md:hidden bg-brand-base text-white px-5 py-2 rounded-full font-medium text-sm shadow-lg">
+                    Ver Planos
+                </a>
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="#diferenciais" class="text-slate-600 hover:text-brand-primary font-medium transition-colors">Diferenciais</a>
                     <a href="#modulos" class="text-slate-600 hover:text-brand-primary font-medium transition-colors">Funcionalidades</a>
@@ -277,7 +338,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="relative pt-40 pb-20 lg:pt-52 lg:pb-32 overflow-hidden bg-white">
+    <section class="relative pt-28 sm:pt-40 pb-20 lg:pt-44 lg:pb-32 overflow-hidden bg-white">
         <!-- Background Blobs -->
         <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[800px] h-[800px] bg-indigo-100 rounded-full blur-3xl opacity-50 mix-blend-multiply animate-pulse-slow"></div>
         <div class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-100 rounded-full blur-3xl opacity-50 mix-blend-multiply animate-pulse-slow" style="animation-delay: 2s"></div>
@@ -288,17 +349,17 @@
                 Implementação completa em até 7 dias
             </div>
             
-            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-8 reveal" style="transition-delay: 0.1s">
-                Atendimento <span class="text-gradient">Omnichannel</span> <br>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-8 reveal" style="animation-delay: 0.1s">
+                Atendimento <span class="text-gradient">Omnichannel</span> <br class="hidden md:inline">
                 Sem Dor de Cabeça
             </h1>
-            
-            <p class="mt-4 max-w-3xl mx-auto text-xl text-slate-600 mb-12 reveal" style="transition-delay: 0.2s">
+
+            <p class="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-slate-600 mb-8 sm:mb-12 reveal" style="animation-delay: 0.2s">
                 Nós configuramos tudo para você. Conecte WhatsApp, Instagram, Mercado Livre e TikTok em um só lugar. Treinamento ilimitado e suporte humanizado para sua equipe não parar nunca.
             </p>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-4 reveal" style="transition-delay: 0.3s">
-                <a href="#planos" class="px-8 py-4 bg-brand-success text-white rounded-xl font-bold text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-600 hover:scale-105 transition-all flex items-center justify-center gap-2">
+            <div class="flex flex-col sm:flex-row justify-center gap-4 reveal" style="animation-delay: 0.3s">
+                <a href="#planos" class="px-8 py-4 bg-brand-success text-emerald-950 rounded-xl font-bold text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-400 hover:scale-105 transition-all flex items-center justify-center gap-2">
                     Escolher meu Plano
                     <i data-lucide="arrow-down" class="w-5 h-5"></i>
                 </a>
@@ -310,17 +371,17 @@
             </div>
 
             <!-- Dashboard Preview (Chatbot Interface Pro) -->
-            <div class="mt-20 relative max-w-5xl mx-auto reveal" style="transition-delay: 0.4s">
+            <div class="mt-14 relative max-w-5xl mx-auto reveal reveal-hero" style="animation-delay: 0.4s">
                 <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-2xl blur opacity-30"></div>
-                
-                <!-- Window Frame -->
-                <div class="relative bg-slate-900 rounded-xl border border-slate-800 shadow-2xl overflow-hidden ring-1 ring-white/10 text-left">
+
+                <!-- Window Frame (mockup ilustrativo: fora do tab order e da árvore de acessibilidade) -->
+                <div class="relative bg-slate-900 rounded-xl border border-slate-800 shadow-2xl overflow-hidden ring-1 ring-white/10 text-left" inert aria-hidden="true">
                     <!-- Window Header -->
                     <div class="h-8 bg-slate-800/50 border-b border-white/5 flex items-center px-4 gap-2">
                         <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
                         <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
                         <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
-                        <div class="ml-4 flex-1 max-w-sm h-5 bg-slate-900/50 rounded-md border border-white/5 mx-auto hidden sm:block flex items-center px-2">
+                        <div class="ml-4 flex-1 max-w-sm h-5 bg-slate-900/50 rounded-md border border-white/5 hidden sm:flex items-center px-2">
                             <i data-lucide="lock" class="w-3 h-3 text-emerald-500 mr-1"></i>
                             <span class="text-[10px] text-slate-500">app.prisme.chatbot/live-chat</span>
                         </div>
@@ -347,7 +408,7 @@
                             <div class="p-3 hidden md:block space-y-2">
                                 <div class="relative">
                                     <i data-lucide="search" class="w-3 h-3 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                                    <input type="text" placeholder="Buscar ticket ou nome..." class="w-full bg-slate-800 border-none rounded-lg py-1.5 pl-8 pr-4 text-xs text-slate-300 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-600">
+                                    <input type="text" placeholder="Buscar ticket ou nome..." class="w-full bg-slate-800 border-none rounded-lg py-1.5 pl-8 pr-4 text-xs text-slate-300 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-500">
                                 </div>
                                 <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
                                     <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20 whitespace-nowrap cursor-pointer">Todos</span>
@@ -436,11 +497,11 @@
                         </div>
 
                         <!-- Main Chat Area -->
-                        <div class="flex-1 flex flex-col bg-[#0B1120] relative bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] bg-repeat bg-opacity-5">
+                        <div class="flex-1 min-w-0 flex flex-col bg-[#0B1120] relative bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] bg-repeat bg-opacity-5">
                             <div class="absolute inset-0 bg-[#0B1120]/95 pointer-events-none"></div>
                             
                             <!-- Chat Header (Official API Style) -->
-                            <div class="h-16 border-b border-white/5 flex items-center px-6 justify-between bg-slate-900/90 backdrop-blur-md relative z-10">
+                            <div class="h-16 border-b border-white/5 flex items-center px-4 md:px-6 justify-between bg-slate-900/90 backdrop-blur-md relative z-10">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-full overflow-hidden border border-white/10 relative">
                                         <img src="https://i.pravatar.cc/150?u=3" class="w-full h-full object-cover" alt="">
@@ -449,7 +510,7 @@
                                         <div class="flex items-center gap-1.5">
                                             <h3 class="font-bold text-slate-200 text-sm">Mariana Costa</h3>
                                             <!-- Official Verified Badge -->
-                                            <i class="fas fa-certificate text-emerald-500 text-xs" title="Conta Verificada"></i>
+                                            <i data-lucide="badge-check" class="w-3.5 h-3.5 text-emerald-500" title="Conta Verificada"></i>
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <span class="text-xs text-slate-400">Canal: </span>
@@ -475,7 +536,7 @@
 
                                     <div class="h-8 w-[1px] bg-white/10 hidden lg:block"></div>
 
-                                    <div class="flex items-center gap-4 text-slate-400">
+                                    <div class="hidden sm:flex items-center gap-4 text-slate-400">
                                         <button class="hover:text-emerald-400 transition" title="Transferir Atendimento">
                                             <i data-lucide="arrow-right-left" class="w-5 h-5"></i>
                                         </button>
@@ -490,15 +551,15 @@
                             </div>
 
                             <!-- Tags Bar (Under Header) -->
-                            <div class="px-6 py-2 bg-slate-900/50 border-b border-white/5 flex gap-2 items-center relative z-10 overflow-x-auto no-scrollbar">
+                            <div class="px-4 md:px-6 py-2 bg-slate-900/50 border-b border-white/5 flex gap-2 items-center relative z-10 overflow-x-auto no-scrollbar">
                                 <i data-lucide="tag" class="w-3 h-3 text-slate-500 shrink-0"></i>
                                 <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold mr-1">Tags:</span>
                                 
-                                <span class="flex items-center gap-1 text-[10px] font-medium bg-yellow-500/10 text-yellow-500 px-2 py-0.5 rounded-full border border-yellow-500/20 group cursor-pointer hover:bg-yellow-500/20 transition">
+                                <span class="flex items-center gap-1 whitespace-nowrap shrink-0 text-[10px] font-medium bg-yellow-500/10 text-yellow-500 px-2 py-0.5 rounded-full border border-yellow-500/20 group cursor-pointer hover:bg-yellow-500/20 transition">
                                     <span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span> Lead Quente
                                     <i data-lucide="x" class="w-2 h-2 opacity-0 group-hover:opacity-100"></i>
                                 </span>
-                                <span class="flex items-center gap-1 text-[10px] font-medium bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full border border-emerald-500/20 group cursor-pointer hover:bg-emerald-500/20 transition">
+                                <span class="flex items-center gap-1 whitespace-nowrap shrink-0 text-[10px] font-medium bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full border border-emerald-500/20 group cursor-pointer hover:bg-emerald-500/20 transition">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Comercial
                                     <i data-lucide="x" class="w-2 h-2 opacity-0 group-hover:opacity-100"></i>
                                 </span>
@@ -508,7 +569,7 @@
                             </div>
 
                             <!-- Messages Area -->
-                            <div class="flex-1 p-6 overflow-y-auto space-y-6 flex flex-col relative z-0">
+                            <div class="flex-1 p-4 md:p-6 overflow-hidden space-y-6 flex flex-col justify-end relative z-0">
                                 <!-- Date Divider -->
                                 <div class="flex justify-center">
                                     <span class="text-[10px] font-medium text-slate-400 bg-slate-800/80 px-3 py-1 rounded-full border border-white/5 backdrop-blur-sm">Hoje, 10:23</span>
@@ -553,7 +614,7 @@
                                 <div class="flex items-end gap-3 group">
                                     <img src="https://i.pravatar.cc/150?u=3" class="w-8 h-8 rounded-full mb-1 border border-white/10 shadow-lg" alt="">
                                     <div class="flex flex-col gap-1 max-w-[75%]">
-                                        <div class="bg-slate-800 p-3.5 rounded-2xl rounded-bl-none border border-white/5 text-slate-200 text-sm leading-relaxed shadow-md flex items-center gap-3 hover:bg-slate-750 transition cursor-pointer">
+                                        <div class="bg-slate-800 p-3.5 rounded-2xl rounded-bl-none border border-white/5 text-slate-200 text-sm leading-relaxed shadow-md flex items-center gap-3 hover:bg-slate-700/70 transition cursor-pointer">
                                             <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 border border-red-500/10">
                                                 <i data-lucide="file-text" class="w-5 h-5"></i>
                                             </div>
@@ -587,8 +648,8 @@
                                     <button class="p-2 text-slate-400 hover:text-emerald-400 transition rounded-lg hover:bg-slate-700">
                                         <i data-lucide="paperclip" class="w-5 h-5"></i>
                                     </button>
-                                    <input type="text" placeholder="Escreva uma mensagem ou digite / para modelos..." class="flex-1 bg-transparent border-none focus:ring-0 text-slate-200 placeholder-slate-500 text-sm">
-                                    <button class="p-2 text-slate-400 hover:text-emerald-400 transition rounded-lg hover:bg-slate-700">
+                                    <input type="text" placeholder="Escreva uma mensagem ou digite / para modelos..." class="flex-1 min-w-0 bg-transparent border-none focus:ring-0 text-slate-200 placeholder-slate-400 text-sm">
+                                    <button class="hidden sm:block p-2 text-slate-400 hover:text-emerald-400 transition rounded-lg hover:bg-slate-700">
                                         <i data-lucide="mic" class="w-5 h-5"></i>
                                     </button>
                                     <button class="p-2.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition shadow-lg shadow-emerald-500/20 transform active:scale-95">
@@ -610,7 +671,7 @@
                 <div class="reveal">
                     <h2 class="text-3xl md:text-4xl font-bold mb-6">Você não precisa parar para configurar nada.</h2>
                     <p class="text-indigo-200 text-lg mb-8 leading-relaxed">
-                        Diferente de outras plataformas "self-service", na Prisme nós somos a sua equipe técnica. Nosso onboarding é <span class="text-brand-success font-bold">100% assistido e ilimitado</span>.
+                        Diferente de outras plataformas “self-service”, na Prisme nós somos a sua equipe técnica. Nosso onboarding é <span class="text-brand-success font-bold">100% assistido e ilimitado</span>.
                     </p>
                     <ul class="space-y-6">
                         <li class="flex items-start gap-4">
@@ -619,7 +680,7 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-white text-lg">Treinamento Ilimitado</h4>
-                                <p class="text-slate-400 text-sm">Treinamos sua equipe e novos funcionários sempre que necessário, sem custo extra.</p>
+                                <p class="text-indigo-200 text-sm">Treinamos sua equipe e novos funcionários sempre que necessário, sem custo extra.</p>
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
@@ -628,7 +689,7 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-white text-lg">Setup Técnico Completo</h4>
-                                <p class="text-slate-400 text-sm">Conexão de APIs, Webhooks, fluxos de IA e integração. Nós fazemos, você usa.</p>
+                                <p class="text-indigo-200 text-sm">Conexão de APIs, Webhooks, fluxos de IA e integração. Nós fazemos, você usa.</p>
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
@@ -637,7 +698,7 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-white text-lg">Multi-dispositivo</h4>
-                                <p class="text-slate-400 text-sm">Acesse pelo PC, App Android nativo ou Web Mobile no iOS. Sua operação na palma da mão.</p>
+                                <p class="text-indigo-200 text-sm">Acesse pelo PC, App Android nativo ou Web Mobile no iOS. Sua operação na palma da mão.</p>
                             </div>
                         </li>
                     </ul>
@@ -646,11 +707,11 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 animate-float" style="animation-delay: 0s">
                             <div class="text-4xl font-bold text-brand-success mb-2">7 Dias</div>
-                            <div class="text-sm text-slate-300">Tempo médio de implementação total</div>
+                            <div class="text-sm text-indigo-200">Tempo médio de implementação total</div>
                         </div>
                         <div class="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 animate-float" style="animation-delay: 1s">
                             <div class="text-4xl font-bold text-indigo-400 mb-2">∞</div>
-                            <div class="text-sm text-slate-300">Suporte e Treinamentos</div>
+                            <div class="text-sm text-indigo-200">Suporte e Treinamentos</div>
                         </div>
                         <div class="col-span-2 bg-gradient-to-r from-indigo-600 to-purple-600 p-8 rounded-2xl animate-float" style="animation-delay: 2s">
                             <div class="flex items-center gap-4 mb-4">
@@ -668,37 +729,37 @@
     </section>
 
     <!-- Channels & Kanban (Integracoes) -->
-    <section id="integracoes" class="py-20 bg-slate-50">
+    <section id="integracoes" class="py-24 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 text-center reveal">
-            <h2 class="text-3xl font-bold text-slate-900 mb-4">Tudo em um só lugar</h2>
-            <p class="text-slate-600 max-w-2xl mx-auto mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-4">Tudo em um só lugar</h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-16">
                 Chega de abrir 10 abas no navegador. Centralize o atendimento de todos os canais no nosso CRM.
             </p>
-            
+
             <!-- Channel Icons -->
-            <div class="flex flex-wrap justify-center gap-8 md:gap-12 opacity-80 grayscale hover:grayscale-0 transition-all duration-500 mb-16">
+            <div class="flex flex-wrap justify-center gap-4 sm:gap-8 md:gap-12 mb-16">
                 <div class="flex flex-col items-center gap-2 group">
-                    <div class="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-[#25D366] text-3xl group-hover:scale-110 transition-transform">
+                    <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-white shadow-lg rounded-2xl flex items-center justify-center text-[#25D366] group-hover:scale-110 transition-transform">
                         <i class="fa-brands fa-whatsapp"></i>
                     </div>
                 </div>
                 <div class="flex flex-col items-center gap-2 group">
-                    <div class="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 text-3xl group-hover:scale-110 transition-transform">
+                    <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-white shadow-lg rounded-2xl flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 group-hover:scale-110 transition-transform">
                         <i class="fa-brands fa-instagram"></i>
                     </div>
                 </div>
                 <div class="flex flex-col items-center gap-2 group">
-                    <div class="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-[#1877F2] text-3xl group-hover:scale-110 transition-transform">
+                    <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-white shadow-lg rounded-2xl flex items-center justify-center text-[#1877F2] group-hover:scale-110 transition-transform">
                         <i class="fa-brands fa-facebook-messenger"></i>
                     </div>
                 </div>
                 <div class="flex flex-col items-center gap-2 group">
-                    <div class="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-[#FFE600] text-3xl group-hover:scale-110 transition-transform">
+                    <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-[#FFE600] shadow-lg rounded-2xl flex items-center justify-center text-[#2D3277] group-hover:scale-110 transition-transform">
                         <i class="fa-solid fa-handshake"></i>
                     </div>
                 </div>
                 <div class="flex flex-col items-center gap-2 group">
-                    <div class="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-black text-3xl group-hover:scale-110 transition-transform">
+                    <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-white shadow-lg rounded-2xl flex items-center justify-center text-black group-hover:scale-110 transition-transform">
                         <i class="fa-brands fa-tiktok"></i>
                     </div>
                 </div>
@@ -707,11 +768,11 @@
             <!-- Kanban Highlight -->
             <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 max-w-4xl mx-auto text-left flex gap-6 items-start hover:shadow-md transition-shadow">
                 <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 shrink-0">
-                    <i data-lucide="layout-kanban" class="w-6 h-6"></i>
+                    <i data-lucide="kanban-square" class="w-6 h-6"></i>
                 </div>
                 <div>
                     <h3 class="text-xl font-bold text-slate-900 mb-2">CRM Visual (Kanban)</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
+                    <p class="text-slate-600 text-sm leading-relaxed max-w-[65ch]">
                         Não é apenas um chat. Organize seus leads em colunas (ex: "Novo Lead", "Em Negociação", "Aguardando Pagamento", "Fechado"). Mova cards, adicione etiquetas, notas internas e agende follow-ups automáticos. Tenha visão total do funil de vendas.
                     </p>
                 </div>
@@ -734,7 +795,7 @@
                         <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[15px] top-[124px] rounded-l-lg"></div>
                         <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[15px] top-[178px] rounded-l-lg"></div>
                         <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[15px] top-[142px] rounded-r-lg"></div>
-                        <div class="rounded-[2rem] overflow-hidden w-full h-full bg-white relative">
+                        <div class="rounded-[2rem] overflow-hidden w-full h-full bg-slate-100 relative">
                             <!-- Notch/Camera -->
                             <div class="absolute top-0 left-1/2 -translate-x-1/2 h-6 w-32 bg-gray-900 rounded-b-xl z-20"></div>
                             <img src="./1.webp" width="700" height="1563" loading="lazy" decoding="async" class="w-full h-full object-cover" alt="App da Prisme com WhatsApp em modo Coexistence no celular">
@@ -744,12 +805,9 @@
 
                 <!-- Content Column -->
                 <div class="order-1 lg:order-2 reveal">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-success/10 text-brand-success text-xs font-bold uppercase tracking-wider mb-6 border border-brand-success/20">
-                        <i data-lucide="zap" class="w-4 h-4"></i> Tecnologia Exclusiva
-                    </div>
-                    <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
+                    <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
                         Liberdade do App.<br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-success to-brand-primary">Potência da API.</span><br>
+                        <span class="text-gradient">Potência da API.</span><br>
                         Tudo Conectado.
                     </h2>
                     <p class="text-lg text-slate-600 mb-10 leading-relaxed">
@@ -786,21 +844,23 @@
     <section id="modulos" class="py-24 bg-slate-50 border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <h2 class="text-3xl font-bold text-slate-900">Módulos Poderosos para Escalar</h2>
-                <p class="text-slate-500 mt-2">Ferramentas avançadas que vão além da troca de mensagens.</p>
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">Módulos Poderosos para Escalar</h2>
+                <p class="text-lg text-slate-500 mt-2">Ferramentas avançadas que vão além da troca de mensagens.</p>
             </div>
 
             <!-- Changed to lg:grid-cols-2 to maintain 2 columns but expanded list -->
-            <div class="grid md:grid-cols-2 gap-8">
+            <div class="grid md:grid-cols-2 gap-6">
                 
                 <!-- Module: Kanban de Filas -->
-                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="kanban-square" class="w-6 h-6"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="kanban-square" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Kanban de Filas</h3>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Kanban de Filas</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
-                        Organize visualmente seus atendimentos. Arraste e solte conversas entre colunas personalizáveis como 'Aguardando', 'Em Atendimento' e 'Finalizado' para nunca perder um ticket de vista.
+                        Organize visualmente seus atendimentos. Arraste e solte conversas entre colunas personalizáveis como ‘Aguardando’, ‘Em Atendimento’ e ‘Finalizado’ para nunca perder um ticket de vista.
                     </p>
                     <ul class="text-sm text-slate-500 space-y-2">
                         <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>Visualização de Cards</li>
@@ -809,11 +869,13 @@
                 </div>
 
                 <!-- Module: Departamentos -->
-                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="transition-delay: 0.1s">
-                    <div class="w-12 h-12 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="building-2" class="w-6 h-6"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="animation-delay:0.1s">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="building-2" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Departamentos</h3>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Departamentos</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
                         Direcione clientes automaticamente para a equipe certa (Comercial, Suporte, Financeiro) com filas de atendimento exclusivas, garantindo que o especialista correto resolva o problema.
                     </p>
@@ -824,11 +886,13 @@
                 </div>
 
                 <!-- Module: Agendamentos -->
-                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="transition-delay: 0.2s">
-                    <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="animation-delay:0.2s">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Agendamentos</h3>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Agendamentos</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
                         Nunca mais esqueça um cliente. Agende mensagens para datas e horários específicos ou programe lembretes para sua equipe fazer o follow-up no momento exato.
                     </p>
@@ -839,11 +903,13 @@
                 </div>
 
                 <!-- Module: Tags Automatizadas -->
-                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="transition-delay: 0.3s">
-                    <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="tags" class="w-6 h-6"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="animation-delay:0.3s">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="tags" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Tags Automatizadas</h3>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Tags Automatizadas</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
                         Classifique leads sem esforço manual. Crie regras que aplicam etiquetas automaticamente baseadas em palavras-chave ditas pelo cliente ou etapas do funil de vendas.
                     </p>
@@ -854,11 +920,13 @@
                 </div>
 
                 <!-- Module: Flowbuilder -->
-                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
-                    <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="git-branch" class="w-6 h-6"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="git-branch" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Flowbuilder Visual</h3>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Flowbuilder Visual</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
                         Construa jornadas do cliente complexas arrastando e soltando caixas. Crie menus, submenus, capturas de dados e direcionamentos sem escrever uma linha de código.
                     </p>
@@ -869,11 +937,13 @@
                 </div>
 
                 <!-- Module: Mensagens de Inatividade e Followup -->
-                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
-                    <div class="w-12 h-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="clock" class="w-6 h-6"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Inatividade e Follow-up</h3>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Inatividade e Follow-up</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
                         Recupere vendas perdidas automaticamente. O sistema envia mensagens de reengajamento se o cliente parar de responder ou se o ticket ficar inativo por muito tempo.
                     </p>
@@ -884,11 +954,13 @@
                 </div>
 
                 <!-- Module: Organizador de Tarefas -->
-                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
-                    <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="check-square" class="w-6 h-6"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="check-square" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Organizador de Tarefas</h3>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Organizador de Tarefas</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
                         Transforme conversas em ações. Crie tarefas vinculadas a cada ticket, defina prazos, delegue responsáveis e receba notificações para garantir que nenhum compromisso seja esquecido.
                     </p>
@@ -899,11 +971,13 @@
                 </div>
 
                 <!-- Module: Campanhas -->
-                <div class="p-8 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
-                    <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="megaphone" class="w-6 h-6"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="megaphone" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Campanhas em Massa</h3>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Campanhas em Massa</h3>
                     <p class="text-slate-600 leading-relaxed mb-4">
                         Crie listas de transmissão segmentadas e envie promoções para milhares de clientes em poucos cliques via API Oficial. Totalmente seguro e com relatórios de entrega.
                     </p>
@@ -927,8 +1001,7 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16 reveal">
-                <span class="text-brand-success font-bold tracking-widest uppercase text-sm">Prisme IA</span>
-                <h2 class="text-4xl md:text-5xl font-extrabold text-white mt-2 mb-6">Mais que um Chatbot.<br>Um Cérebro de Vendas.</h2>
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6"><span class="text-brand-success">Prisme IA.</span> Mais que um Chatbot.<br class="hidden md:inline"> Um Cérebro de Vendas.</h2>
                 <p class="text-indigo-200 max-w-2xl mx-auto text-lg">
                     Nossa IA não apenas responde. Ela entende, classifica e ajuda seu atendente a vender mais.
                 </p>
@@ -940,18 +1013,18 @@
                     <div class="h-48 bg-slate-900/50 rounded-2xl mb-6 relative overflow-hidden border border-white/5 flex flex-col justify-center items-center">
                         <!-- Abstract UI for Copilot -->
                         <div class="absolute top-4 left-4 right-4 bg-slate-800 p-2 rounded text-xs text-slate-400">Cliente: "Gostei do tênis de corrida."</div>
-                        <div class="mt-8 bg-brand-success/20 text-brand-success p-3 rounded-lg border border-brand-success/30 text-xs font-bold animate-pulse">
-                            <i class="fas fa-magic mr-1"></i> Sugestão: Ofertar Meias Esportivas
+                        <div class="mt-8 bg-brand-success/20 text-brand-success p-3 rounded-lg border border-brand-success/30 text-xs font-bold animate-pulse flex items-center gap-1.5">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Sugestão: Ofertar Meias Esportivas
                         </div>
                     </div>
                     <h3 class="text-2xl font-bold text-white mb-3">Copiloto de Vendas</h3>
-                    <p class="text-slate-300 text-sm leading-relaxed">
+                    <p class="text-indigo-200 text-sm leading-relaxed">
                         Enquanto seu atendente fala, a IA analisa o contexto e sugere produtos complementares (Cross-sell) para arrastar e soltar na conversa. Aumente seu ticket médio sem esforço.
                     </p>
                 </div>
 
                 <!-- AI Feature 2: Auto Tagging -->
-                <div class="glass-dark p-8 rounded-3xl border border-white/10 hover:border-purple-500/50 transition-all group reveal" style="transition-delay: 0.1s">
+                <div class="glass-dark p-8 rounded-3xl border border-white/10 hover:border-purple-500/50 transition-all group reveal" style="animation-delay:0.1s">
                     <div class="h-48 bg-slate-900/50 rounded-2xl mb-6 relative overflow-hidden border border-white/5 flex flex-col justify-center items-center p-6">
                         <!-- Abstract UI for Tagging -->
                         <div class="flex flex-wrap gap-2 justify-center">
@@ -961,19 +1034,19 @@
                         </div>
                     </div>
                     <h3 class="text-2xl font-bold text-white mb-3">Classificação Automática</h3>
-                    <p class="text-slate-300 text-sm leading-relaxed">
-                        A IA lê as conversas e aplica etiquetas (tags) automaticamente. Saiba quem está "Quente", "Curioso" ou "Reclamando" sem precisar ler todas as mensagens manualmente.
+                    <p class="text-indigo-200 text-sm leading-relaxed">
+                        A IA lê as conversas e aplica etiquetas (tags) automaticamente. Saiba quem está “Quente”, “Curioso” ou “Reclamando” sem precisar ler todas as mensagens manualmente.
                     </p>
                 </div>
 
                 <!-- AI Feature 3: Auto Service -->
-                <div class="glass-dark p-8 rounded-3xl border border-white/10 hover:border-blue-500/50 transition-all group reveal" style="transition-delay: 0.2s">
+                <div class="glass-dark p-8 rounded-3xl border border-white/10 hover:border-blue-500/50 transition-all group reveal" style="animation-delay:0.2s">
                     <div class="h-48 bg-slate-900/50 rounded-2xl mb-6 relative overflow-hidden border border-white/5 flex flex-col items-center justify-center">
                         <i data-lucide="bot" class="w-16 h-16 text-indigo-400/50"></i>
                         <div class="absolute bottom-4 text-xs text-white/50">Atendendo 24/7/365</div>
                     </div>
                     <h3 class="text-2xl font-bold text-white mb-3">Atendimento Humanizado</h3>
-                    <p class="text-slate-300 text-sm leading-relaxed">
+                    <p class="text-indigo-200 text-sm leading-relaxed">
                         Esqueça os robôs frios. Nossa IA conversa naturalmente, tira dúvidas, agenda reuniões e qualifica o lead antes de passar para um humano.
                     </p>
                 </div>
@@ -985,20 +1058,20 @@
     <section id="calculadora" class="py-24 bg-white relative">
         <div class="max-w-4xl mx-auto px-4">
             <div class="text-center mb-12 reveal">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4">Transparência de Custos Extras</h2>
-                <p class="text-slate-600">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-4">Transparência de Custos Extras</h2>
+                <p class="text-lg text-slate-600">
                     Custos de Inteligência Artificial e API Oficial da Meta são variáveis e pagos à parte (diretamente ou via recarga). Simule abaixo.
                 </p>
             </div>
 
             <div class="bg-slate-50 rounded-3xl border border-slate-200 shadow-xl overflow-hidden reveal">
                 <!-- Tabs -->
-                <div class="flex border-b border-slate-200">
-                    <button onclick="switchTab('api')" id="tab-api" class="flex-1 py-4 text-center font-bold text-brand-primary bg-white border-b-2 border-brand-primary transition-all">
-                        Simulador WhatsApp API Oficial
+                <div class="flex border-b border-slate-200" role="tablist">
+                    <button onclick="switchTab('api')" id="tab-api" role="tab" aria-selected="true" aria-controls="content-api" class="flex-1 py-3 md:py-4 px-2 text-center font-bold text-sm md:text-base text-brand-primary bg-white border-b-2 border-brand-primary transition-all">
+                        <span class="sm:hidden">API Oficial</span><span class="hidden sm:inline">Simulador WhatsApp API Oficial</span>
                     </button>
-                    <button onclick="switchTab('ai')" id="tab-ai" class="flex-1 py-4 text-center font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-all">
-                        Simulador Custos de IA
+                    <button onclick="switchTab('ai')" id="tab-ai" role="tab" aria-selected="false" aria-controls="content-ai" class="flex-1 py-3 md:py-4 px-2 text-center font-bold text-sm md:text-base text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-all">
+                        <span class="sm:hidden">Custos de IA</span><span class="hidden sm:inline">Simulador Custos de IA</span>
                     </button>
                 </div>
 
@@ -1011,7 +1084,7 @@
                                     Conversas de Marketing (Iniciadas pela empresa)
                                     <span class="block text-xs text-slate-500 font-normal">Ex: Disparos, promoções. Custo est. R$ 0,35/conversa (24h)</span>
                                 </label>
-                                <input type="range" min="0" max="10000" step="100" value="1000" id="marketingRange" oninput="updateApiCost()" aria-label="Quantidade de conversas de marketing por mês">
+                                <input type="range" min="0" max="10000" step="100" value="1000" id="marketingRange" oninput="updateApiCost()" aria-label="Quantidade de conversas de marketing por mês" class="w-full">
                                 <div class="text-right font-bold text-brand-primary mt-2" id="marketingValue">1.000 conversas</div>
                             </div>
                             <div>
@@ -1019,7 +1092,7 @@
                                     Conversas de Serviço/Utilidade
                                     <span class="block text-xs text-slate-500 font-normal">Ex: Atualização de pedido, senhas. Custo est. R$ 0,18/conversa (24h)</span>
                                 </label>
-                                <input type="range" min="0" max="10000" step="100" value="500" id="utilityRange" oninput="updateApiCost()" aria-label="Quantidade de conversas de serviço ou utilidade por mês">
+                                <input type="range" min="0" max="10000" step="100" value="500" id="utilityRange" oninput="updateApiCost()" aria-label="Quantidade de conversas de serviço ou utilidade por mês" class="w-full">
                                 <div class="text-right font-bold text-brand-primary mt-2" id="utilityValue">500 conversas</div>
                             </div>
                             <div class="bg-blue-50 p-4 rounded-lg text-xs text-blue-800">
@@ -1029,7 +1102,7 @@
                         <div class="flex flex-col justify-center items-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
                             <div class="text-sm text-slate-500 mb-2">Estimativa Mensal (Pago à Meta)</div>
                             <div class="text-4xl font-extrabold text-slate-900 mb-2">R$ <span id="totalApiCost">440,00</span></div>
-                            <p class="text-xs text-center text-slate-400">Valores aproximados baseados na tabela em Dólar. Varia com câmbio.</p>
+                            <p class="text-xs text-center text-slate-500">Valores aproximados baseados na tabela em Dólar. Varia com câmbio.</p>
                         </div>
                     </div>
                 </div>
@@ -1043,7 +1116,7 @@
                                     Média de Atendimentos com IA por dia
                                     <span class="block text-xs text-slate-500 font-normal">Quantas pessoas o robô vai atender totalmente ou pré-qualificar?</span>
                                 </label>
-                                <input type="range" min="0" max="1000" step="10" value="50" id="aiRange" oninput="updateAiCost()" aria-label="Média de atendimentos com IA por dia">
+                                <input type="range" min="0" max="1000" step="10" value="50" id="aiRange" oninput="updateAiCost()" aria-label="Média de atendimentos com IA por dia" class="w-full">
                                 <div class="text-right font-bold text-brand-accent mt-2" id="aiValue">50 atendimentos/dia</div>
                             </div>
                             
@@ -1054,7 +1127,7 @@
                         <div class="flex flex-col justify-center items-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
                             <div class="text-sm text-slate-500 mb-2">Estimativa Mensal de Tokens</div>
                             <div class="text-4xl font-extrabold text-slate-900 mb-2">R$ <span id="totalAiCost">75,00</span></div>
-                            <p class="text-xs text-center text-slate-400">Pague apenas o que consumir.</p>
+                            <p class="text-xs text-center text-slate-500">Pague apenas o que consumir.</p>
                         </div>
                     </div>
                 </div>
@@ -1071,49 +1144,43 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16 reveal">
-                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">Planos Flexíveis "Estilo Netflix"</h2>
-                <p class="text-indigo-200 text-lg">Sem contratos de fidelidade. Cancele quando quiser.<br>Pagamento pré-pago mensal.</p>
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6">Planos Flexíveis “Estilo Netflix”</h2>
+                <p class="text-indigo-200 text-lg">Sem contratos de fidelidade. Cancele quando quiser.<br class="hidden md:inline"> Pagamento pré-pago mensal.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 items-start">
                 
                 <!-- Plan 1 -->
-                <div class="glass-dark rounded-3xl p-8 hover:bg-slate-900/80 transition-all duration-300 border-t-4 border-indigo-500 reveal">
+                <div class="glass-dark rounded-3xl p-8 hover:bg-slate-900/80 transition-all duration-300 border border-indigo-500/40 reveal">
                     <h3 class="text-xl font-bold text-white mb-2">Essencial</h3>
-                    <p class="text-slate-400 text-sm h-10">Para quem precisa centralizar o atendimento e organizar o time.</p>
+                    <p class="text-indigo-200 text-sm min-h-[2.5rem]">Para quem precisa centralizar o atendimento e organizar o time.</p>
                     <div class="mt-6 mb-2">
-                        <span class="text-sm text-slate-400">R$</span>
-                        <span class="text-5xl font-bold text-white">599</span>
-                        <span class="text-lg text-slate-400">,90</span>
-                        <span class="block text-xs text-slate-500 mt-1">/mês</span>
+                        <span class="text-sm text-indigo-200">R$</span> <span class="text-5xl font-bold text-white">599</span><span class="text-lg text-indigo-200">,90</span><span class="text-sm text-indigo-300 ml-1">/mês</span>
                     </div>
                     <!-- Added Implementation Fee -->
-                    <p class="text-sm text-slate-400 mb-6 font-medium border-b border-slate-700 pb-4">
+                    <p class="text-sm text-indigo-200 mb-6 font-medium border-b border-slate-700 pb-4">
                         + R$ 1.500,00 de Implementação (Única)
                     </p>
 
                     <ul class="space-y-4 mb-8 text-sm text-indigo-100">
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> 1 Conexão (Oficial ou WAPI)</li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> CRM Kanban Completo</li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> Múltiplos Usuários</li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> Onboarding Ilimitado</li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> App Android & iOS Web</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> 1 Conexão (Oficial ou WAPI)</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> CRM Kanban Completo</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Múltiplos Usuários</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Onboarding Ilimitado</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> App Android & iOS Web</li>
                     </ul>
-                    <a href="https://wa.me/5524992592320?text=Quero%20contratar%20o%20Plano%20Essencial" class="block w-full py-3 rounded-xl border border-indigo-500 text-indigo-400 font-bold text-center hover:bg-indigo-500 hover:text-white transition-all">
+                    <a href="https://wa.me/5524992592320?text=Quero%20contratar%20o%20Plano%20Essencial" class="block w-full py-3 rounded-xl border border-indigo-500 text-indigo-300 font-bold text-center hover:bg-brand-primary hover:text-white transition-all">
                         Contratar Agora
                     </a>
                 </div>
 
                 <!-- Plan 2 -->
-                <div class="bg-gradient-to-b from-indigo-900 to-brand-base rounded-3xl p-8 relative transform md:-translate-y-4 shadow-2xl border border-indigo-500/50 reveal" style="transition-delay: 0.1s">
-                    <div class="absolute top-0 right-0 bg-brand-success text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-xl">MAIS POPULAR</div>
+                <div class="bg-gradient-to-b from-indigo-900 to-brand-base rounded-3xl p-8 relative transform md:-translate-y-4 shadow-2xl border border-indigo-500/50 reveal" style="animation-delay:0.1s">
+                    <div class="absolute top-0 right-0 bg-brand-success text-emerald-950 text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-xl">MAIS POPULAR</div>
                     <h3 class="text-xl font-bold text-white mb-2">Integrador</h3>
-                    <p class="text-indigo-200 text-sm h-10">Para quem precisa conectar com outros sistemas.</p>
+                    <p class="text-indigo-200 text-sm min-h-[2.5rem]">Para quem precisa conectar com outros sistemas.</p>
                     <div class="mt-6 mb-2">
-                        <span class="text-sm text-slate-400">R$</span>
-                        <span class="text-5xl font-bold text-white">799</span>
-                        <span class="text-lg text-slate-400">,90</span>
-                        <span class="block text-xs text-slate-500 mt-1">/mês</span>
+                        <span class="text-sm text-indigo-200">R$</span> <span class="text-5xl font-bold text-white">799</span><span class="text-lg text-indigo-200">,90</span><span class="text-sm text-indigo-300 ml-1">/mês</span>
                     </div>
                     <!-- Added Implementation Fee -->
                     <p class="text-sm text-indigo-200 mb-6 font-medium border-b border-indigo-400/30 pb-4">
@@ -1121,40 +1188,37 @@
                     </p>
 
                     <ul class="space-y-4 mb-8 text-sm text-white">
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> <strong>Tudo do Essencial</strong></li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> Webhooks (n8n, Typebot)</li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> Integração Externa</li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> API Pública</li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> Suporte Prioritário</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> <strong>Tudo do Essencial</strong></li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Webhooks (n8n, Typebot)</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Integração Externa</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> API Pública</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Suporte Prioritário</li>
                     </ul>
-                    <a href="https://wa.me/5524992592320?text=Quero%20contratar%20o%20Plano%20Integrador" class="block w-full py-4 rounded-xl bg-brand-primary text-white font-bold text-center hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-900">
+                    <a href="https://wa.me/5524992592320?text=Quero%20contratar%20o%20Plano%20Integrador" class="block w-full py-4 rounded-xl bg-brand-primary text-white font-bold text-center hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-900">
                         Contratar Agora
                     </a>
                 </div>
 
                 <!-- Plan 3 -->
-                <div class="glass-dark rounded-3xl p-8 hover:bg-slate-900/80 transition-all duration-300 border-t-4 border-purple-500 reveal" style="transition-delay: 0.2s">
+                <div class="glass-dark rounded-3xl p-8 hover:bg-slate-900/80 transition-all duration-300 border border-purple-500/40 reveal" style="animation-delay:0.2s">
                     <h3 class="text-xl font-bold text-white mb-2">IA Power</h3>
-                    <p class="text-slate-400 text-sm h-10">Automação máxima com Inteligência Artificial.</p>
+                    <p class="text-indigo-200 text-sm min-h-[2.5rem]">Automação máxima com Inteligência Artificial.</p>
                     <div class="mt-6 mb-2">
-                        <span class="text-sm text-slate-400">R$</span>
-                        <span class="text-5xl font-bold text-white">999</span>
-                        <span class="text-lg text-slate-400">,90</span>
-                        <span class="block text-xs text-slate-500 mt-1">/mês</span>
+                        <span class="text-sm text-indigo-200">R$</span> <span class="text-5xl font-bold text-white">999</span><span class="text-lg text-indigo-200">,90</span><span class="text-sm text-indigo-300 ml-1">/mês</span>
                     </div>
                     <!-- Added Implementation Fee -->
-                    <p class="text-sm text-slate-400 mb-6 font-medium border-b border-slate-700 pb-4">
+                    <p class="text-sm text-indigo-200 mb-6 font-medium border-b border-slate-700 pb-4">
                         + Implementação a combinar
                     </p>
 
                     <ul class="space-y-4 mb-8 text-sm text-indigo-100">
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-brand-success"></i> <strong>Tudo do Integrador</strong></li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-purple-400"></i> Módulo de IA Nativo</li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-purple-400"></i> Treinamento da IA</li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-purple-400"></i> Análise de Sentimento</li>
-                        <li class="flex gap-3"><i class="fa-solid fa-check text-purple-400"></i> *Tokens pagos à parte</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> <strong>Tudo do Integrador</strong></li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i> Módulo de IA Nativo</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i> Treinamento da IA</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i> Análise de Sentimento</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i> *Tokens pagos à parte</li>
                     </ul>
-                    <a href="https://wa.me/5524992592320?text=Quero%20contratar%20o%20Plano%20IA%20Power" class="block w-full py-3 rounded-xl border border-purple-500 text-purple-400 font-bold text-center hover:bg-purple-600 hover:text-white transition-all">
+                    <a href="https://wa.me/5524992592320?text=Quero%20contratar%20o%20Plano%20IA%20Power" class="block w-full py-3 rounded-xl border border-purple-500 text-purple-300 font-bold text-center hover:bg-purple-600 hover:text-white transition-all">
                         Contratar Agora
                     </a>
                 </div>
@@ -1162,7 +1226,7 @@
             </div>
 
             <div class="mt-12 text-center reveal">
-                <div class="inline-block bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10 text-slate-300">
+                <div class="inline-block bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10 text-indigo-200">
                     <h4 class="font-bold text-white mb-2">Precisa de mais conexões?</h4>
                     <p class="text-sm">Adicione Instagram, Webchat, Mercado Livre ou números extras de WhatsApp por apenas <span class="text-brand-success font-bold">R$ 147,90/mês</span> cada.</p>
                 </div>
@@ -1173,7 +1237,7 @@
     <!-- Certifications Section -->
     <section class="py-16 bg-white border-t border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
-            <p class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-10">Parceiros e Certificações Oficiais</p>
+            <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-10">Parceiros e Certificações Oficiais</h2>
             <!-- Removed 'grayscale' class to keep colors always visible -->
             <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
                 <!-- Image 1 -->
@@ -1228,35 +1292,37 @@
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="pb-2">Conheça o ecossistema Prisme: <a href="https://www.prismesales.com.br/" class="underline hover:text-slate-300">Prisme Sales</a> · <a href="https://coex.prismeapp.com.br/" class="underline hover:text-slate-300">API Oficial + Coex</a> · <a href="https://consultoria.prismeapp.com.br/" class="underline hover:text-slate-300">Consultoria Meta</a> · <a href="https://performance.prismeapp.com.br/" class="underline hover:text-slate-300">Tráfego Pago</a> · <a href="https://mentoria.prismeapp.com.br/" class="underline hover:text-slate-300">Consultoria com Nattan Lima</a> · <a href="https://www.prismesales.com.br/blog" class="underline hover:text-slate-300">Blog</a></p>
-                <p>&copy; 2026 Prisme Sales. Todos os direitos reservados.</p>
-                <p class="text-xs">Feito com <i class="fa-solid fa-heart text-brand-success mx-1"></i> por Lima Consultoria</p>
+            <div class="border-t border-slate-800 pt-8">
+                <p class="text-center md:text-left mb-4">Conheça o ecossistema Prisme: <a href="https://www.prismesales.com.br/" class="underline hover:text-slate-300">Prisme Sales</a> · <a href="https://coex.prismeapp.com.br/" class="underline hover:text-slate-300">API Oficial + Coex</a> · <a href="https://consultoria.prismeapp.com.br/" class="underline hover:text-slate-300">Consultoria Meta</a> · <a href="https://performance.prismeapp.com.br/" class="underline hover:text-slate-300">Tráfego Pago</a> · <a href="https://mentoria.prismeapp.com.br/" class="underline hover:text-slate-300">Consultoria com Nattan Lima</a> · <a href="https://www.prismesales.com.br/blog" class="underline hover:text-slate-300">Blog</a></p>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p>&copy; 2026 Prisme Sales. Todos os direitos reservados.</p>
+                    <p class="text-xs flex items-center gap-1">Feito com <i data-lucide="heart" class="w-3.5 h-3.5 text-brand-success"></i> por Lima Consultoria</p>
+                </div>
             </div>
         </div>
     </footer>
 
     <!-- Scheduler Modal (com fluxo de qualificação) -->
-    <div id="scheduler-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div id="scheduler-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="scheduler-title">
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="toggleScheduler()"></div>
 
         <!-- Modal Content -->
-        <div class="modal-content relative bg-white w-full max-w-3xl h-[88vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+        <div class="modal-content relative bg-white w-full max-w-3xl h-auto max-h-[88vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col">
             <!-- Header -->
             <div class="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50 shrink-0">
-                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                <h3 id="scheduler-title" class="font-bold text-slate-800 flex items-center gap-2">
                     <i data-lucide="calendar-days" class="w-5 h-5 text-brand-primary"></i>
                     Agendar Demonstração
                 </h3>
-                <button onclick="toggleScheduler()" aria-label="Fechar" class="text-slate-400 hover:text-slate-600 transition-colors">
+                <button onclick="toggleScheduler()" aria-label="Fechar" class="p-2 -m-2 rounded-lg text-slate-500 hover:text-slate-700 transition-colors">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
 
             <!-- Barra de progresso -->
             <div id="qual-progress" class="h-1.5 bg-slate-100 shrink-0">
-                <div id="qual-progress-bar" class="h-full bg-brand-success transition-all duration-500" style="width: 25%"></div>
+                <div id="qual-progress-bar" class="h-full bg-emerald-600 transition-all duration-500" style="width: 25%"></div>
             </div>
 
             <!-- Corpo -->
@@ -1264,7 +1330,7 @@
 
                 <!-- PASSO 1: Decisor -->
                 <div data-step="decisor" class="qual-step p-8 md:p-10">
-                    <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">Pergunta 1 de 4</span>
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider tabular-nums">Pergunta 1 de 4</span>
                     <h4 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">Você é o decisor (dono) da empresa?</h4>
                     <p class="text-slate-500 mb-8">Esta é uma <strong>call de apresentação</strong> e, para ser produtiva, precisa da pessoa que decide pela contratação.</p>
                     <div class="grid sm:grid-cols-2 gap-4">
@@ -1280,19 +1346,19 @@
                 </div>
 
                 <!-- BLOQUEIO: não é decisor -->
-                <div data-step="block" class="qual-step hidden p-8 md:p-10 text-center flex flex-col items-center justify-center h-full">
+                <div data-step="block" class="qual-step hidden p-8 md:p-10 text-center flex flex-col items-center justify-center min-h-[380px]">
                     <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mb-5"><i data-lucide="lock" class="w-8 h-8"></i></div>
                     <h4 class="text-2xl font-bold text-slate-900 mb-3">A call precisa ser com o decisor</h4>
                     <p class="text-slate-500 max-w-md mb-8">Nossa call é uma <strong>apresentação estratégica</strong> da plataforma. Para que ela seja realmente útil, ela só pode ser marcada com o <strong>decisor (dono)</strong> da empresa. Converse com o responsável e retorne para agendar — ou fale com a gente no WhatsApp para dúvidas iniciais.</p>
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <a href="https://wa.me/5524992592320?text=Tenho%20interesse%20no%20Prisme%20chatbot%20e%20gostaria%20de%20mais%20informacoes" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-brand-success text-white font-bold hover:bg-emerald-600 transition flex items-center justify-center gap-2"><i class="fa-brands fa-whatsapp"></i> Dúvidas no WhatsApp</a>
+                        <a href="https://wa.me/5524992592320?text=Tenho%20interesse%20no%20Prisme%20chatbot%20e%20gostaria%20de%20mais%20informacoes" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-brand-success text-emerald-950 font-bold hover:bg-emerald-400 transition flex items-center justify-center gap-2"><i class="fa-brands fa-whatsapp"></i> Dúvidas no WhatsApp</a>
                         <button onclick="qualShow('decisor')" class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition">Voltar</button>
                     </div>
                 </div>
 
                 <!-- PASSO 2: Urgência -->
                 <div data-step="urgencia" class="qual-step hidden p-8 md:p-10">
-                    <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">Pergunta 2 de 4</span>
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider tabular-nums">Pergunta 2 de 4</span>
                     <h4 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">Qual o nível de urgência para começar?</h4>
                     <p class="text-slate-500 mb-8">Isso nos ajuda a preparar a melhor proposta para o seu momento.</p>
                     <div class="space-y-3">
@@ -1309,12 +1375,12 @@
                             <div><div class="font-bold text-slate-900">Ainda pensando</div><div class="text-xs text-slate-500">Avaliando possibilidades</div></div>
                         </button>
                     </div>
-                    <button onclick="qualShow('decisor')" class="mt-8 text-sm text-slate-400 hover:text-slate-600 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar</button>
+                    <button onclick="qualShow('decisor')" class="mt-8 text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar</button>
                 </div>
 
                 <!-- PASSO 3: Chatbot -->
                 <div data-step="chatbot" class="qual-step hidden p-8 md:p-10">
-                    <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">Pergunta 3 de 4</span>
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider tabular-nums">Pergunta 3 de 4</span>
                     <h4 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">Você já tem chatbot na operação?</h4>
                     <p class="text-slate-500 mb-8">Queremos entender seu cenário atual de atendimento.</p>
                     <div class="grid sm:grid-cols-2 gap-4">
@@ -1327,12 +1393,12 @@
                             <div><div class="font-bold text-slate-900">Ainda não tenho</div><div class="text-xs text-slate-500">Seria o primeiro</div></div>
                         </button>
                     </div>
-                    <button onclick="qualShow('urgencia')" class="mt-8 text-sm text-slate-400 hover:text-slate-600 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar</button>
+                    <button onclick="qualShow('urgencia')" class="mt-8 text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar</button>
                 </div>
 
                 <!-- PASSO 4: Quem -->
                 <div data-step="quem" class="qual-step hidden p-8 md:p-10">
-                    <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">Pergunta 4 de 4</span>
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider tabular-nums">Pergunta 4 de 4</span>
                     <h4 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">Com quem você prefere a call?</h4>
                     <p class="text-slate-500 mb-8">Escolha o formato que faz mais sentido para você.</p>
                     <div class="grid md:grid-cols-2 gap-4">
@@ -1353,11 +1419,11 @@
                             <p class="text-sm text-slate-500 mt-1">Call exclusiva. O valor é abatido na implementação em caso de fechamento.</p>
                         </button>
                     </div>
-                    <button onclick="qualShow('chatbot')" class="mt-8 text-sm text-slate-400 hover:text-slate-600 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar</button>
+                    <button onclick="qualShow('chatbot')" class="mt-8 text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar</button>
                 </div>
 
                 <!-- CONFIRMAÇÃO DE CUSTO (Nattan) -->
-                <div data-step="nattan" class="qual-step hidden p-8 md:p-10 text-center flex flex-col items-center justify-center h-full">
+                <div data-step="nattan" class="qual-step hidden p-8 md:p-10 text-center flex flex-col items-center justify-center min-h-[380px]">
                     <div class="w-16 h-16 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mb-5"><i data-lucide="crown" class="w-8 h-8"></i></div>
                     <h4 class="text-2xl font-bold text-slate-900 mb-3">Call exclusiva com Nattan Lima</h4>
                     <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 max-w-md text-left mb-8 space-y-3">
@@ -1373,7 +1439,7 @@
 
                 <!-- CONTATO (coleta antes de abrir a agenda) -->
                 <div data-step="contato" class="qual-step hidden p-8 md:p-10">
-                    <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">Quase lá</span>
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider tabular-nums">Quase lá</span>
                     <h4 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">Para quem enviamos a confirmação?</h4>
                     <p class="text-slate-500 mb-8">Deixe seus dados para nossa equipe preparar a sua call.</p>
                     <form onsubmit="event.preventDefault(); qualSubmitContact();" class="space-y-4" novalidate>
@@ -1382,7 +1448,7 @@
                         <div class="grid sm:grid-cols-2 gap-4">
                             <div>
                                 <label for="lead-nome" class="block text-sm font-semibold text-slate-700 mb-1">Nome *</label>
-                                <input id="lead-nome" type="text" autocomplete="name" class="w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none transition" placeholder="Seu nome">
+                                <input id="lead-nome" type="text" autocomplete="name" required class="w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none transition" placeholder="Seu nome">
                             </div>
                             <div>
                                 <label for="lead-empresa" class="block text-sm font-semibold text-slate-700 mb-1">Empresa</label>
@@ -1390,22 +1456,22 @@
                             </div>
                             <div>
                                 <label for="lead-whatsapp" class="block text-sm font-semibold text-slate-700 mb-1">WhatsApp *</label>
-                                <input id="lead-whatsapp" type="tel" inputmode="tel" autocomplete="tel" class="w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none transition" placeholder="(DDD) 9 9999-9999">
+                                <input id="lead-whatsapp" type="tel" inputmode="tel" autocomplete="tel" required class="w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none transition" placeholder="(DDD) 9 9999-9999">
                             </div>
                             <div>
                                 <label for="lead-email" class="block text-sm font-semibold text-slate-700 mb-1">E-mail *</label>
-                                <input id="lead-email" type="email" autocomplete="email" class="w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none transition" placeholder="voce@empresa.com">
+                                <input id="lead-email" type="email" autocomplete="email" required class="w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary outline-none transition" placeholder="voce@empresa.com">
                             </div>
                         </div>
-                        <p id="lead-error" class="hidden text-sm text-red-600 flex items-center gap-1.5"><i data-lucide="alert-circle" class="w-4 h-4"></i><span id="lead-error-msg"></span></p>
+                        <p id="lead-error" role="alert" class="hidden text-sm text-red-600 flex items-center gap-1.5"><i data-lucide="alert-circle" class="w-4 h-4"></i><span id="lead-error-msg"></span></p>
                         <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                            <button id="lead-submit" type="submit" class="flex-1 px-6 py-3 rounded-xl bg-brand-success text-white font-bold hover:bg-emerald-600 transition flex items-center justify-center gap-2 disabled:opacity-60">
+                            <button id="lead-submit" type="submit" class="flex-1 px-6 py-3 rounded-xl bg-brand-success text-emerald-950 font-bold hover:bg-emerald-400 transition flex items-center justify-center gap-2 disabled:opacity-60">
                                 <span id="lead-submit-label">Continuar para a agenda</span>
                                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
                             </button>
                             <button type="button" onclick="qualBackFromContato()" class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition">Voltar</button>
                         </div>
-                        <p class="text-xs text-slate-400 flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5 shrink-0"></i> Seus dados são enviados com segurança apenas para nossa equipe.</p>
+                        <p class="text-xs text-slate-500 flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5 shrink-0"></i> Seus dados são enviados com segurança apenas para nossa equipe.</p>
                     </form>
                 </div>
 
@@ -1415,11 +1481,15 @@
                         <i data-lucide="info" class="w-4 h-4 shrink-0"></i>
                         <span>Call com <strong>Nattan Lima</strong> — R$ 197,90, abatido na implementação em caso de fechamento (não reembolsável).</span>
                     </div>
-                    <div class="flex-1 bg-slate-100 relative">
-                        <iframe id="qual-iframe" src="about:blank" class="w-full h-full border-0" title="Agendamento de Demonstração" allowfullscreen></iframe>
+                    <div class="flex-1 bg-slate-100 relative min-h-[60vh]">
+                        <div id="qual-iframe-loading" class="hidden absolute inset-0 z-10 flex-col items-center justify-center gap-3 text-slate-500 bg-slate-100">
+                            <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-brand-primary"></i>
+                            <span class="text-sm">Carregando agenda…</span>
+                        </div>
+                        <iframe id="qual-iframe" src="about:blank" class="w-full h-full absolute inset-0 border-0" title="Agendamento de Demonstração" allowfullscreen></iframe>
                     </div>
                     <div class="shrink-0 px-5 py-2 border-t border-slate-200 bg-white">
-                        <button onclick="qualBackFromCalendar()" class="text-sm text-slate-400 hover:text-slate-600 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Trocar tipo de call</button>
+                        <button onclick="qualBackFromCalendar()" class="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1"><i data-lucide="arrow-left" class="w-4 h-4"></i> Trocar tipo de call</button>
                     </div>
                 </div>
 
@@ -1429,8 +1499,12 @@
 
     <!-- Scripts -->
     <script>
-        // Init Lucide Icons
-        lucide.createIcons();
+        // Init Lucide Icons (com guarda: se o CDN de ícones falhar, o resto do script sobrevive)
+        try { if (window.lucide) lucide.createIcons(); } catch (e) { /* ícones são aprimoramento progressivo */ }
+
+        // Sombra sutil no header ao rolar (dá função à transição declarada no markup)
+        const siteHeader = document.querySelector('header');
+        addEventListener('scroll', () => siteHeader.classList.toggle('shadow-md', scrollY > 8), { passive: true });
 
         // ===== Rastreamento de conversao (GA4/Meta: no-op ate configurar; OpenAI Ads: ativo) =====
         // Mapa: evento interno -> evento padrao do OpenAI Ads Pixel (oaiq).
@@ -1471,6 +1545,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
@@ -1499,6 +1574,9 @@
             if (idx >= 0) {
                 wrap.classList.remove('hidden');
                 bar.style.width = (((idx + 1) / QUAL_FLOW.length) * 100) + '%';
+            } else if (step === 'contato') {
+                wrap.classList.remove('hidden'); // formulario fecha o funil: barra completa
+                bar.style.width = '100%';
             } else {
                 wrap.classList.add('hidden'); // bloqueio / nattan / calendario nao mostram progresso
             }
@@ -1534,9 +1612,20 @@
             }
         }
 
+        // Loading da agenda: overlay visivel ate o iframe do Google carregar
+        const qualIframeEl = document.getElementById('qual-iframe');
+        const qualIframeLoading = document.getElementById('qual-iframe-loading');
+        function qualLoadingShow(on) {
+            if (!qualIframeLoading) return;
+            qualIframeLoading.classList.toggle('hidden', !on);
+            qualIframeLoading.classList.toggle('flex', on);
+        }
+        if (qualIframeEl) qualIframeEl.addEventListener('load', () => qualLoadingShow(false));
+
         // Carrega a agenda correta no iframe e exibe o calendario
         function qualOpenCalendar(tipo) {
             qualData.quem = tipo;
+            qualLoadingShow(true);
             document.getElementById('qual-iframe').src = AGENDAS[tipo];
             document.getElementById('qual-cost-banner').classList.toggle('hidden', tipo !== 'nattan');
             qualShow('calendar');
@@ -1567,6 +1656,33 @@
             document.getElementById('lead-error').classList.remove('hidden');
         }
 
+        // Estado de erro por campo: borda vermelha + aria-invalid, limpo ao digitar
+        const LEAD_FIELDS = ['lead-nome', 'lead-whatsapp', 'lead-email'];
+        function clearLeadInvalid(id) {
+            (id ? [id] : LEAD_FIELDS).forEach(fid => {
+                const el = document.getElementById(fid);
+                if (!el) return;
+                el.classList.remove('border-red-400');
+                el.removeAttribute('aria-invalid');
+            });
+        }
+        function markLeadInvalid(ids, msg) {
+            clearLeadInvalid();
+            ids.forEach(fid => {
+                const el = document.getElementById(fid);
+                if (!el) return;
+                el.classList.add('border-red-400');
+                el.setAttribute('aria-invalid', 'true');
+            });
+            const first = document.getElementById(ids[0]);
+            if (first) first.focus();
+            showLeadError(msg);
+        }
+        LEAD_FIELDS.forEach(fid => {
+            const el = document.getElementById(fid);
+            if (el) el.addEventListener('input', () => clearLeadInvalid(fid));
+        });
+
         // Valida o contato, envia ao Worker (Resend) e abre a agenda escolhida
         async function qualSubmitContact() {
             const nome = document.getElementById('lead-nome').value.trim();
@@ -1575,9 +1691,14 @@
             const empresa = document.getElementById('lead-empresa').value.trim();
             const honeypot = document.getElementById('lead-website').value;
 
-            if (!nome || !whatsapp || !email) { showLeadError('Preencha nome, WhatsApp e e-mail.'); return; }
-            if (!isEmailValido(email)) { showLeadError('Informe um e-mail válido.'); return; }
-            if (whatsapp.replace(/\D/g, '').length < 10) { showLeadError('Informe um WhatsApp válido com DDD.'); return; }
+            const faltando = [];
+            if (!nome) faltando.push('lead-nome');
+            if (!whatsapp) faltando.push('lead-whatsapp');
+            if (!email) faltando.push('lead-email');
+            if (faltando.length) { markLeadInvalid(faltando, 'Preencha nome, WhatsApp e e-mail.'); return; }
+            if (!isEmailValido(email)) { markLeadInvalid(['lead-email'], 'Informe um e-mail válido.'); return; }
+            if (whatsapp.replace(/\D/g, '').length < 10) { markLeadInvalid(['lead-whatsapp'], 'Informe um WhatsApp válido com DDD.'); return; }
+            clearLeadInvalid();
             document.getElementById('lead-error').classList.add('hidden');
 
             qualData.contato = { nome, whatsapp, email, empresa };
@@ -1618,6 +1739,14 @@
             qualOpenCalendar(qualData.quem);
         }
 
+        // Gestao de foco do modal: foco entra ao abrir, fundo fica inerte, foco volta ao fechar
+        let schedulerOpener = null;
+        function setBackgroundInert(on) {
+            document.querySelectorAll('body > header, body > section, body > footer').forEach(el => {
+                if (on) el.setAttribute('inert', '');
+                else el.removeAttribute('inert');
+            });
+        }
         function toggleScheduler() {
             const modal = document.getElementById('scheduler-modal');
             modal.classList.toggle('open');
@@ -1626,8 +1755,15 @@
                 trackEvent('abrir_agendamento');
                 qualReset();
                 document.body.style.overflow = 'hidden';
+                schedulerOpener = document.activeElement;
+                setBackgroundInert(true);
+                const closeBtn = modal.querySelector('button[aria-label="Fechar"]');
+                if (closeBtn && closeBtn.focus) closeBtn.focus();
             } else {
                 document.body.style.overflow = '';
+                setBackgroundInert(false);
+                if (schedulerOpener && schedulerOpener.focus) schedulerOpener.focus();
+                schedulerOpener = null;
             }
         }
 
@@ -1648,42 +1784,52 @@
             const apiContent = document.getElementById('content-api');
             const aiContent = document.getElementById('content-ai');
 
+            const ACTIVE = ['text-brand-primary', 'bg-white', 'border-b-2', 'border-brand-primary'];
+            const INACTIVE = ['text-slate-500', 'hover:text-slate-700', 'hover:bg-slate-100'];
+            const activate = (btn) => { btn.classList.add(...ACTIVE); btn.classList.remove(...INACTIVE); btn.setAttribute('aria-selected', 'true'); };
+            const deactivate = (btn) => { btn.classList.remove(...ACTIVE); btn.classList.add(...INACTIVE); btn.setAttribute('aria-selected', 'false'); };
+
             if (tab === 'api') {
-                apiTab.classList.add('text-brand-primary', 'bg-white', 'border-b-2', 'border-brand-primary');
-                apiTab.classList.remove('text-slate-500');
-                aiTab.classList.remove('text-brand-primary', 'bg-white', 'border-b-2', 'border-brand-primary');
-                aiTab.classList.add('text-slate-500');
-                
+                activate(apiTab);
+                deactivate(aiTab);
                 apiContent.classList.remove('hidden');
                 aiContent.classList.add('hidden');
             } else {
-                aiTab.classList.add('text-brand-primary', 'bg-white', 'border-b-2', 'border-brand-primary');
-                aiTab.classList.remove('text-slate-500');
-                apiTab.classList.remove('text-brand-primary', 'bg-white', 'border-b-2', 'border-brand-primary');
-                apiTab.classList.add('text-slate-500');
-
+                activate(aiTab);
+                deactivate(apiTab);
                 aiContent.classList.remove('hidden');
                 apiContent.classList.add('hidden');
             }
         }
 
+        // Preenche o trilho do slider ate o valor atual (var --fill usada no CSS do track)
+        function setRangeFill(el) {
+            if (el && el.style) el.style.setProperty('--fill', ((el.value / el.max) * 100) + '%');
+        }
+
         function updateApiCost() {
-            const marketing = parseInt(document.getElementById('marketingRange').value);
-            const utility = parseInt(document.getElementById('utilityRange').value);
-            
+            const marketingEl = document.getElementById('marketingRange');
+            const utilityEl = document.getElementById('utilityRange');
+            const marketing = parseInt(marketingEl.value);
+            const utility = parseInt(utilityEl.value);
+
             // Estimates (Average Cost)
             const marketingCost = 0.35;
             const utilityCost = 0.18;
-            
+
             const total = (marketing * marketingCost) + (utility * utilityCost);
-            
+
+            setRangeFill(marketingEl);
+            setRangeFill(utilityEl);
             document.getElementById('marketingValue').innerText = marketing.toLocaleString('pt-BR') + ' conversas';
             document.getElementById('utilityValue').innerText = utility.toLocaleString('pt-BR') + ' conversas';
             document.getElementById('totalApiCost').innerText = total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
         function updateAiCost() {
-            const conversations = parseInt(document.getElementById('aiRange').value);
+            const aiEl = document.getElementById('aiRange');
+            const conversations = parseInt(aiEl.value);
+            setRangeFill(aiEl);
             
             // Logic: 
             // 1 conversation ~ 10 msgs. 
@@ -1705,6 +1851,10 @@
             document.getElementById('aiValue').innerText = conversations + ' atendimentos/dia';
             document.getElementById('totalAiCost').innerText = safeTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
+
+        // Estado inicial dos sliders (preenche o trilho com os valores default)
+        updateApiCost();
+        updateAiCost();
     </script>
 </body>
 </html>

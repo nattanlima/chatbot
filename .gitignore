@@ -12,3 +12,8 @@ worker/.wrangler/
 # Logs
 npm-debug.log*
 *.log
+
+# Configs locais de agentes de IA (Codex/Cursor) e cache do detector de design
+.codex/
+.cursor/
+.impeccable/hook.cache.json

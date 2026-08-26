@@ -139,4 +139,37 @@ npx lighthouse https://chatbot.prismeapp.com.br --view
 
 ---
 
+---
+
+## 10. Refinamento de design (26/08/2026) ✅
+
+Passada completa de design (Impeccable `polish`) sobre o `index.html`, **preservando a identidade visual**
+(indigo #1e1b4b / #4F46E5, verde #00C38D, gradiente do hero) — refinamento, não redesign. Revisão em 6
+dimensões (mobile, desktop, tipografia, cor/contraste, interação/estados, modal) com verificação por
+screenshot em 1440px e 390px. Suíte de testes intacta (89/89).
+
+**Correções principais:**
+
+- **Mobile:** mockup do dashboard do hero estourava ~100px além do viewport (mensagens/input cortados) —
+  corrigido com `min-w-0` + paddings responsivos; CTA "Ver Planos" no header mobile (antes não havia
+  navegação nenhuma); primeira dobra compactada; 5 canais em uma linha; abas da calculadora com rótulo curto.
+- **Contraste (WCAG AA):** texto branco sobre o verde da marca reprovava (2,3:1) → CTAs verdes com texto
+  `emerald-950` (7:1+); cinzas neutros sobre indigo escuro → `indigo-200/300` (texto secundário tingido do
+  matiz); diversos `slate-400` sobre branco → `slate-500`.
+- **Modal de agendamento:** altura adaptativa (era 88vh fixo com passo 1 quase vazio), `role="dialog"` +
+  gestão de foco (`inert` no fundo, foco retorna ao fechar), loading do calendário, barra de progresso fecha
+  em 100% no formulário, erro por campo (borda vermelha + `aria-invalid`).
+- **Defeitos objetivos:** ícone `layout-kanban` inexistente no lucide 1.17 → `kanban-square`; classe
+  `.no-scrollbar` usada mas não definida; `hidden sm:block flex` conflitantes na pílula de URL do mockup;
+  sliders sem `w-full` e sem estilo Firefox (`::-moz-*`); preços "599 ,90" com espaço espúrio.
+- **Craft:** eyebrows removidos ("Tecnologia Exclusiva", "Prisme IA" incorporado ao heading); escala de
+  headings em 2 níveis (`3xl/4xl` conteúdo, `4xl/5xl` vitrine); ícones unificados em Lucide (Font Awesome só
+  para marcas); animação de entrada com ease exponencial + variante autoral só no mockup do hero;
+  `prefers-reduced-motion`; `:focus-visible` tematizado; `scroll-margin-top` nas âncoras; sombra no header ao
+  rolar; cards de módulos compactados (~2 telas a menos no mobile); `border-t-4` dos planos → borda fina
+  completa.
+
+**Exceções de design registradas** em `.impeccable/config.json` (com justificativa): `gradient-text`,
+`overused-font` (Inter) e `ai-color-palette` — todos são a identidade incumbente do site em produção.
+
 > Documento gerado como baseline. Cada fase pode virar uma PR pequena e isolada, mantendo o deploy atual no GitHub Pages.
