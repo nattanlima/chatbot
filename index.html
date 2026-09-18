@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prisme.chatbot | A Plataforma de Atendimento Omnichannel Definitiva</title>
-    <meta name="description" content="Centralize WhatsApp, Instagram, Mercado Livre e mais. CRM incluso, automação com IA e implementação completa em 7 dias.">
+    <meta name="description" content="Centralize WhatsApp, Instagram, Messenger e TikTok. CRM incluso, automação com IA e implementação completa em 7 dias.">
     <link rel="canonical" href="https://chatbot.prismeapp.com.br/">
     <meta name="theme-color" content="#1e1b4b">
     <meta name="robots" content="index, follow">
@@ -18,7 +18,7 @@
     <meta property="og:site_name" content="Prisme.chatbot">
     <meta property="og:url" content="https://chatbot.prismeapp.com.br/">
     <meta property="og:title" content="Prisme.chatbot | Atendimento Omnichannel sem dor de cabeça">
-    <meta property="og:description" content="Centralize WhatsApp, Instagram, Mercado Livre e mais. CRM incluso, automação com IA e implementação completa em 7 dias.">
+    <meta property="og:description" content="Centralize WhatsApp, Instagram, Messenger e TikTok. CRM incluso, automação com IA e implementação completa em 7 dias.">
     <meta property="og:image" content="https://chatbot.prismeapp.com.br/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -27,7 +27,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Prisme.chatbot | Atendimento Omnichannel sem dor de cabeça">
-    <meta name="twitter:description" content="Centralize WhatsApp, Instagram, Mercado Livre e mais. CRM, automação com IA e implementação em 7 dias.">
+    <meta name="twitter:description" content="Centralize WhatsApp, Instagram, Messenger e TikTok. CRM, automação com IA e implementação em 7 dias.">
     <meta name="twitter:image" content="https://chatbot.prismeapp.com.br/og-image.png">
 
 
@@ -235,6 +235,448 @@
             .animate-float, .animate-blob, .animate-pulse-slow, .animate-pulse { animation: none !important; }
             .modal, .modal-content { transition-duration: 0.01ms !important; }
         }
+
+        /* ===== Animacao: carrinho dentro do WhatsApp (secao #carrinho-wa) ===== */
+#carrinho-wa{
+  --wa-green:#25D366;          
+  --wa-green-press:#1FB855;
+  --wa-accent:#008069;         
+  --wa-chat-bg:#EFE7DE;        
+  --wa-doodle:#DDD3C7;
+  --wa-bubble-in:#FFFFFF;
+  --wa-bubble-out:#D9FDD3;
+  --wa-text:#111B21;
+  --wa-text-2:#3B4A54;
+  --wa-text-3:#667781;
+  --wa-divider:#E9EDEF;
+  --wa-field-border:#C4C9CC;
+  --wa-sheet:#FFFFFF;
+  --wa-header:#F6F6F6;
+  --wa-link:#027EB5;
+  --kb-bg:#D1D4DA;
+  --kb-key:#FFFFFF;
+  --phone-w:393px;
+  --phone-h:852px;
+  --ios-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Segoe UI",Inter,system-ui,sans-serif;
+}
+#carrinho-wa .wa-stage{--scale:1;display:grid;place-items:center}
+#carrinho-wa .wa-phone{
+  position:relative;width:var(--phone-w);height:var(--phone-h);
+  border-radius:54px;background:#000;padding:11px;
+  box-shadow:0 0 0 2px #2b2f35,0 0 0 4px #0d0f12,0 40px 90px -20px rgba(0,0,0,.85);
+  transform:scale(var(--scale));transform-origin:center center;
+  flex:none;
+}
+#carrinho-wa .wa-viewport{
+  position:relative;width:100%;height:100%;border-radius:44px;overflow:hidden;
+  background:var(--wa-chat-bg);isolation:isolate;
+}
+#carrinho-wa .ios-status{
+  position:absolute;inset:0 0 auto 0;height:54px;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 30px 0;font-size:15px;font-weight:600;color:#000;letter-spacing:.2px;
+  pointer-events:none;
+}
+#carrinho-wa .ios-status .right{display:flex;align-items:center;gap:5px}
+#carrinho-wa .island{
+  position:absolute;top:11px;left:50%;transform:translateX(-50%);
+  width:124px;height:35px;border-radius:20px;background:#000;z-index:45;
+}
+#carrinho-wa .chat-head{
+  position:absolute;top:54px;left:0;right:0;height:52px;z-index:30;
+  background:rgba(246,246,246,.94);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:.5px solid rgba(0,0,0,.16);
+  display:flex;align-items:center;gap:8px;padding:0 12px;
+}
+#carrinho-wa .chat-head .back{color:var(--wa-accent);font-size:26px;line-height:1;margin-right:-2px}
+#carrinho-wa .chat-head .av{width:34px;height:34px;border-radius:50%;background:#D9E0E3;display:grid;place-items:center;overflow:hidden;flex:none}
+#carrinho-wa .chat-head .av svg{width:22px;height:22px}
+#carrinho-wa .chat-head .who{flex:1;min-width:0}
+#carrinho-wa .chat-head .who b{display:block;font-size:16px;font-weight:600;color:#000;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#carrinho-wa .chat-head .who span{display:block;font-size:11px;color:var(--wa-text-3);margin-top:1px}
+#carrinho-wa .chat-head .acts{display:flex;gap:18px;color:var(--wa-accent)}
+#carrinho-wa .chat-head .acts svg{width:21px;height:21px}
+#carrinho-wa .chat-body{
+  position:absolute;top:106px;bottom:86px;left:0;right:0;z-index:10;
+  background-color:var(--wa-chat-bg);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%23DDD3C7' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M22 30c6-8 16-8 22 0M30 52a8 8 0 1 0 .01 0'/%3E%3Cpath d='M96 24h26v18H108l-8 8v-8h-4z'/%3E%3Cpath d='M180 20l6 12 13 2-9 9 2 13-12-6-12 6 2-13-9-9 13-2z'/%3E%3Cpath d='M232 44a10 10 0 1 0 .01 0M228 40l8 8'/%3E%3Cpath d='M40 112h22v16H40zM46 108h10v4H46z'/%3E%3Cpath d='M112 104c8-8 20 0 12 10l-12 12-12-12c-8-10 4-18 12-10z'/%3E%3Cpath d='M186 100v26M176 112h20'/%3E%3Cpath d='M228 106h20v20h-20zM232 114h12M232 120h8'/%3E%3Cpath d='M28 190a12 12 0 1 0 .01 0M28 178v-6'/%3E%3Cpath d='M92 182h28l-4 20H96zM100 182v-6a6 6 0 0 1 12 0v6'/%3E%3Cpath d='M170 186l10-10 10 10-10 10z'/%3E%3Cpath d='M226 176h22v14h-8l-6 6v-6h-8z'/%3E%3Cpath d='M60 236h20M70 228v16'/%3E%3Cpath d='M130 230a9 9 0 1 0 .01 0'/%3E%3Cpath d='M196 228h18v16h-18zM200 224h10'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:260px 260px;
+  padding:10px 8px 0;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;gap:6px;
+}
+#carrinho-wa .sys-note{
+  align-self:center;max-width:82%;text-align:center;font-size:11.5px;line-height:1.45;
+  color:#54656F;background:#FFF6D9;border-radius:8px;padding:6px 10px;margin-bottom:4px;
+  box-shadow:0 1px .5px rgba(11,20,26,.13);
+}
+#carrinho-wa .day{align-self:center;font-size:11.5px;color:#54656F;background:#FFFFFF;border-radius:8px;padding:4px 10px;box-shadow:0 1px .5px rgba(11,20,26,.13);margin-bottom:2px}
+#carrinho-wa .msg{max-width:86%;border-radius:8px;padding:6px 8px 5px;font-size:14.6px;line-height:1.35;color:var(--wa-text);box-shadow:0 1px .5px rgba(11,20,26,.13);position:relative;white-space:pre-line}
+#carrinho-wa .msg.in{align-self:flex-start;background:var(--wa-bubble-in);border-top-left-radius:0}
+#carrinho-wa .msg.out{align-self:flex-end;background:var(--wa-bubble-out);border-top-right-radius:0}
+#carrinho-wa .msg .time{font-size:10.5px;color:var(--wa-text-3);float:right;margin:4px 0 -2px 8px;position:relative;top:3px}
+#carrinho-wa .msg .time b{color:#53BDEB;font-weight:400;margin-left:2px}
+#carrinho-wa .msg .banner{display:block;width:100%;border-radius:6px;margin-bottom:6px;overflow:hidden}
+#carrinho-wa .msg .cta{
+  display:block;text-align:center;color:#00A5F4;font-size:14.5px;font-weight:400;
+  border-top:1px solid rgba(0,0,0,.09);margin:6px -8px -5px;padding:10px 8px;cursor:pointer;
+}
+#carrinho-wa .msg .cta.is-pressed{background:rgba(0,0,0,.05)}
+#carrinho-wa .msg small.hint{display:block;font-size:11.5px;color:var(--wa-text-3);margin-top:4px}
+#carrinho-wa .reply-card{
+  align-self:flex-end;background:var(--wa-bubble-out);border-radius:8px;border-top-right-radius:0;
+  padding:8px;max-width:76%;box-shadow:0 1px .5px rgba(11,20,26,.13);
+}
+#carrinho-wa .reply-card .row{display:flex;align-items:center;gap:8px}
+#carrinho-wa .reply-card .ic{width:30px;height:34px;border-radius:4px;background:#fff;display:grid;place-items:center;flex:none}
+#carrinho-wa .reply-card .ic svg{width:16px;height:16px;color:var(--wa-text-3)}
+#carrinho-wa .reply-card b{font-size:14.5px;font-weight:500;display:block;color:var(--wa-text)}
+#carrinho-wa .reply-card span{font-size:12.5px;color:var(--wa-text-3)}
+#carrinho-wa .reply-card .link{display:block;text-align:center;color:#00A5F4;font-size:14.5px;border-top:1px solid rgba(0,0,0,.09);margin:8px -8px -8px;padding:9px}
+#carrinho-wa .chat-input{
+  position:absolute;left:0;right:0;bottom:0;height:86px;z-index:30;
+  background:rgba(246,246,246,.94);backdrop-filter:blur(20px);
+  border-top:.5px solid rgba(0,0,0,.14);
+  display:flex;align-items:flex-start;gap:10px;padding:9px 12px 0;color:var(--wa-text-3);
+}
+#carrinho-wa .chat-input .plus{font-size:25px;line-height:1;color:var(--wa-accent);margin-top:4px}
+#carrinho-wa .chat-input .field{
+  flex:1;height:36px;border-radius:18px;background:#fff;border:.5px solid rgba(0,0,0,.14);
+  display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:16px;color:#9AA4AA;
+}
+#carrinho-wa .chat-input .field svg{width:19px;height:19px;color:var(--wa-text-3)}
+#carrinho-wa .chat-input .mic{width:19px;height:19px;color:var(--wa-accent);margin-top:12px}
+#carrinho-wa .home-bar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:139px;height:5px;border-radius:3px;background:#000;opacity:.85;z-index:60}
+#carrinho-wa .scrim{position:absolute;inset:0;z-index:45;background:rgba(0,0,0,.28);opacity:0;transition:opacity .42s;pointer-events:none}
+#carrinho-wa .scrim.on{opacity:1}
+#carrinho-wa .flow-sheet{
+  position:absolute;left:0;right:0;top:96px;bottom:0;z-index:50;
+  background:var(--wa-sheet);border-radius:12px 12px 0 0;
+  box-shadow:0 -2px 24px rgba(0,0,0,.28);
+  display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform .42s cubic-bezier(.32,.72,0,1);
+}
+#carrinho-wa .flow-sheet.is-open{transform:translateY(0)}
+#carrinho-wa .grabber{width:36px;height:4px;border-radius:2px;background:#C9CDD1;margin:8px auto 0;flex:none}
+#carrinho-wa .sheet-head{height:48px;display:flex;align-items:center;padding:0 14px;flex:none;position:relative}
+#carrinho-wa .sheet-head .nav{width:24px;height:24px;color:var(--wa-text);display:grid;place-items:center}
+#carrinho-wa .sheet-head .nav svg{width:19px;height:19px}
+#carrinho-wa .sheet-head .title{position:absolute;left:0;right:0;text-align:center;font-size:17px;font-weight:600;color:var(--wa-text);letter-spacing:-.2px;pointer-events:none}
+#carrinho-wa .sheet-head .kebab{margin-left:auto;color:var(--wa-text)}
+#carrinho-wa .sheet-head .kebab svg{width:19px;height:19px}
+#carrinho-wa .sheet-head .spin{margin-left:auto;width:18px;height:18px;border:2px solid var(--wa-divider);border-top-color:var(--wa-green);border-radius:50%;animation:wfSpin .7s linear infinite;display:none}
+#carrinho-wa .flow-sheet.is-loading .spin{display:block}
+#carrinho-wa .flow-sheet.is-loading .kebab{display:none}
+@keyframes wfSpin{to{transform:rotate(360deg)}}
+#carrinho-wa .progress{height:4px;border-radius:2px;background:var(--wa-divider);margin:0 16px;flex:none;overflow:hidden}
+#carrinho-wa .progress i{display:block;height:100%;width:0;background:var(--wa-green);border-radius:2px;transition:width .45s cubic-bezier(.4,0,.2,1)}
+#carrinho-wa .sheet-scroll{flex:1;position:relative;overflow:hidden}
+#carrinho-wa .fscreen{position:absolute;inset:0;overflow:hidden;padding:20px 20px 8px;display:flex;flex-direction:column;gap:14px;background:var(--wa-sheet)}
+#carrinho-wa .fscreen.enter{animation:wfSlideIn .34s cubic-bezier(.32,.72,0,1) both}
+#carrinho-wa .fscreen.exit{animation:wfSlideOut .34s cubic-bezier(.32,.72,0,1) both}
+@keyframes wfSlideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes wfSlideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(-26%);opacity:0}}
+#carrinho-wa .fscroll{overflow:hidden;flex:1;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+#carrinho-wa .fscroll>*{flex:none}
+#carrinho-wa .f-h1{font-size:22px;line-height:1.25;font-weight:700;color:var(--wa-text);letter-spacing:-.4px}
+#carrinho-wa .f-h2{font-size:16px;font-weight:600;color:var(--wa-text)}
+#carrinho-wa .f-body{font-size:15px;line-height:1.45;color:var(--wa-text-2)}
+#carrinho-wa .f-body.err{color:#D32F2F}
+#carrinho-wa .f-caption{font-size:12.5px;line-height:1.4;color:var(--wa-text-3)}
+#carrinho-wa .f-label{font-size:13px;color:var(--wa-text-3)}
+#carrinho-wa .f-link{font-size:15px;color:var(--wa-green);font-weight:500;text-align:center;padding:6px 0;cursor:pointer}
+#carrinho-wa .f-link.left{text-align:left}
+#carrinho-wa .f-link.is-pressed{opacity:.5}
+#carrinho-wa .f-opt{display:flex;align-items:center;gap:12px;padding:11px 0;cursor:pointer;border-radius:8px}
+#carrinho-wa .f-opt .txt{flex:1;min-width:0}
+#carrinho-wa .f-opt .txt b{display:block;font-size:15px;font-weight:400;color:var(--wa-text);line-height:1.3}
+#carrinho-wa .f-opt .txt span{display:block;font-size:13px;color:var(--wa-text-3);line-height:1.35;margin-top:2px}
+#carrinho-wa .f-opt .thumb{width:44px;height:44px;border-radius:6px;background:#F0F2F5;display:grid;place-items:center;font-size:21px;flex:none}
+#carrinho-wa .radio{width:20px;height:20px;border-radius:50%;border:2px solid #8696A0;flex:none;position:relative;transition:border-color .15s}
+#carrinho-wa .f-opt.on .radio{border-color:var(--wa-green)}
+#carrinho-wa .f-opt.on .radio::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--wa-green)}
+#carrinho-wa .f-opt.is-pressed{background:rgba(0,0,0,.04)}
+#carrinho-wa .f-opt+.f-opt{border-top:1px solid var(--wa-divider)}
+#carrinho-wa .f-field{
+  position:relative;border:1px solid var(--wa-field-border);border-radius:8px;
+  height:56px;display:flex;align-items:center;padding:0 14px;transition:border-color .15s,box-shadow .15s;
+}
+#carrinho-wa .f-field.on{border-color:var(--wa-green);box-shadow:inset 0 0 0 1px var(--wa-green)}
+#carrinho-wa .f-field .cap{position:absolute;top:-7px;left:11px;background:#fff;padding:0 4px;font-size:11.5px;color:var(--wa-text-3)}
+#carrinho-wa .f-field.on .cap{color:var(--wa-green)}
+#carrinho-wa .f-field .val{font-size:16px;color:var(--wa-text);letter-spacing:.2px}
+#carrinho-wa .f-field .val.ph{color:#8696A0}
+#carrinho-wa .f-field .caret{display:inline-block;width:1.5px;height:19px;background:var(--wa-green);margin-left:1px;vertical-align:-4px;animation:wfBlink 1s steps(1) infinite}
+@keyframes wfBlink{50%{opacity:0}}
+#carrinho-wa .f-field .clear{margin-left:auto;color:#8696A0}
+#carrinho-wa .f-field .clear svg{width:18px;height:18px;display:block}
+#carrinho-wa .f-helper{font-size:12px;color:var(--wa-text-3);margin:-8px 0 0 14px}
+#carrinho-wa .f-nav{display:flex;align-items:center;gap:12px;padding:13px 0;cursor:pointer}
+#carrinho-wa .f-nav .txt{flex:1;min-width:0}
+#carrinho-wa .f-nav .txt b{display:block;font-size:15px;font-weight:400;color:var(--wa-text)}
+#carrinho-wa .f-nav .txt span{display:block;font-size:13px;color:var(--wa-text-3);margin-top:2px}
+#carrinho-wa .f-nav .chev{color:#8696A0}
+#carrinho-wa .f-nav .chev svg{width:17px;height:17px;display:block}
+#carrinho-wa .f-nav+.f-nav{border-top:1px solid var(--wa-divider)}
+#carrinho-wa .f-nav.is-pressed{background:rgba(0,0,0,.04)}
+#carrinho-wa .f-nav .txt .tag{display:inline-block;width:auto;font-size:11px;font-weight:600;color:#0E7A45;background:#DFF7E6;border-radius:4px;padding:2px 6px;margin-top:4px}
+#carrinho-wa .f-kv{font-size:15px;line-height:1.6;color:var(--wa-text-2)}
+#carrinho-wa .f-kv b{font-weight:400;color:var(--wa-text)}
+#carrinho-wa .f-total{font-size:15px;line-height:1.7;color:var(--wa-text)}
+#carrinho-wa .f-total b{font-weight:600}
+#carrinho-wa .sheet-foot{flex:none;padding:8px 16px 0;background:var(--wa-sheet)}
+#carrinho-wa .f-btn{
+  width:100%;height:52px;border:0;border-radius:26px;background:var(--wa-green);
+  color:#fff;font-size:15.5px;font-weight:600;font-family:inherit;letter-spacing:-.1px;
+  transition:background .15s,transform .1s,opacity .2s;cursor:pointer;
+}
+#carrinho-wa .f-btn[disabled]{background:#E9EDEF;color:#A8B0B5}
+#carrinho-wa .f-btn.is-pressed{background:var(--wa-green-press);transform:scale(.985)}
+#carrinho-wa .sheet-caption{
+  flex:none;text-align:center;font-size:11px;color:var(--wa-text-3);
+  padding:11px 0 22px;display:flex;align-items:center;justify-content:center;gap:5px;
+}
+#carrinho-wa .sheet-caption .dot{width:13px;height:13px;border-radius:3px;background:#D9E0E3;display:inline-block}
+#carrinho-wa .sheet-caption a{color:var(--wa-link);text-decoration:none}
+#carrinho-wa .kb{
+  position:absolute;left:0;right:0;bottom:0;z-index:70;background:var(--kb-bg);
+  padding:8px 3px 30px;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);
+  user-select:none;
+}
+#carrinho-wa .kb.up{transform:translateY(0)}
+#carrinho-wa .kb .row{display:flex;justify-content:center;gap:6px;margin-bottom:11px}
+#carrinho-wa .kb .k{
+  flex:1;height:42px;border-radius:5px;background:var(--kb-key);
+  box-shadow:0 1px 0 rgba(0,0,0,.28);display:grid;place-items:center;
+  font-size:22px;font-weight:400;color:#000;
+}
+#carrinho-wa .kb .k.dark{background:#ABB0BA;box-shadow:0 1px 0 rgba(0,0,0,.25)}
+#carrinho-wa .kb .k.wide{flex:2.2}
+#carrinho-wa .kb .k.sm{font-size:15px}
+#carrinho-wa .kb .k.press{background:#E3E5E8}
+#carrinho-wa .kb.num .row{gap:8px;padding:0 6px}
+#carrinho-wa .kb.num .k{height:46px;font-size:24px}
+#carrinho-wa .kb .bar{display:flex;align-items:center;justify-content:space-between;padding:4px 10px 10px;font-size:15px;color:#3C3C43}
+#carrinho-wa .kb .bar span{opacity:.75}
+#carrinho-wa .tapdot{
+  position:absolute;z-index:90;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;
+  background:rgba(0,0,0,.14);border:1.5px solid rgba(0,0,0,.22);
+  opacity:0;pointer-events:none;transition:left .42s cubic-bezier(.4,0,.2,1),top .42s cubic-bezier(.4,0,.2,1),opacity .2s,transform .12s;
+}
+#carrinho-wa .tapdot.show{opacity:1}
+#carrinho-wa .tapdot.hit{transform:scale(.72);background:rgba(0,0,0,.26)}
+#carrinho-wa .wa-caption{margin-top:18px;text-align:center;color:#8FA3A0;font-size:13px;letter-spacing:.2px}
+@media (prefers-reduced-motion:reduce){#carrinho-wa .flow-sheet, #carrinho-wa .fscreen, #carrinho-wa .kb, #carrinho-wa .tapdot, #carrinho-wa .progress i{transition:none!important;animation:none!important}}
+#carrinho-wa .wa-stage{width:calc(393px * var(--s));height:calc(852px * var(--s));display:block}
+#carrinho-wa .wa-phone{position:absolute;top:0;left:0;transform:scale(var(--s));transform-origin:top left;box-shadow:0 0 0 2px #2b2f35,0 0 0 4px #0d0f12,0 25px 60px -18px rgba(30,27,75,.45)}
+#carrinho-wa{--s:.72}
+@media (max-width:1023px){#carrinho-wa{--s:.70}}
+@media (max-width:380px){#carrinho-wa{--s:.60}}
+
+
+        /* ===== Painel da Prisme: componente compartilhado (.pz-demo) ===== */
+.pz-demo{
+  --ink:#0F172A; --ink-2:#475569; --ink-3:#94A3B8;
+  --line:#E2E8F0; --line-2:#F1F5F9; --surface:#FFFFFF; --surface-2:#F8FAFC;
+  --indigo:#4F46E5; --green:#00A76A; --green-soft:#DCFCE7; --green-ink:#15803D;
+  --violet:#7C3AED; --violet-bg:#F5F3FF; --violet-line:#DDD6FE;
+  --wa-bg:#EFE7DE; --wa-in:#FFFFFF; --wa-out:#D9FDD3; --wa-ink:#111B21; --wa-ink-2:#667781;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
+}
+.pz-demo .hb{width:100%;max-width:1000px}
+.pz-demo .hb-stage{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:20px}
+.pz-demo .hb-panel{
+  width:100%;max-width:640px;background:var(--surface);border-radius:14px;
+  border:1px solid var(--line);box-shadow:0 30px 70px -25px rgba(2,6,23,.65);
+  overflow:hidden;position:relative;font-size:13px;color:var(--ink);
+}
+.pz-demo .hb-top{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.pz-demo .hb-top .av{width:30px;height:30px;border-radius:50%;background:#E2E8F0;display:grid;place-items:center;flex:none;color:#94A3B8}
+.pz-demo .hb-top .av svg{width:18px;height:18px}
+.pz-demo .hb-top .who b{display:block;font-size:13.5px;font-weight:600;line-height:1.2}
+.pz-demo .hb-top .who span{display:block;font-size:11px;color:var(--ink-3);margin-top:1px}
+.pz-demo .hb-top .badge{
+  margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;
+  color:var(--green-ink);background:var(--green-soft);border:1px solid #BBF7D0;border-radius:999px;padding:5px 10px;
+}
+.pz-demo .hb-top .badge i{width:6px;height:6px;border-radius:50%;background:var(--green);display:block}
+.pz-demo .hb-body{display:flex;min-height:462px}
+.pz-demo .hb-chat{flex:1;min-width:0;display:flex;flex-direction:column;background:#fff}
+.pz-demo .hb-msgs{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:9px;overflow:hidden;justify-content:flex-end}
+.pz-demo .row{display:flex;flex-direction:column;max-width:88%;opacity:0;transform:translateY(8px)}
+.pz-demo .row.in{align-self:flex-start;align-items:flex-start}
+.pz-demo .row.out{align-self:flex-end;align-items:flex-end}
+.pz-demo .row.show{animation:hbPop .3s cubic-bezier(.32,.72,0,1) forwards}
+@keyframes hbPop{to{opacity:1;transform:none}}
+.pz-demo .bub{border-radius:12px;padding:8px 11px;font-size:12.5px;line-height:1.4}
+.pz-demo .row.in .bub{background:var(--line-2);color:var(--ink);border-bottom-left-radius:3px}
+.pz-demo .row.out .bub{background:#EEF2FF;color:var(--ink);border-bottom-right-radius:3px}
+.pz-demo .meta{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:10.5px;color:var(--ink-3)}
+.pz-demo .tag{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2.5px 7px;font-size:10px;font-weight:600;letter-spacing:.1px}
+.pz-demo .tag.ofi{background:#F1F5F9;color:#475569;border:1px solid #E2E8F0}
+.pz-demo .tag.hib{background:var(--green-soft);color:var(--green-ink);border:1px solid #BBF7D0}
+.pz-demo .tick{color:#38BDF8;font-size:10px;letter-spacing:-1px}
+.pz-demo .hb-compose{border-top:1px solid var(--line);padding:9px 14px;display:flex;align-items:center;gap:9px;background:var(--surface-2)}
+.pz-demo .hb-compose .fake{flex:1;height:32px;border-radius:16px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;padding:0 12px;font-size:12px;color:var(--ink-3)}
+.pz-demo .hb-compose .send{width:32px;height:32px;border-radius:50%;background:var(--indigo);display:grid;place-items:center;color:#fff;flex:none}
+.pz-demo .hb-compose .send svg{width:15px;height:15px}
+.pz-demo .hb-rail{width:200px;flex:none;border-left:1px solid var(--line);background:var(--surface-2);padding:14px}
+.pz-demo .rail-t{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px}
+.pz-demo .dial{position:relative;width:104px;height:104px;margin:0 auto 6px}
+.pz-demo .dial svg{transform:rotate(-90deg);display:block}
+.pz-demo .dial .val{position:absolute;inset:0;display:grid;place-items:center;font-size:23px;font-weight:700;color:var(--green)}
+.pz-demo .dial-cap{text-align:center;font-size:10px;color:var(--ink-3);margin:-6px 0 12px}
+.pz-demo .kpi{border-top:1px solid var(--line);padding-top:9px;margin-top:9px}
+.pz-demo .kpi:first-of-type{border-top:0;margin-top:0}
+.pz-demo .kpi span{display:block;font-size:10.5px;color:var(--ink-3);line-height:1.3}
+.pz-demo .kpi b{display:block;font-size:14px;font-weight:600;margin-top:2px}
+.pz-demo .kpi.was b{color:var(--ink-3);text-decoration:line-through;font-weight:500}
+.pz-demo .kpi.eco{background:var(--green-soft);border:1px solid #BBF7D0;border-radius:9px;padding:9px 10px;margin:0 0 4px;border-top:0}
+.pz-demo .kpi.eco span{color:var(--green-ink);opacity:.85}
+.pz-demo .kpi.eco b{color:var(--green-ink);font-size:19px;font-weight:700}
+.pz-demo .hb-rail-m{display:none}
+.pz-demo .hb-scrim{position:absolute;inset:0;background:rgba(15,23,42,.45);opacity:0;transition:opacity .3s;z-index:20;pointer-events:none}
+.pz-demo .hb-scrim.on{opacity:1}
+.pz-demo .hb-modal{
+  position:absolute;z-index:21;left:50%;top:50%;width:330px;max-width:calc(100% - 28px);
+  transform:translate(-50%,-46%) scale(.96);opacity:0;transition:all .32s cubic-bezier(.32,.72,0,1);
+  background:#fff;border-radius:13px;overflow:hidden;box-shadow:0 24px 60px rgba(2,6,23,.4);
+}
+.pz-demo .hb-modal.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.pz-demo .mh-head{background:linear-gradient(135deg,#1FA463,#16A34A);color:#fff;padding:13px 15px;display:flex;align-items:center;gap:11px}
+.pz-demo .mh-head .ic{width:33px;height:33px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;flex:none}
+.pz-demo .mh-head .ic svg{width:17px;height:17px}
+.pz-demo .mh-head b{display:block;font-size:14.5px;font-weight:700;line-height:1.2}
+.pz-demo .mh-head span{display:block;font-size:10.5px;opacity:.9;margin-top:2px}
+.pz-demo .mh-head .x{margin-left:auto;opacity:.9;font-size:17px;line-height:1}
+.pz-demo .mh-body{padding:12px 15px}
+.pz-demo .mh-lead{font-size:11px;line-height:1.45;color:var(--ink-2);margin-bottom:11px}
+.pz-demo .mh-field{border:1px solid var(--line);border-radius:8px;padding:7px 11px;position:relative;margin-bottom:13px;background:#fff}
+.pz-demo .mh-field i{position:absolute;top:-6px;left:9px;background:#fff;padding:0 4px;font-size:9.5px;color:var(--ink-3);font-style:normal}
+.pz-demo .mh-field .v{font-size:12.5px;display:flex;align-items:center;justify-content:space-between;color:var(--ink)}
+.pz-demo .mh-label{font-size:11.5px;font-weight:600;margin-bottom:5px}
+.pz-demo .mh-pct{text-align:center;font-size:26px;font-weight:700;color:var(--green);line-height:1.1}
+.pz-demo .mh-slider{position:relative;height:16px;margin:5px 0 3px}
+.pz-demo .mh-slider .track{position:absolute;top:7px;left:0;right:0;height:2.5px;border-radius:2px;background:var(--line)}
+.pz-demo .mh-slider .fill{position:absolute;top:7px;left:0;height:2.5px;border-radius:2px;background:var(--green);width:0}
+.pz-demo .mh-slider .knob{position:absolute;top:2px;width:12px;height:12px;border-radius:50%;background:var(--green);left:0;margin-left:-6px;box-shadow:0 1px 3px rgba(2,6,23,.3)}
+.pz-demo .mh-scale{display:flex;justify-content:space-between;font-size:9.5px;color:var(--ink-3)}
+.pz-demo .mh-help{font-size:10px;color:var(--ink-3);margin-top:7px}
+.pz-demo .mh-box{background:var(--violet-bg);border:1px solid var(--violet-line);border-radius:9px;padding:10px;margin-top:11px}
+.pz-demo .mh-box .t{font-size:11.5px;font-weight:600;color:var(--violet);margin-bottom:5px}
+.pz-demo .mh-box p{font-size:10.5px;line-height:1.5;color:#6D28D9}
+.pz-demo .mh-box .eco{font-size:11px;font-weight:600;color:var(--green-ink);margin-top:7px}
+.pz-demo .mh-box .base{font-size:9.5px;color:#8B7FB8;margin-top:7px;line-height:1.45}
+.pz-demo .mh-foot{display:flex;align-items:center;justify-content:flex-end;gap:9px;padding:10px 15px;border-top:1px solid var(--line)}
+.pz-demo .mh-foot .cancel{font-size:12px;color:var(--ink-2)}
+.pz-demo .mh-foot .save{background:var(--green);color:#fff;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:transform .12s,filter .12s}
+.pz-demo .mh-foot .save svg{width:13px;height:13px}
+.pz-demo .mh-foot .save.press{transform:scale(.96);filter:brightness(.92)}
+.pz-demo .hb-phone{
+  position:relative;z-index:15;flex:none;
+  width:250px;background:#0B0F14;border-radius:32px;padding:7px;
+  box-shadow:0 0 0 1.5px #2b2f35,0 24px 50px -12px rgba(2,6,23,.75);
+}
+.pz-demo .ph-screen{border-radius:26px;overflow:hidden;background:var(--wa-bg);height:470px;display:flex;flex-direction:column;position:relative}
+.pz-demo .ph-notch{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:74px;height:20px;border-radius:12px;background:#0B0F14;z-index:5}
+.pz-demo .ph-top{background:rgba(246,246,246,.96);border-bottom:.5px solid rgba(0,0,0,.14);padding:30px 11px 8px;display:flex;align-items:center;gap:7px}
+.pz-demo .ph-top .av{width:24px;height:24px;border-radius:50%;background:#D9E0E3;display:grid;place-items:center;color:#8696A0;flex:none}
+.pz-demo .ph-top .av svg{width:15px;height:15px}
+.pz-demo .ph-top b{font-size:12px;font-weight:600;color:#000;display:block;line-height:1.2}
+.pz-demo .ph-top span{font-size:9px;color:var(--wa-ink-2);display:block}
+.pz-demo .ph-msgs{flex:1;padding:9px 8px;display:flex;flex-direction:column;gap:5px;justify-content:flex-end;overflow:hidden}
+.pz-demo .pb{max-width:84%;border-radius:8px;padding:5px 8px;font-size:11.5px;line-height:1.35;color:var(--wa-ink);
+  box-shadow:0 1px .5px rgba(11,20,26,.13);opacity:0;transform:translateY(6px)}
+.pz-demo .pb.show{animation:hbPop .3s cubic-bezier(.32,.72,0,1) forwards}
+.pz-demo .pb.in{align-self:flex-start;background:var(--wa-in);border-top-left-radius:2px}
+.pz-demo .pb.out{align-self:flex-end;background:var(--wa-out);border-top-right-radius:2px}
+.pz-demo .pb .t{font-size:8.5px;color:var(--wa-ink-2);float:right;margin:3px 0 -2px 7px;position:relative;top:2px}
+.pz-demo .ph-bar{background:rgba(246,246,246,.96);border-top:.5px solid rgba(0,0,0,.12);padding:7px 10px 12px;display:flex;align-items:center;gap:7px}
+.pz-demo .ph-bar .f{flex:1;height:25px;border-radius:13px;background:#fff;border:.5px solid rgba(0,0,0,.12)}
+.pz-demo .ph-bar .c{width:19px;height:19px;border-radius:50%;background:#D9E0E3}
+.pz-demo .hb-note{margin-top:34px;text-align:center}
+.pz-demo .hb-note .lead{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#D7E3DF;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:8px 16px}
+.pz-demo .hb-note .lead b{color:#4ADE80}
+.pz-demo .hb-cap{margin-top:14px;text-align:center;color:#8FA3A0;font-size:12.5px;line-height:1.6}
+@media (max-width:820px){.pz-demo .hb-body{display:block;min-height:0}
+.pz-demo .hb-rail{display:none}
+.pz-demo .hb-msgs{min-height:340px}
+.pz-demo .hb-modal{transform:translate(-50%,-46%) scale(.86)}
+.pz-demo .hb-modal.on{transform:translate(-50%,-50%) scale(.86)}
+.pz-demo .hb-phone{width:250px;margin:22px auto 0}
+.pz-demo .ph-screen{height:380px}
+.pz-demo .hb-stage{display:block;gap:0}
+.pz-demo .hb-panel{max-width:100%}
+.pz-demo .hb-rail-m{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.pz-demo .hb-rail-m .c{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:11px;padding:11px 12px}
+.pz-demo .hb-rail-m .c span{display:block;font-size:10.5px;color:#93A5A1}
+.pz-demo .hb-rail-m .c b{display:block;font-size:16px;color:#E8EFED;margin-top:3px;font-weight:600}
+.pz-demo .hb-rail-m .c.was b{text-decoration:line-through;color:#8FA3A0;font-weight:500}
+.pz-demo .hb-rail-m .c.eco{grid-column:1/-1;background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.3)}
+.pz-demo .hb-rail-m .c.eco b{color:#4ADE80;font-size:21px;font-weight:700}}
+@media (prefers-reduced-motion:reduce){.pz-demo .hb-modal, .pz-demo .hb-scrim, .pz-demo .row, .pz-demo .pb, .pz-demo .mh-slider .fill, .pz-demo .mh-slider .knob{transition:none!important;animation:none!important}
+.pz-demo .row, .pz-demo .pb{opacity:1!important;transform:none!important}}
+.pz-demo .hb{margin:0 auto}
+.pz-demo .hb-panel{box-shadow:0 24px 60px -24px rgba(30,27,75,.35)}
+.pz-demo .hb-phone{box-shadow:0 0 0 1.5px #2b2f35,0 20px 45px -14px rgba(30,27,75,.45)}
+.pz-demo .hb-note{margin-top:30px}
+.pz-demo .hb-note .lead{color:#0F172A;background:#F1F5F9;border-color:#E2E8F0;font-size:14px;padding:9px 18px}
+.pz-demo .hb-note .lead b{color:#0E7A45}
+.pz-demo .hb-cap{color:#64748B;font-size:13px}
+.pz-demo .hb-rail-m .c{background:#F8FAFC;border-color:#E2E8F0}
+.pz-demo .hb-rail-m .c span{color:#64748B}
+.pz-demo .hb-rail-m .c b{color:#0F172A}
+.pz-demo .hb-rail-m .c.was b{color:#94A3B8}
+.pz-demo .hb-rail-m .c.eco{background:#DCFCE7;border-color:#BBF7D0}
+.pz-demo .hb-rail-m .c.eco b{color:#15803D}
+
+
+        /* ===== Delta do Concatenador (secao #concatenador) ===== */
+#concatenador .tray:not(.on){display:none}
+#concatenador .hb-body{min-height:392px}
+#concatenador .tray{
+  margin:0 14px 10px;border:1px dashed #C7D2FE;background:#EEF2FF;border-radius:11px;
+  padding:9px 11px;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;
+}
+#concatenador .tray.on{opacity:1;transform:none}
+#concatenador .tray-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+#concatenador .tray-head .n{font-size:11px;font-weight:700;color:#4338CA;letter-spacing:.02em}
+#concatenador .tray-head .timer{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:#6366F1}
+#concatenador .tray-head .timer b{font-variant-numeric:tabular-nums;font-weight:700}
+#concatenador .ring{width:15px;height:15px;flex:none}
+#concatenador .ring circle{fill:none;stroke-width:2.5}
+#concatenador .ring .bg{stroke:#C7D2FE}
+#concatenador .ring .fg{stroke:#4F46E5;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+#concatenador .tray-items{display:flex;flex-direction:column;gap:4px}
+#concatenador .ti{
+  display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #E0E7FF;border-radius:7px;
+  padding:5px 8px;font-size:11.5px;color:var(--ink);opacity:0;transform:translateY(6px);
+}
+#concatenador .ti.show{animation:hbPop .26s cubic-bezier(.32,.72,0,1) forwards}
+#concatenador .ti .ghost{margin-left:auto;font-size:9.5px;color:#A5B4FC;text-decoration:line-through;flex:none}
+#concatenador .tray.merge .ti{animation:mergeIn .5s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes mergeIn{to{opacity:0;transform:translateY(26px) scale(.86)}}
+#concatenador .tray.merge{animation:trayOut .45s .28s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes trayOut{to{opacity:0;transform:translateY(10px) scale(.97)}}
+#concatenador .row.merged .bub{background:#EEF2FF;border:1px solid #C7D2FE}
+#concatenador .row.merged.pulse .bub{animation:landed .6s ease-out}
+@keyframes landed{0%{box-shadow:0 0 0 0 rgba(79,70,229,.35)}100%{box-shadow:0 0 0 14px rgba(79,70,229,0)}}
+#concatenador .bub .ln, #concatenador .pb .ln{display:block}
+#concatenador .bub .ln+.ln, #concatenador .pb .ln+.ln{margin-top:3px}
+#concatenador .ph-chip{
+  position:absolute;left:50%;transform:translateX(-50%) translateY(-6px);top:58px;z-index:6;
+  background:rgba(15,23,42,.9);color:#fff;font-size:10px;font-weight:600;border-radius:999px;
+  padding:5px 11px;opacity:0;transition:opacity .3s,transform .3s;white-space:nowrap;
+}
+#concatenador .ph-chip.on{opacity:1;transform:translateX(-50%) translateY(0)}
+#concatenador .cmp{display:flex;align-items:baseline;gap:7px}
+#concatenador .cmp .old{font-size:14px;color:var(--ink-3);text-decoration:line-through}
+#concatenador .cmp .arrow{color:var(--ink-3);font-size:12px}
+#concatenador .cmp .new{font-size:17px;font-weight:700;color:var(--green)}
+#concatenador .rail-note{font-size:10px;color:var(--ink-3);line-height:1.45;margin-top:10px;border-top:1px solid var(--line);padding-top:9px}
+#concatenador .hb-note .lead{background:#fff;border-color:#E2E8F0}
+#concatenador .hb-rail-m .c{background:#fff}
+
     </style>
 
     <!-- Dados estruturados (SEO / rich results) -->
@@ -265,7 +707,7 @@
         {
           "@type": "Product",
           "name": "Prisme.chatbot",
-          "description": "Atendimento omnichannel: WhatsApp, Instagram, Mercado Livre e TikTok com CRM Kanban e automação por IA.",
+          "description": "Atendimento omnichannel: WhatsApp, Instagram, Messenger e TikTok com CRM Kanban e automação por IA.",
           "brand": { "@id": "https://chatbot.prismeapp.com.br/#organization" },
           "offers": [
             { "@type": "Offer", "name": "Essencial", "price": "599.90", "priceCurrency": "BRL", "url": "https://chatbot.prismeapp.com.br/#planos", "availability": "https://schema.org/InStock" },
@@ -325,9 +767,11 @@
                 <a href="#planos" class="md:hidden bg-brand-base text-white px-5 py-2 rounded-full font-medium text-sm shadow-lg">
                     Ver Planos
                 </a>
-                <div class="hidden md:flex space-x-8 items-center">
-                    <a href="#diferenciais" class="text-slate-600 hover:text-brand-primary font-medium transition-colors">Diferenciais</a>
+                <div class="hidden md:flex space-x-5 lg:space-x-8 items-center">
+                    <a href="#diferenciais" class="hidden lg:inline text-slate-600 hover:text-brand-primary font-medium transition-colors">Diferenciais</a>
                     <a href="#modulos" class="text-slate-600 hover:text-brand-primary font-medium transition-colors">Funcionalidades</a>
+                    <a href="#modo-hibrido" class="text-slate-600 hover:text-brand-primary font-medium transition-colors">Custos</a>
+                    <a href="#carrinho-wa" class="text-slate-600 hover:text-brand-primary font-medium transition-colors">Carrinho</a>
                     <a href="#ia-section" class="text-slate-600 hover:text-brand-primary font-medium transition-colors">Prisme IA</a>
                     <a href="#planos" class="bg-brand-base text-white px-6 py-2.5 rounded-full font-medium hover:bg-brand-primary transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                         Ver Planos
@@ -355,7 +799,7 @@
             </h1>
 
             <p class="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-slate-600 mb-8 sm:mb-12 reveal" style="animation-delay: 0.2s">
-                Nós configuramos tudo para você. Conecte WhatsApp, Instagram, Mercado Livre e TikTok em um só lugar. Treinamento ilimitado e suporte humanizado para sua equipe não parar nunca.
+                Nós configuramos tudo para você. Conecte WhatsApp, Instagram, Messenger e TikTok em um só lugar. Treinamento ilimitado e suporte humanizado para sua equipe não parar nunca.
             </p>
             
             <div class="flex flex-col sm:flex-row justify-center gap-4 reveal" style="animation-delay: 0.3s">
@@ -754,11 +1198,6 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center gap-2 group">
-                    <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-[#FFE600] shadow-lg rounded-2xl flex items-center justify-center text-[#2D3277] group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-handshake"></i>
-                    </div>
-                </div>
-                <div class="flex flex-col items-center gap-2 group">
                     <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-white shadow-lg rounded-2xl flex items-center justify-center text-black group-hover:scale-110 transition-transform">
                         <i class="fa-brands fa-tiktok"></i>
                     </div>
@@ -831,7 +1270,7 @@
                             </div>
                             <div>
                                 <h4 class="text-xl font-bold text-slate-900 group-hover:text-brand-primary transition-colors">Segurança da API Oficial</h4>
-                                <p class="text-slate-500 mt-2 text-sm leading-relaxed">Sem risco de banimento por uso de QR Code não oficial. Estabilidade garantida pela Meta com selo de verificação.</p>
+                                <p class="text-slate-500 mt-2 text-sm leading-relaxed">Conexão homologada pela Meta, com selo de verificação e estabilidade de quem opera dentro das regras. É a rota certa para o que não pode falhar: template, notificação e primeiro contato.</p>
                             </div>
                         </div>
                     </div>
@@ -991,6 +1430,314 @@
         </div>
     </section>
 
+    <!-- Modo Hibrido: roteamento de custo por mensagem -->
+    <section id="modo-hibrido" class="pz-demo py-24 bg-white border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-800 font-semibold text-sm mb-6">
+                    <i data-lucide="calendar-clock" class="w-4 h-4"></i>
+                    Vale a partir de 1º de outubro de 2026
+                </div>
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
+                    Cada mensagem passa a ter preço.<br>
+                    <span class="text-gradient">Você decide por onde ela sai.</span>
+                </h2>
+                <p class="text-lg text-slate-600 leading-relaxed">
+                    As mensagens de serviço enviadas pela API Oficial passam a ser cobradas, mesmo dentro da janela de 24 horas. No Modo Híbrido você define qual fatia do tráfego sai pela conexão do seu app e qual continua pela API Oficial, com o mesmo número e na mesma conversa.
+                </p>
+            </div>
+
+            <div class="reveal" aria-hidden="true">
+                <div class="hb-stage">
+
+                    <!-- PAINEL DA PRISME -->
+                    <div class="hb-panel">
+                      <div class="hb-top">
+                        <span class="av"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4 0-9 2-9 5v1h18v-1c0-3-5-5-9-5z"/></svg></span>
+                        <span class="who"><b>Marina Alves</b><span>Atendimento · Loja</span></span>
+                        <span class="badge"><i></i> Modo Híbrido</span>
+                      </div>
+
+                      <div class="hb-body">
+                        <div class="hb-chat">
+                          <div class="hb-msgs" id="hb-msgs"></div>
+                          <div class="hb-compose">
+                            <span class="fake">Mensagem</span>
+                            <span class="send"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></span>
+                          </div>
+                        </div>
+
+                        <div class="hb-rail">
+                          <div class="rail-t">Roteamento</div>
+                          <div class="dial">
+                            <svg width="104" height="104" viewBox="0 0 104 104">
+                              <circle cx="52" cy="52" r="44" fill="none" stroke="#E2E8F0" stroke-width="9"/>
+                              <circle id="hb-arc" cx="52" cy="52" r="44" fill="none" stroke="#00A76A" stroke-width="9"
+                                      stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="276.5"/>
+                            </svg>
+                            <span class="val" id="hb-dialVal">0%</span>
+                          </div>
+                          <div class="dial-cap">do tráfego pela conexão híbrida</div>
+                          <div class="kpi eco"><span>Economia no mês</span><b id="hb-kEco">R$ 0,00</b></div>
+                          <div class="kpi"><span>Mensagens no mês</span><b>12.000</b></div>
+                          <div class="kpi was"><span>Sem Modo Híbrido</span><b>R$ 420,00</b></div>
+                          <div class="kpi"><span>Custo atual</span><b id="hb-kCusto">R$ 420,00</b></div>
+                        </div>
+                      </div>
+
+                      <!-- MODAL -->
+                      <div class="hb-scrim" id="hb-scrim"></div>
+                      <div class="hb-modal" id="hb-modal">
+                        <div class="mh-head">
+                          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4h3v3M21 4l-7 7M6 20H3v-3M3 20l7-7"/><path d="M14 20h7v-7"/></svg></span>
+                          <span><b>Modo Híbrido</b><span>API Oficial + conexão do app</span></span>
+                          <span class="x">✕</span>
+                        </div>
+                        <div class="mh-body">
+                          <p class="mh-lead">Escolha a conexão que divide o tráfego com a API Oficial e o percentual que passa por ela.</p>
+                          <div class="mh-field"><i>Conexão híbrida</i><span class="v">Conexão do app <span style="color:#94A3B8">▾</span></span></div>
+                          <div class="mh-label">Percentual híbrido</div>
+                          <div class="mh-pct" id="hb-mPct">0%</div>
+                          <div class="mh-slider">
+                            <span class="track"></span><span class="fill" id="hb-mFill"></span><span class="knob" id="hb-mKnob"></span>
+                          </div>
+                          <div class="mh-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+                          <div class="mh-box">
+                            <div class="t">O cálculo é feito a cada 100 mensagens enviadas</div>
+                            <p id="hb-mExpl">0 de cada 100 mensagens passam pela conexão híbrida; o restante segue pela API Oficial.</p>
+                            <div class="eco" id="hb-mEco">Economia estimada: a cada 1.000 mensagens, cerca de R$ 0,00.</div>
+                            <div class="base">Base: API Oficial cobra R$ 0,035/msg (mensagens de serviço e utilidade, a partir de 01/10/2026). Valor estimado.</div>
+                          </div>
+                        </div>
+                        <div class="mh-foot">
+                          <span class="cancel">Cancelar</span>
+                          <span class="save" id="hb-mSave"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Salvar</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- CELULAR DO CLIENTE -->
+                    <div class="hb-phone">
+                      <div class="ph-screen">
+                        <div class="ph-notch"></div>
+                        <div class="ph-top">
+                          <span class="av"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4 0-9 2-9 5v1h18v-1c0-3-5-5-9-5z"/></svg></span>
+                          <span><b>Loja</b><span>online</span></span>
+                        </div>
+                        <div class="ph-msgs" id="hb-phMsgs"></div>
+                        <div class="ph-bar"><span class="f"></span><span class="c"></span></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="hb-rail-m">
+                    <div class="c"><span>Pela conexão híbrida</span><b id="hb-mkPct">0%</b></div>
+                    <div class="c was"><span>Sem Modo Híbrido</span><b>R$ 420,00</b></div>
+                    <div class="c"><span>Custo atual</span><b id="hb-mkCusto">R$ 420,00</b></div>
+                    <div class="c eco"><span>Economia no mês</span><b id="hb-mkEco">R$ 0,00</b></div>
+                  </div>
+                <div class="hb-note">
+                    <span class="lead">O cliente não percebe diferença. <b>Seu caixa percebe.</b></span>
+                    <p class="hb-cap">Mesma conversa, dois pontos de vista. O custo por mensagem existe de um lado só.</p>
+                </div>
+            </div>
+
+            <p class="sr-only">
+                A animação compara a mesma conversa em duas telas. No painel da Prisme, cada mensagem enviada mostra por qual rota saiu e quanto custou, e um resumo acompanha o custo do mês. No celular do cliente, as mesmas mensagens chegam normalmente, sem qualquer indicação de rota ou de custo.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-6 mt-16">
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="sliders-horizontal" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Configure uma vez</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Você define o percentual e o roteamento passa a valer para toda a equipe. Ninguém precisa lembrar de trocar de rota no meio do atendimento.
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="animation-delay:0.1s">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="calculator" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Conta previsível</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        A divisão é feita a cada 100 mensagens enviadas, não é sorteio. Você consegue estimar a fatura do mês antes dela chegar.
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="animation-delay:0.2s">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="message-circle" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Mesmo número, mesma conversa</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        As duas rotas atendem pelo mesmo número. O cliente continua na mesma janela do WhatsApp e não vê rota, não vê custo, não muda nada.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center reveal">
+                <button onclick="toggleScheduler()" class="px-8 py-4 bg-brand-base text-white rounded-xl font-bold text-lg hover:bg-brand-primary transition-all shadow-lg hover:shadow-xl inline-flex items-center justify-center gap-2">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    Quero calcular a minha economia
+                </button>
+                <p class="mt-6 text-sm text-slate-500">
+                    Tem uma segunda alavanca logo abaixo:
+                    <a href="#concatenador" class="text-brand-primary font-semibold hover:underline">agrupar as mensagens do atendente</a>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Concatenador: agrupa as mensagens do atendente em um envio so -->
+    <section id="concatenador" class="pz-demo py-24 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-semibold text-sm mb-6">
+                    <i data-lucide="layers" class="w-4 h-4"></i>
+                    A segunda alavanca de custo
+                </div>
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
+                    Seis mensagens.<br>
+                    <span class="text-gradient">Uma cobrança só.</span>
+                </h2>
+                <p class="text-lg text-slate-600 leading-relaxed">
+                    Atendente bom escreve em rajada, e cada linha dessas vira uma cobrança. O Concatenador segura as mensagens por alguns segundos, junta tudo e envia como uma só. Ninguém muda o jeito de trabalhar.
+                </p>
+            </div>
+
+            <div class="reveal" aria-hidden="true">
+                <div class="hb-stage">
+
+                    <div class="hb-panel">
+                      <div class="hb-top">
+                        <span class="av"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4 0-9 2-9 5v1h18v-1c0-3-5-5-9-5z"/></svg></span>
+                        <span class="who"><b>Marina Alves</b><span>Atendimento · Loja</span></span>
+                        <span class="badge"><i></i> Concatenador</span>
+                      </div>
+
+                      <div class="hb-body">
+                        <div class="hb-chat">
+                          <div class="hb-msgs" id="cc-msgs"></div>
+
+                          <div class="tray" id="cc-tray">
+                            <div class="tray-head">
+                              <span class="n" id="cc-trayN">1 mensagem agrupada</span>
+                              <span class="timer">
+                                <svg class="ring" viewBox="0 0 20 20"><circle class="bg" cx="10" cy="10" r="8"></circle><circle class="fg" id="cc-ring" cx="10" cy="10" r="8" stroke-dasharray="50.3" stroke-dashoffset="0"></circle></svg>
+                                enviando em <b id="cc-timer">3s</b>
+                              </span>
+                            </div>
+                            <div class="tray-items" id="cc-trayItems"></div>
+                          </div>
+
+                          <div class="hb-compose">
+                            <span class="fake" id="cc-composer">Mensagem</span>
+                            <span class="send"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></span>
+                          </div>
+                        </div>
+
+                        <div class="hb-rail">
+                          <div class="rail-t">Custo do atendimento</div>
+                          <div class="kpi"><span>Sem concatenador</span><b id="cc-kSem">R$ 0,035</b></div>
+                          <div class="kpi"><span>Com concatenador</span>
+                            <div class="cmp"><span class="old" id="cc-kOld">R$ 0,035</span><span class="arrow">→</span><span class="new">R$ 0,035</span></div>
+                          </div>
+                          <div class="kpi eco"><span>Economia por atendimento</span><b id="cc-kEco">R$ 0,00</b></div>
+                          <div class="rail-note">
+                            Em 1.000 atendimentos com esse padrão:<br>
+                            <b style="color:#0F172A">R$ 210,00</b> viram <b style="color:#15803D">R$ 35,00</b>.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="hb-phone">
+                      <div class="ph-screen">
+                        <div class="ph-notch"></div>
+                        <div class="ph-top">
+                          <span class="av"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4 0-9 2-9 5v1h18v-1c0-3-5-5-9-5z"/></svg></span>
+                          <span><b>Loja</b><span>online</span></span>
+                        </div>
+                        <div class="ph-msgs" id="cc-phMsgs"></div>
+                        <div class="ph-chip" id="cc-chip">1 notificação, não 6</div>
+                        <div class="ph-bar"><span class="f"></span><span class="c"></span></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="hb-rail-m">
+                    <div class="c was"><span>Sem concatenador</span><b>R$ 0,21</b></div>
+                    <div class="c"><span>Com concatenador</span><b>R$ 0,035</b></div>
+                    <div class="c eco"><span>Economia por atendimento</span><b id="cc-mkEco">R$ 0,175</b></div>
+                  </div>
+                <div class="hb-note">
+                    <span class="lead">Seis mensagens saem como uma. <b>Você paga por uma.</b></span>
+                    <p class="hb-cap">O atendente escreve do jeito que já escreve. O agrupamento acontece antes do envio.</p>
+                </div>
+            </div>
+
+            <p class="sr-only">
+                A animação mostra o atendente escrevendo seis mensagens seguidas. Em vez de sair uma a uma, elas ficam em uma bandeja com o custo de cada uma ao lado. Quando a janela de tempo fecha, as seis se juntam e saem como uma única mensagem, cobrada uma vez só, e o cliente recebe tudo em um balão e uma notificação.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-6 mt-16">
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="timer" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Janela automática</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        O agrupamento acontece sozinho, alguns segundos depois da última linha. O atendente não aperta nada diferente e não precisa mudar o ritmo dele.
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="animation-delay:0.1s">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="coins" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Seis cobranças viram uma</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        A conta é direta: o que sairia por R$ 0,21 sai por R$ 0,035. Em mil atendimentos com esse padrão, R$ 210,00 viram R$ 35,00.
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-brand-primary/30 transition-all hover:shadow-lg reveal group" style="animation-delay:0.2s">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="bell-off" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Uma notificação, não seis</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Do lado do cliente a conversa fica mais limpa. Ele lê a resposta inteira de uma vez, em vez de o celular tocar seis vezes seguidas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center reveal">
+                <p class="text-sm text-slate-500">
+                    A terceira alavanca é encurtar a conversa inteira:
+                    <a href="#carrinho-wa" class="text-brand-primary font-semibold hover:underline">o carrinho dentro do WhatsApp</a>.
+                </p>
+            </div>
+        </div>
+    </section>
+
     <!-- New AI Section: Copilot & Brain -->
     <section id="ia-section" class="py-24 bg-brand-base relative overflow-hidden">
         <!-- Background Accents -->
@@ -1055,87 +1802,187 @@
     </section>
 
     <!-- Interactive Calculators -->
-    <section id="calculadora" class="py-24 bg-white relative">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="text-center mb-12 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-4">Transparência de Custos Extras</h2>
-                <p class="text-lg text-slate-600">
-                    Custos de Inteligência Artificial e API Oficial da Meta são variáveis e pagos à parte (diretamente ou via recarga). Simule abaixo.
-                </p>
-            </div>
+    <!-- WhatsApp Flows: carrinho de compras dentro da conversa -->
+    <section id="carrinho-wa" class="py-24 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
 
-            <div class="bg-slate-50 rounded-3xl border border-slate-200 shadow-xl overflow-hidden reveal">
-                <!-- Tabs -->
-                <div class="flex border-b border-slate-200" role="tablist">
-                    <button onclick="switchTab('api')" id="tab-api" role="tab" aria-selected="true" aria-controls="content-api" class="flex-1 py-3 md:py-4 px-2 text-center font-bold text-sm md:text-base text-brand-primary bg-white border-b-2 border-brand-primary transition-all">
-                        <span class="sm:hidden">API Oficial</span><span class="hidden sm:inline">Simulador WhatsApp API Oficial</span>
-                    </button>
-                    <button onclick="switchTab('ai')" id="tab-ai" role="tab" aria-selected="false" aria-controls="content-ai" class="flex-1 py-3 md:py-4 px-2 text-center font-bold text-sm md:text-base text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-all">
-                        <span class="sm:hidden">Custos de IA</span><span class="hidden sm:inline">Simulador Custos de IA</span>
-                    </button>
-                </div>
+                <!-- Content Column -->
+                <div class="reveal">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 font-semibold text-sm mb-6">
+                        <i class="fa-brands fa-whatsapp text-base"></i>
+                        WhatsApp Flows
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
+                        Catálogo, carrinho e pagamento.<br>
+                        <span class="text-gradient">Tudo dentro do WhatsApp.</span>
+                    </h2>
+                    <p class="text-lg text-slate-600 mb-10 leading-relaxed">
+                        O cliente escolhe a loja, busca o produto, monta o carrinho, informa o endereço, seleciona a forma de pagamento e confirma o pedido sem sair da conversa. Sem link externo, sem site lento, sem fila de espera.
+                    </p>
 
-                <!-- Calculator Content: API -->
-                <div id="content-api" class="p-8 md:p-12">
-                    <div class="grid md:grid-cols-2 gap-12">
-                        <div class="space-y-8">
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-4">
-                                    Conversas de Marketing (Iniciadas pela empresa)
-                                    <span class="block text-xs text-slate-500 font-normal">Ex: Disparos, promoções. Custo est. R$ 0,35/conversa (24h)</span>
-                                </label>
-                                <input type="range" min="0" max="10000" step="100" value="1000" id="marketingRange" oninput="updateApiCost()" aria-label="Quantidade de conversas de marketing por mês" class="w-full">
-                                <div class="text-right font-bold text-brand-primary mt-2" id="marketingValue">1.000 conversas</div>
+                    <div class="space-y-8">
+                        <div class="flex gap-5 group">
+                            <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center shrink-0 border border-green-100 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="shopping-cart" class="w-7 h-7 text-[#25D366]"></i>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-4">
-                                    Conversas de Serviço/Utilidade
-                                    <span class="block text-xs text-slate-500 font-normal">Ex: Atualização de pedido, senhas. Custo est. R$ 0,18/conversa (24h)</span>
-                                </label>
-                                <input type="range" min="0" max="10000" step="100" value="500" id="utilityRange" oninput="updateApiCost()" aria-label="Quantidade de conversas de serviço ou utilidade por mês" class="w-full">
-                                <div class="text-right font-bold text-brand-primary mt-2" id="utilityValue">500 conversas</div>
-                            </div>
-                            <div class="bg-blue-50 p-4 rounded-lg text-xs text-blue-800">
-                                *As primeiras 1.000 conversas iniciadas pelo usuário (serviço) são gratuitas pela Meta mensalmente.
+                                <h4 class="text-xl font-bold text-slate-900 group-hover:text-brand-success transition-colors">Checkout nativo, zero atrito</h4>
+                                <p class="text-slate-500 mt-2 text-sm leading-relaxed">O cliente não instala nada, não abre outra aba e não preenche formulário em página externa. Menos etapa no caminho significa menos carrinho abandonado.</p>
                             </div>
                         </div>
-                        <div class="flex flex-col justify-center items-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                            <div class="text-sm text-slate-500 mb-2">Estimativa Mensal (Pago à Meta)</div>
-                            <div class="text-4xl font-extrabold text-slate-900 mb-2">R$ <span id="totalApiCost">440,00</span></div>
-                            <p class="text-xs text-center text-slate-500">Valores aproximados baseados na tabela em Dólar. Varia com câmbio.</p>
+
+                        <div class="flex gap-5 group">
+                            <div class="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center shrink-0 border border-indigo-100 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="database" class="w-7 h-7 text-brand-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-slate-900 group-hover:text-brand-primary transition-colors">Preço e estoque do seu sistema</h4>
+                                <p class="text-slate-500 mt-2 text-sm leading-relaxed">A busca consulta preço, disponibilidade e código de barras direto no seu ERP, então o cliente só enxerga o que você realmente tem para vender.</p>
+                            </div>
                         </div>
+
+                        <div class="flex gap-5 group">
+                            <div class="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center shrink-0 border border-purple-100 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="inbox" class="w-7 h-7 text-brand-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-slate-900 group-hover:text-brand-accent transition-colors">Pedido pronto no CRM</h4>
+                                <p class="text-slate-500 mt-2 text-sm leading-relaxed">Na confirmação, o pedido cai na fila do atendimento com itens, endereço e forma de pagamento já preenchidos, prontos para separação.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-10">
+                        <button onclick="toggleScheduler()" class="px-8 py-4 bg-brand-success text-emerald-950 rounded-xl font-bold text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-400 hover:scale-105 transition-all inline-flex items-center justify-center gap-2">
+                            <i data-lucide="calendar" class="w-5 h-5"></i>
+                            Quero esse fluxo no meu negócio
+                        </button>
+                        <p class="mt-6 text-sm text-slate-500">
+                            Também dá para escolher por onde cada mensagem sai:
+                            <a href="#modo-hibrido" class="text-brand-primary font-semibold hover:underline">veja o Modo Híbrido</a>.
+                        </p>
                     </div>
                 </div>
 
-                <!-- Calculator Content: IA -->
-                <div id="content-ai" class="p-8 md:p-12 hidden">
-                    <div class="grid md:grid-cols-2 gap-12">
-                        <div class="space-y-8">
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-4">
-                                    Média de Atendimentos com IA por dia
-                                    <span class="block text-xs text-slate-500 font-normal">Quantas pessoas o robô vai atender totalmente ou pré-qualificar?</span>
-                                </label>
-                                <input type="range" min="0" max="1000" step="10" value="50" id="aiRange" oninput="updateAiCost()" aria-label="Média de atendimentos com IA por dia" class="w-full">
-                                <div class="text-right font-bold text-brand-accent mt-2" id="aiValue">50 atendimentos/dia</div>
+                <!-- Animation Column -->
+                <div class="relative reveal flex flex-col items-center justify-center">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[600px] bg-gradient-to-tr from-brand-success/30 to-brand-primary/30 rounded-full blur-3xl opacity-60 pointer-events-none"></div>
+
+                    <div class="wa-stage relative" aria-hidden="true">
+                    <div class="wa-phone" id="wf-phone">
+                        <div class="wa-viewport">
+
+                          <div class="island"></div>
+                          <div class="ios-status">
+                            <span>13:01</span>
+                            <span class="right">
+                              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="6" width="3" height="6" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                              <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 11.2 6.2 8.8a3.3 3.3 0 0 1 4.6 0zM3.6 6.2 2 4.5a9.2 9.2 0 0 1 13 0l-1.6 1.7a6.9 6.9 0 0 0-9.8 0z"/></svg>
+                              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="20" height="11" rx="3.2" stroke="currentColor" opacity=".38"/><rect x="2" y="2" width="15" height="8" rx="2" fill="currentColor"/><path d="M22.5 4v4a2.2 2.2 0 0 0 0-4z" fill="currentColor" opacity=".38"/></svg>
+                            </span>
+                          </div>
+
+                          <div class="chat-head">
+                            <span class="back">‹</span>
+                            <span class="av">
+                              <svg viewBox="0 0 24 24" fill="#8696A0"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4 0-9 2-9 5v1h18v-1c0-3-5-5-9-5z"/></svg>
+                            </span>
+                            <span class="who">
+                              <b>Loja</b>
+                              <span>Conta comercial</span>
+                            </span>
+                            <span class="acts">
+                              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
+                            </span>
+                          </div>
+
+                          <div class="chat-body" id="wf-chat">
+                            <div class="sys-note">Sua empresa usa um serviço seguro da Meta para gerenciar esta conversa. Toque para saber mais.</div>
+                            <div class="day">Hoje</div>
+                            <div class="msg out" id="wf-msgOi">Oi<span class="time">13:01<b>✓✓</b></span></div>
+                            <div class="msg in" id="wf-msgWelcome">
+                              <span class="banner">
+                                <svg viewBox="0 0 300 150" style="display:block;width:100%">
+                                  <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#EAF6EF"/></linearGradient></defs>
+                                  <rect width="300" height="150" fill="url(#g1)"/>
+                                  <circle cx="262" cy="118" r="62" fill="#E7362F" opacity=".92"/>
+                                  <text x="16" y="34" font-family="var(--ios-font)" font-size="15" font-weight="700" fill="#0E7A45">LOJA</text>
+                                  <text x="16" y="62" font-family="var(--ios-font)" font-size="19" font-weight="800" fill="#111B21">VOCÊ FAZ TUDO</text>
+                                  <text x="16" y="84" font-family="var(--ios-font)" font-size="19" font-weight="800" fill="#0E7A45">PELO WHATSAPP.</text>
+                                  <text x="16" y="104" font-family="var(--ios-font)" font-size="9.5" fill="#54656F">Escolha os produtos, monte seu pedido</text>
+                                  <text x="16" y="116" font-family="var(--ios-font)" font-size="9.5" fill="#54656F">e finalize a compra sozinho.</text>
+                                  <g fill="#0E7A45"><circle cx="24" cy="133" r="7"/><circle cx="58" cy="133" r="7"/><circle cx="92" cy="133" r="7"/></g>
+                                  <g font-family="var(--ios-font)" font-size="7" fill="#54656F"><text x="16" y="147">ESCOLHA</text><text x="48" y="147">COMPRE</text><text x="82" y="147">RECEBA</text></g>
+                                  <rect x="206" y="24" width="76" height="120" rx="10" fill="#fff" stroke="#D9E0E3"/>
+                                  <rect x="211" y="34" width="66" height="10" rx="3" fill="#D9FDD3"/>
+                                  <rect x="211" y="50" width="52" height="8" rx="3" fill="#EFF3F5"/>
+                                  <rect x="211" y="64" width="60" height="8" rx="3" fill="#EFF3F5"/>
+                                  <rect x="211" y="78" width="44" height="8" rx="3" fill="#EFF3F5"/>
+                                  <rect x="211" y="120" width="66" height="16" rx="8" fill="#25D366"/>
+                                </svg>
+                              </span>
+                    Olá! Que bom ter você por aqui. ❤️
+
+                    🛒 <b>COMPRAR SOZINHO NESTE WHATSAPP</b>
+                    Escolha os produtos, informe o endereço, selecione a forma de pagamento e finalize seu pedido sem esperar atendente.
+
+                    Toque em Montar meu pedido para começar.
+
+                    🙋 💬 <b>PREFERE FALAR COM UM ATENDENTE?</b>
+                    Chame nosso televendas pelo link abaixo.<small class="hint">Para falar com um atendente, digite: Ajuda</small><span class="time">13:01</span>
+                              <span class="cta" id="wf-ctaFlow">Montar meu pedido</span>
                             </div>
-                            
-                            <div class="bg-purple-50 p-4 rounded-lg text-xs text-purple-800">
-                                *Cálculo estimado considerando uma média de 10 mensagens (troca de turnos) por atendimento utilizando modelos inteligentes (GPT-4o-mini ou similar).
+                          </div>
+
+                          <div class="chat-input">
+                            <span class="plus">+</span>
+                            <span class="field">Mensagem
+                              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-3.5 7a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM12 18a5 5 0 0 1-4.6-3h9.2A5 5 0 0 1 12 18z"/></svg>
+                            </span>
+                            <svg class="mic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V22h2v-3.1A7 7 0 0 0 19 12h-2z"/></svg>
+                          </div>
+
+                          <div class="scrim" id="wf-scrim"></div>
+                          <!-- BOTTOM SHEET -->
+                          <div class="flow-sheet" id="wf-sheet">
+                            <div class="grabber"></div>
+                            <div class="sheet-head">
+                              <span class="nav" id="wf-sheetNav">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+                              </span>
+                              <span class="title" id="wf-sheetTitle">Escolha a loja</span>
+                              <span class="kebab"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></span>
+                              <span class="spin"></span>
                             </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                            <div class="text-sm text-slate-500 mb-2">Estimativa Mensal de Tokens</div>
-                            <div class="text-4xl font-extrabold text-slate-900 mb-2">R$ <span id="totalAiCost">75,00</span></div>
-                            <p class="text-xs text-center text-slate-500">Pague apenas o que consumir.</p>
+                            <div class="progress"><i id="wf-bar"></i></div>
+                            <div class="sheet-scroll" id="wf-stack"></div>
+                            <div class="sheet-foot"><button class="f-btn" id="wf-foot" disabled>Continuar</button></div>
+                            <div class="sheet-caption"><span class="dot"></span> Gerenciada por Loja. <a href="#">Saiba mais</a></div>
+                          </div>
+
+                          <!-- TECLADO -->
+                          <div class="kb" id="wf-kb"></div>
+
+                          <div class="tapdot" id="wf-dot"></div>
+                          <div class="home-bar"></div>
                         </div>
                     </div>
+                    </div>
+
+                    <p class="mt-8 text-sm text-slate-500 text-center max-w-sm relative">
+                        Simulação de um fluxo real de farmácia montado no Flowbuilder da Prisme. As telas, os botões e a ordem são os mesmos que o seu cliente vê.
+                    </p>
+                    <p class="sr-only">
+                        A animação mostra, passo a passo, uma compra feita dentro do WhatsApp: escolha da loja, identificação por CPF, busca de produto, seleção de quantidade, carrinho, navegação por categorias, escolha de entrega, forma de pagamento e confirmação do pedido, tudo sem sair da conversa.
+                    </p>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Pricing Plans -->
     <section id="planos" class="py-24 bg-brand-base relative">
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div class="absolute top-1/4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
@@ -1148,10 +1995,10 @@
                 <p class="text-indigo-200 text-lg">Sem contratos de fidelidade. Cancele quando quiser.<br class="hidden md:inline"> Pagamento pré-pago mensal.</p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8 items-start">
+            <div class="grid md:grid-cols-3 gap-8 items-stretch">
                 
                 <!-- Plan 1 -->
-                <div class="glass-dark rounded-3xl p-8 hover:bg-slate-900/80 transition-all duration-300 border border-indigo-500/40 reveal">
+                <div class="glass-dark rounded-3xl p-8 hover:bg-slate-900/80 transition-all duration-300 border border-indigo-500/40 reveal flex flex-col">
                     <h3 class="text-xl font-bold text-white mb-2">Essencial</h3>
                     <p class="text-indigo-200 text-sm min-h-[2.5rem]">Para quem precisa centralizar o atendimento e organizar o time.</p>
                     <div class="mt-6 mb-2">
@@ -1162,9 +2009,11 @@
                         + R$ 1.500,00 de Implementação (Única)
                     </p>
 
-                    <ul class="space-y-4 mb-8 text-sm text-indigo-100">
+                    <ul class="space-y-4 mb-8 flex-1 text-sm text-indigo-100">
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> 1 Conexão (Oficial ou WAPI)</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Modo Híbrido</li>
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> CRM Kanban Completo</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Concatenador de Mensagens</li>
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Múltiplos Usuários</li>
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Onboarding Ilimitado</li>
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> App Android & iOS Web</li>
@@ -1175,7 +2024,7 @@
                 </div>
 
                 <!-- Plan 2 -->
-                <div class="bg-gradient-to-b from-indigo-900 to-brand-base rounded-3xl p-8 relative transform md:-translate-y-4 shadow-2xl border border-indigo-500/50 reveal" style="animation-delay:0.1s">
+                <div class="bg-gradient-to-b from-indigo-900 to-brand-base rounded-3xl p-8 relative transform md:-translate-y-4 shadow-2xl border border-indigo-500/50 reveal flex flex-col" style="animation-delay:0.1s">
                     <div class="absolute top-0 right-0 bg-brand-success text-emerald-950 text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-xl">MAIS POPULAR</div>
                     <h3 class="text-xl font-bold text-white mb-2">Integrador</h3>
                     <p class="text-indigo-200 text-sm min-h-[2.5rem]">Para quem precisa conectar com outros sistemas.</p>
@@ -1187,8 +2036,10 @@
                         + Implementação a combinar
                     </p>
 
-                    <ul class="space-y-4 mb-8 text-sm text-white">
+                    <ul class="space-y-4 mb-8 flex-1 text-sm text-white">
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> <strong>Tudo do Essencial</strong></li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> WhatsApp Flows</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Webchat</li>
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Webhooks (n8n, Typebot)</li>
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> Integração Externa</li>
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> API Pública</li>
@@ -1200,7 +2051,7 @@
                 </div>
 
                 <!-- Plan 3 -->
-                <div class="glass-dark rounded-3xl p-8 hover:bg-slate-900/80 transition-all duration-300 border border-purple-500/40 reveal" style="animation-delay:0.2s">
+                <div class="glass-dark rounded-3xl p-8 hover:bg-slate-900/80 transition-all duration-300 border border-purple-500/40 reveal flex flex-col" style="animation-delay:0.2s">
                     <h3 class="text-xl font-bold text-white mb-2">IA Power</h3>
                     <p class="text-indigo-200 text-sm min-h-[2.5rem]">Automação máxima com Inteligência Artificial.</p>
                     <div class="mt-6 mb-2">
@@ -1211,7 +2062,7 @@
                         + Implementação a combinar
                     </p>
 
-                    <ul class="space-y-4 mb-8 text-sm text-indigo-100">
+                    <ul class="space-y-4 mb-8 flex-1 text-sm text-indigo-100">
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-success shrink-0 mt-0.5"></i> <strong>Tudo do Integrador</strong></li>
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i> Módulo de IA Nativo</li>
                         <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i> Treinamento da IA</li>
@@ -1228,7 +2079,7 @@
             <div class="mt-12 text-center reveal">
                 <div class="inline-block bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10 text-indigo-200">
                     <h4 class="font-bold text-white mb-2">Precisa de mais conexões?</h4>
-                    <p class="text-sm">Adicione Instagram, Webchat, Mercado Livre ou números extras de WhatsApp por apenas <span class="text-brand-success font-bold">R$ 147,90/mês</span> cada.</p>
+                    <p class="text-sm">Adicione Instagram, Webchat ou números extras de WhatsApp por apenas <span class="text-brand-success font-bold">R$ 147,90/mês</span> cada.</p>
                 </div>
             </div>
         </div>
@@ -1241,21 +2092,21 @@
             <!-- Removed 'grayscale' class to keep colors always visible -->
             <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
                 <!-- Image 1 -->
-                <img src="./9f4e9f_9dedc72c898b4b7daa61c3d13f3779c0~mv2.avif"
-                     width="416" height="256" loading="lazy" decoding="async"
-                     alt="Meta Business Partner"
-                     class="h-20 w-auto object-contain hover:scale-105 transition-transform duration-300">
+                <img src="./selo-provedor-meta.avif"
+                     width="416" height="110" loading="lazy" decoding="async"
+                     alt="Meta | Provedor de Tecnologia Habilitado"
+                     class="h-14 md:h-16 w-auto object-contain hover:scale-105 transition-transform duration-300">
 
                 <!-- Image 2 -->
                 <img src="./images_edited.avif"
                      width="279" height="111" loading="lazy" decoding="async"
-                     alt="Meta Certified"
+                     alt="Meta Business Partner"
                      class="h-20 w-auto object-contain hover:scale-105 transition-transform duration-300">
 
                 <!-- Image 3 -->
                 <img src="./selo-1.avif"
                      width="438" height="192" loading="lazy" decoding="async"
-                     alt="Selo de Qualidade"
+                     alt="Oficial WhatsApp Business API"
                      class="h-20 w-auto object-contain hover:scale-105 transition-transform duration-300">
             </div>
         </div>
@@ -1777,84 +2628,597 @@
             }
         });
 
-        // Calculator Logic
-        function switchTab(tab) {
-            const apiTab = document.getElementById('tab-api');
-            const aiTab = document.getElementById('tab-ai');
-            const apiContent = document.getElementById('content-api');
-            const aiContent = document.getElementById('content-ai');
 
-            const ACTIVE = ['text-brand-primary', 'bg-white', 'border-b-2', 'border-brand-primary'];
-            const INACTIVE = ['text-slate-500', 'hover:text-slate-700', 'hover:bg-slate-100'];
-            const activate = (btn) => { btn.classList.add(...ACTIVE); btn.classList.remove(...INACTIVE); btn.setAttribute('aria-selected', 'true'); };
-            const deactivate = (btn) => { btn.classList.remove(...ACTIVE); btn.classList.add(...INACTIVE); btn.setAttribute('aria-selected', 'false'); };
+        // ===== Animacao do carrinho dentro do WhatsApp (secao #carrinho-wa) =====
+(function(){
 
-            if (tab === 'api') {
-                activate(apiTab);
-                deactivate(aiTab);
-                apiContent.classList.remove('hidden');
-                aiContent.classList.add('hidden');
-            } else {
-                activate(aiTab);
-                deactivate(apiTab);
-                aiContent.classList.remove('hidden');
-                apiContent.classList.add('hidden');
-            }
+/* ============================================================
+   ROTEIRO — 13 telas do Flow
+   ============================================================ */
+const SCREENS = {
+  loja:{title:"Escolha a loja",p:8,footer:"Continuar",need:1,c:[
+    {t:"h1",v:"🏪 Onde você quer comprar?"},
+    {t:"body",v:"O estoque e o preço mudam de uma loja para a outra."},
+    {t:"label",v:"Loja"},
+    {t:"radio",o:[
+      {l:"Loja Centro",s:"R. das Flores, 355 - Centro"},
+      {l:"Loja Jardim",s:"Av. Brasil, 1029 - Jardim América"}]}
+  ]},
+  cpf:{title:"Seu CPF",p:16,footer:"Continuar",need:1,c:[
+    {t:"h1",v:"Vamos começar"},
+    {t:"body",v:"Informe seu CPF para identificarmos seu cadastro e seus endereços de entrega."},
+    {t:"input",cap:"CPF",ph:"CPF",helper:"Só os números, sem ponto nem traço"}
+  ]},
+  buscar:{title:"Buscar produto",p:26,footer:"Buscar",need:0,c:[
+    {t:"h1",v:"💊 O que você precisa?"},
+    {t:"body",v:"✅ Tudo certo! Agora é só buscar o que você precisa."},
+    {t:"input",cap:"Buscar (opcional)",ph:"Buscar (opcional)",helper:"Nome do produto ou código de barras"},
+    {t:"link",v:"Ver por categoria"},
+    {t:"h2",v:"🔥 Ofertas de hoje para você"},
+    {t:"caption",v:"Toque para ver (opcional)"},
+    {t:"radio",thumbs:1,o:[
+      {l:"PARACETAMOL 750MG 10 CPR, CARTELA",s:"R$ 4,00 (antes R$ 7,70 · -48%) · GENÉRICO",e:"💊"},
+      {l:"VITAMINA C 1G 10 CPR EFERVESCENTE",s:"R$ 15,90 (antes R$ 30,56 · -48%) · EXEMPLAR",e:"🍊"},
+      {l:"DIPIRONA 500MG 10 CPR, CARTELA",s:"R$ 4,00 (antes R$ 6,84 · -42%) · GENÉRICO",e:"💊"},
+      {l:"FRALDA JUMBO RN 18UN",s:"R$ 36,90 · BABYCARE",e:"🍼"}]}
+  ]},
+  resultados:{title:"Resultados",p:34,footer:"Ver produto",need:1,c:[
+    {t:"radio",o:[
+      {l:"DIPIRONA 100ML 50MG/ML, XAROPE",s:"R$ 14,90 (antes R$ 21,18 · -30%) · GENÉRICO"},
+      {l:"DIPIRONA 500MG 10 CPR, CARTELA",s:"R$ 4,00 · últimas unidades!"},
+      {l:"DIPIRONA 1G 10 CPR, CAIXA",s:"R$ 18,90 (antes R$ 23,01 · -18%) · EXEMPLAR"},
+      {l:"DIPIRONA 20ML 500MG, GOTAS",s:"R$ 4,00 · últimas unidades!"}]}
+  ]},
+  produto:{title:"Produto",p:42,footer:"Adicionar ao carrinho",need:1,c:[
+    {t:"h1",v:"DIPIRONA 1G 10 CPR, CAIXA"},
+    {t:"kv",v:"Preço: <b>R$ 18,90</b> (antes R$ 23,01)\nProduto em oferta\nDisponibilidade: em estoque\nApresentação: CAIXA\nLaboratório: EXEMPLAR\nCódigo de barras: 7891058002602"},
+    {t:"drop",cap:"Quantidade",ph:"Quantidade",val:"1 unidade"}
+  ]},
+  carrinho1:{title:"Seu carrinho",p:50,footer:"Finalizar pedido",need:0,c:[
+    {t:"h1",v:"Seu carrinho"},
+    {t:"total",v:"1. 1x DIPIRONA 1G 10 CPR, CAIXA - R$ 18,90\n\nTotal: <b>R$ 18,90</b>\nUnidade: Loja Centro"},
+    {t:"link",v:"Adicionar mais itens",id:"more"},
+    {t:"link",v:"Esvaziar carrinho"}
+  ]},
+  categorias:{title:"Categorias",p:58,footer:null,c:[
+    {t:"h2",v:"Toque em uma categoria"},
+    {t:"caption",v:"Toque para ver os produtos"},
+    {t:"nav",o:[
+      {l:"Medicamentos",s:"2806 produtos"},
+      {l:"Vitaminas e suplementos",s:"725 produtos"},
+      {l:"Higiene bucal",s:"260 produtos"},
+      {l:"Fraldas, absorventes e lenços",s:"319 produtos"},
+      {l:"Bebê e mamãe",s:"377 produtos"}]}
+  ]},
+  produtos:{title:"Produtos",p:66,footer:null,c:[
+    {t:"h2",v:"Fraldas, absorventes e lenços"},
+    {t:"caption",v:"Página 1 · toque em Ver mais"},
+    {t:"nav",o:[
+      {l:"FRALDA JUMBO RN 18UN",s:"R$ 36,90 · em estoque",tag:"Oferta"},
+      {l:"FRALDA JUMBO M 30UN",s:"R$ 49,90 · últimas 2 un."},
+      {l:"LENÇO UMEDECIDO 450UN",s:"R$ 24,90 · em estoque"},
+      {l:"ABSORVENTE NOTURNO 8UN",s:"R$ 9,90 · em estoque"}]}
+  ]},
+  produto2:{title:"Produto",p:74,footer:"Adicionar ao carrinho",need:1,c:[
+    {t:"h1",v:"FRALDA JUMBO RN 18UN"},
+    {t:"kv",v:"Preço: <b>R$ 36,90</b>\nDisponibilidade: em estoque\nCategoria: FRALDAS INFANTIS\nCódigo de barras: 7896007552856"},
+    {t:"drop",cap:"Quantidade",ph:"Quantidade",val:"2 unidades"}
+  ]},
+  carrinho2:{title:"Seu carrinho",p:80,footer:"Finalizar pedido",need:0,c:[
+    {t:"h1",v:"Seu carrinho"},
+    {t:"total",v:"1. 1x DIPIRONA 1G 10 CPR, CAIXA - R$ 18,90\n2. 2x FRALDA JUMBO RN 18UN - R$ 73,80\n\nTotal: <b>R$ 92,70</b>\nUnidade: Loja Centro"},
+    {t:"link",v:"Adicionar mais itens"},
+    {t:"link",v:"Esvaziar carrinho"}
+  ]},
+  entrega:{title:"Como receber",p:86,footer:"Continuar",need:1,c:[
+    {t:"h1",v:"Como você quer receber?"},
+    {t:"label",v:"Escolha"},
+    {t:"radio",o:[
+      {l:"Retirar na loja",s:"Sem taxa de entrega"},
+      {l:"Receber em casa",s:"Informe o endereço"},
+      {l:"Rua das Acácias, 100",s:"Endereço salvo no seu cadastro"}]}
+  ]},
+  pagamento:{title:"Pagamento",p:93,footer:"Revisar pedido",need:1,c:[
+    {t:"h1",v:"Como você prefere pagar?"},
+    {t:"label",v:"Forma de pagamento"},
+    {t:"radio",o:[
+      {l:"Pix",s:"Enviamos o código depois da confirmação"},
+      {l:"Link de pagamento",s:"Cartão pelo link, antes da entrega"},
+      {l:"Cartão",s:"Na entrega ou na retirada"},
+      {l:"Dinheiro",s:"Na entrega ou na retirada"}]},
+    {t:"input",cap:"Troco para quanto? (opcional)",ph:"Troco para quanto? (opcional)",helper:"Só se for pagar em dinheiro",quiet:1}
+  ]},
+  confirmar:{title:"Confirmar pedido",p:100,footer:"Confirmar pedido",need:0,c:[
+    {t:"h1",v:"🧾 Confirme seu pedido"},
+    {t:"h2",v:"🛒 Itens"},
+    {t:"total",v:"<b>1x</b> DIPIRONA 1G 10 CPR, CAIXA · <b>R$ 18,90</b>\n<b>2x</b> FRALDA JUMBO RN 18UN · <b>R$ 73,80</b>\n\n💰 Total: <b>R$ 92,70</b>\n🏪 Unidade: Loja Centro\n🛵 Entrega: Rua das Acácias, 100 - Centro\n💳 Pagamento: Pix"},
+    {t:"caption",v:"✅ Ao confirmar, a farmácia recebe seu pedido e responde aqui na conversa."}
+  ]}
+};
+
+/* linha do tempo: cada passo = tela + acoes */
+const TIMELINE = [
+  {s:"loja",       a:[{w:900},{tap:0},{w:700},{foot:1}]},
+  {s:"cpf",        a:[{w:600},{type:"12345678900",kb:"num"},{w:500},{foot:1}]},
+  {s:"buscar",     a:[{w:900},{type:"Dipirona",kb:"abc",idx:0},{w:500},{foot:1}]},
+  {s:"resultados", a:[{w:800},{tap:2},{w:700},{foot:1}]},
+  {s:"produto",    a:[{w:1100},{drop:1},{w:600},{foot:1}]},
+  {s:"carrinho1",  a:[{w:1400},{link:"more"},{w:300}]},
+  {s:"categorias", a:[{w:900},{nav:3},{w:400}]},
+  {s:"produtos",   a:[{w:900},{nav:0},{w:400}]},
+  {s:"produto2",   a:[{w:1000},{drop:1},{w:600},{foot:1}]},
+  {s:"carrinho2",  a:[{w:1500},{foot:1}]},
+  {s:"entrega",    a:[{w:900},{tap:2},{w:700},{foot:1}]},
+  {s:"pagamento",  a:[{w:900},{tap:0},{w:700},{foot:1}]},
+  {s:"confirmar",  a:[{w:2200},{foot:1}]}
+];
+
+/* ============================================================
+   MOTOR
+   ============================================================ */
+const root=document.getElementById("carrinho-wa");
+const $=s=>root.querySelector(s);
+const scrim=$("#wf-scrim"),sheet=$("#wf-sheet"),stack=$("#wf-stack"),bar=$("#wf-bar"),foot=$("#wf-foot"),
+      title=$("#wf-sheetTitle"),kb=$("#wf-kb"),dot=$("#wf-dot"),phone=$("#wf-phone"),chat=$("#wf-chat");
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let paused=true;
+const idle=()=>new Promise(r=>setTimeout(r,300));
+async function sleep(ms){
+  await new Promise(r=>setTimeout(r,reduce?Math.min(ms,120):ms));
+  while(paused||document.hidden){await idle();}
+}
+let cur=null;
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function rich(s){return esc(s).replace(/&lt;b&gt;/g,"<b>").replace(/&lt;\/b&gt;/g,"</b>").replace(/\n/g,"<br>")}
+
+const ICO_BACK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>';
+const ICO_X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+const CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
+const CLEARX='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4 13.6L14.6 17 12 14.4 9.4 17 8 15.6 10.6 13 8 10.4 9.4 9l2.6 2.6L14.6 9 16 10.4 13.4 13 16 15.6z"/></svg>';
+
+function build(def){
+  const el=document.createElement("div");
+  el.className="fscreen";
+  const scroll=document.createElement("div");
+  scroll.className="fscroll";
+  scroll.innerHTML=def.c.map(c=>{
+    switch(c.t){
+      case "h1":return `<div class="f-h1">${rich(c.v)}</div>`;
+      case "h2":return `<div class="f-h2">${rich(c.v)}</div>`;
+      case "body":return `<div class="f-body">${rich(c.v)}</div>`;
+      case "caption":return `<div class="f-caption">${rich(c.v)}</div>`;
+      case "label":return `<div class="f-label">${rich(c.v)}</div>`;
+      case "kv":return `<div class="f-kv">${rich(c.v)}</div>`;
+      case "total":return `<div class="f-total">${rich(c.v)}</div>`;
+      case "link":return `<div class="f-link${c.id?" left":""}" data-link="${c.id||""}">${rich(c.v)}</div>`;
+      case "input":return `<div class="f-field" data-input><span class="cap" hidden>${esc(c.cap)}</span><span class="val ph">${esc(c.ph)}</span></div><div class="f-helper">${esc(c.helper)}</div>`;
+      case "drop":return `<div class="f-field" data-drop><span class="cap" hidden>${esc(c.cap)}</span><span class="val ph">${esc(c.ph)}</span><span class="clear">${CHEV}</span></div>`;
+      case "radio":return `<div>${c.o.map((o,i)=>`<div class="f-opt" data-opt="${i}">${c.thumbs?`<span class="thumb">${o.e||"💊"}</span>`:""}<span class="txt"><b>${esc(o.l)}</b>${o.s?`<span>${esc(o.s)}</span>`:""}</span><span class="radio"></span></div>`).join("")}</div>`;
+      case "nav":return `<div>${c.o.map((o,i)=>`<div class="f-nav" data-nav="${i}"><span class="txt"><b>${esc(o.l)}</b>${o.s?`<span>${esc(o.s)}</span>`:""}${o.tag?`<span class="tag">${esc(o.tag)}</span>`:""}</span><span class="chev">${CHEV}</span></div>`).join("")}</div>`;
+    }
+    return "";
+  }).join("");
+  el.appendChild(scroll);
+  return el;
+}
+
+async function goto(id){
+  const def=SCREENS[id];
+  const next=build(def);
+  const prev=stack.firstElementChild;
+  stack.appendChild(next);
+  if(prev&&!reduce){prev.classList.add("exit");next.classList.add("enter");setTimeout(()=>prev.remove(),340);}
+  else if(prev){prev.remove();}
+  cur={id,def,el:next};
+  title.textContent=def.title;
+  $("#wf-sheetNav").innerHTML = (id===TIMELINE[0].s) ? ICO_X : ICO_BACK;
+  bar.style.width=def.p+"%";
+  if(def.footer){foot.textContent=def.footer;foot.disabled=!!def.need;foot.style.visibility="visible";}
+  else{foot.style.visibility="hidden";}
+  await sleep(340);
+}
+
+/* cursor + toque */
+function point(el){
+  const p=phone.getBoundingClientRect(),r=el.getBoundingClientRect();
+  dot.style.left=(r.left-p.left+r.width/2)+"px";
+  dot.style.top=(r.top-p.top+Math.min(r.height/2,26))+"px";
+  dot.classList.add("show");
+}
+async function press(el){
+  point(el);await sleep(430);
+  dot.classList.add("hit");el.classList.add("is-pressed");
+  await sleep(180);
+  dot.classList.remove("hit");el.classList.remove("is-pressed");
+  await sleep(120);
+}
+function hideDot(){dot.classList.remove("show")}
+
+/* teclado */
+const ROWS_ABC=[["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["⇧","z","x","c","v","b","n","m","⌫"]];
+function renderKb(mode){
+  if(mode==="num"){
+    kb.className="kb num";
+    kb.innerHTML=[["1","2","3"],["4","5","6"],["7","8","9"],["",'0',"⌫"]]
+      .map(r=>`<div class="row">${r.map(k=>k?`<div class="k${k==="⌫"?" dark":""}" data-k="${k}">${k}</div>`:'<div class="k" style="background:transparent;box-shadow:none"></div>').join("")}</div>`).join("");
+  }else{
+    kb.className="kb";
+    kb.innerHTML=ROWS_ABC.map(r=>`<div class="row">${r.map(k=>`<div class="k${k.length>1?" dark sm":""}" data-k="${k}">${k}</div>`).join("")}</div>`)
+      .join("")+`<div class="row"><div class="k dark sm" style="flex:1.5">123</div><div class="k wide" style="flex:5"></div><div class="k dark sm" style="flex:1.8">ir</div></div>`;
+  }
+}
+function kbUp(mode){renderKb(mode);kb.classList.add("up")}
+function kbDown(){kb.classList.remove("up")}
+function flashKey(ch){
+  const k=[...kb.querySelectorAll("[data-k]")].find(e=>e.dataset.k.toLowerCase()===ch.toLowerCase());
+  if(!k)return;k.classList.add("press");setTimeout(()=>k.classList.remove("press"),90);
+}
+
+async function typeInto(field,text,mode){
+  const val=field.querySelector(".val"),cap=field.querySelector(".cap");
+  await press(field);hideDot();
+  field.classList.add("on");cap.hidden=false;val.classList.remove("ph");val.textContent="";
+  kbUp(mode);await sleep(420);
+  for(const ch of text){
+    val.innerHTML=esc(val.textContent+ch)+'<span class="caret"></span>';
+    val.textContent=val.textContent;// normaliza
+    val.innerHTML=esc(val.textContent)+'<span class="caret"></span>';
+    flashKey(ch);
+    await sleep(reduce?20:105+Math.random()*70);
+  }
+  val.innerHTML=esc(val.textContent);
+  if(!field.querySelector(".clear")){
+    const x=document.createElement("span");x.className="clear";x.innerHTML=CLEARX;field.appendChild(x);
+  }
+  await sleep(320);kbDown();await sleep(280);
+  foot.disabled=false;
+}
+
+/* ============================================================
+   LOOP
+   ============================================================ */
+async function openFlow(){
+  const cta=$("#wf-ctaFlow");
+  await press(cta);hideDot();
+  sheet.classList.add("is-loading");
+  scrim.classList.add("on");
+  sheet.classList.add("is-open");
+  await sleep(700);
+  sheet.classList.remove("is-loading");
+}
+
+async function closeFlow(){
+  kbDown();hideDot();
+  sheet.classList.remove("is-open");scrim.classList.remove("on");
+  await sleep(520);
+  stack.innerHTML="";
+  const card=document.createElement("div");
+  card.className="reply-card";
+  card.innerHTML=`<div class="row"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h8l4 4v16H6z" opacity=".25"/><path d="M14 2l4 4h-4z"/><path d="M8 11h8v1.6H8zm0 4h6v1.6H8z"/></svg></span><span><b>Montar meu pedido</b><span>Resposta enviada</span></span><span style="font-size:11px;color:var(--wa-text-3)">13:03 ✓✓</span></div><span class="link">Mostrar resposta</span>`;
+  chat.appendChild(card);
+  await sleep(900);
+  const ok=document.createElement("div");
+  ok.className="msg in";
+  ok.innerHTML='Obrigado pela compra, já iremos confirmar seu pedido. 🧾<span class="time">13:03</span>';
+  chat.appendChild(ok);
+  await sleep(2600);
+  card.remove();ok.remove();
+  bar.style.width="0%";
+}
+
+async function run(){
+  while(true){
+    await sleep(1200);
+    await openFlow();
+    for(const step of TIMELINE){
+      await goto(step.s);
+      for(const act of step.a){
+        if(act.w!==undefined)await sleep(act.w);
+        if(act.tap!==undefined){
+          const opts=cur.el.querySelectorAll("[data-opt]");
+          const el=opts[act.tap];
+          await press(el);
+          opts.forEach(o=>o.classList.remove("on"));
+          el.classList.add("on");
+          foot.disabled=false;hideDot();
         }
-
-        // Preenche o trilho do slider ate o valor atual (var --fill usada no CSS do track)
-        function setRangeFill(el) {
-            if (el && el.style) el.style.setProperty('--fill', ((el.value / el.max) * 100) + '%');
+        if(act.type!==undefined){
+          const f=cur.el.querySelectorAll("[data-input]")[act.idx||0];
+          await typeInto(f,act.type,act.kb);
         }
-
-        function updateApiCost() {
-            const marketingEl = document.getElementById('marketingRange');
-            const utilityEl = document.getElementById('utilityRange');
-            const marketing = parseInt(marketingEl.value);
-            const utility = parseInt(utilityEl.value);
-
-            // Estimates (Average Cost)
-            const marketingCost = 0.35;
-            const utilityCost = 0.18;
-
-            const total = (marketing * marketingCost) + (utility * utilityCost);
-
-            setRangeFill(marketingEl);
-            setRangeFill(utilityEl);
-            document.getElementById('marketingValue').innerText = marketing.toLocaleString('pt-BR') + ' conversas';
-            document.getElementById('utilityValue').innerText = utility.toLocaleString('pt-BR') + ' conversas';
-            document.getElementById('totalApiCost').innerText = total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if(act.drop!==undefined){
+          const d=cur.el.querySelector("[data-drop]");
+          await press(d);hideDot();
+          d.classList.add("on");
+          d.querySelector(".cap").hidden=false;
+          const v=d.querySelector(".val");
+          const def=cur.def.c.find(c=>c.t==="drop");
+          v.classList.remove("ph");v.textContent=def.val;
+          d.querySelector(".clear").innerHTML=CLEARX;
+          foot.disabled=false;
+          await sleep(400);
         }
-
-        function updateAiCost() {
-            const aiEl = document.getElementById('aiRange');
-            const conversations = parseInt(aiEl.value);
-            setRangeFill(aiEl);
-            
-            // Logic: 
-            // 1 conversation ~ 10 msgs. 
-            // 1 msg ~ 200 tokens (input+output). 
-            // Total tokens = conversations * 10 * 200 = conv * 2000 tokens.
-            // Cost GPT-4o-mini approx $0.60 USD / 1M tokens. 
-            // R$ 3.50 / 1M tokens.
-            // Cost = (Total Tokens / 1,000,000) * 3.50.
-            
-            const avgTokensPerConv = 2000; 
-            const totalTokens = conversations * 30 * avgTokensPerConv; // Monthly (Daily * 30 days)
-            const pricePerMillion = 3.50; // Reais estimation with margin/tax
-            
-            const total = (totalTokens / 1000000) * pricePerMillion;
-
-            // Adding a small base fee or rounding for safety in estimation
-            const safeTotal = total < 5 ? 5 : total; // Min 5 reais displayed
-            
-            document.getElementById('aiValue').innerText = conversations + ' atendimentos/dia';
-            document.getElementById('totalAiCost').innerText = safeTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if(act.link!==undefined){
+          const l=cur.el.querySelector(`[data-link="${act.link}"]`)||cur.el.querySelector("[data-link]");
+          await press(l);hideDot();
         }
+        if(act.nav!==undefined){
+          const n=cur.el.querySelectorAll("[data-nav]")[act.nav];
+          await press(n);hideDot();
+        }
+        if(act.foot){
+          await press(foot);hideDot();
+        }
+      }
+    }
+    await closeFlow();
+  }
+}
+const io=new IntersectionObserver(es=>{paused=!es[0].isIntersecting;},{threshold:.15});
+io.observe(root);
+document.addEventListener("visibilitychange",()=>{},{passive:true});
+run();
 
-        // Estado inicial dos sliders (preenche o trilho com os valores default)
-        updateApiCost();
-        updateAiCost();
+})();
+
+        // ===== Animacao do Modo Hibrido (secao #modo-hibrido) =====
+(function(){
+
+(function(){
+const RATE=0.035, MES=12000, PCT=70;
+const root=document.getElementById("modo-hibrido");
+const $=s=>root.querySelector(s);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const brl=v=>"R$ "+v.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const sleep=ms=>new Promise(r=>setTimeout(r,reduce?Math.min(ms,80):ms));
+
+const THREAD=[
+  {who:"c",  txt:"Oi! Chegou aquele remédio que eu pedi?", t:"09:12"},
+  {who:"s",  txt:"Oi, Marina! Chegou sim, acabou de entrar.", t:"09:12", rota:"hib"},
+  {who:"s",  txt:"Quer que eu já separe uma caixa?", t:"09:12", rota:"hib"},
+  {who:"c",  txt:"Quero sim, por favor", t:"09:13"},
+  {who:"s",  txt:"Separado! Retira hoje até as 18h?", t:"09:13", rota:"ofi"},
+  {who:"s",  txt:"Te mando o código do Pix por aqui.", t:"09:13", rota:"hib"},
+  {who:"s",  txt:"Pix enviado. Qualquer coisa é só chamar.", t:"09:14", rota:"hib"},
+  {who:"s",  txt:"Pedido #4821 confirmado.", t:"09:14", rota:"ofi"}
+];
+
+const msgs=$("#hb-msgs"), ph=$("#hb-phMsgs"), modal=$("#hb-modal"), scrim=$("#hb-scrim");
+const arc=$("#hb-arc"), LEN=2*Math.PI*44;
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+
+function panelRow(m){
+  const el=document.createElement("div");
+  el.className="row "+(m.who==="c"?"in":"out");
+  const tag = m.rota==="hib"
+    ? '<span class="tag hib">Híbrida · R$ 0,00</span>'
+    : m.rota==="ofi" ? '<span class="tag ofi">Oficial · R$ 0,035</span>' : '';
+  el.innerHTML=`<span class="bub">${esc(m.txt)}</span>
+    <span class="meta">${tag}<span>${m.t}</span>${m.who==="s"?'<span class="tick">✓✓</span>':''}</span>`;
+  msgs.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add("show"));
+  while(msgs.children.length>6) msgs.removeChild(msgs.firstChild);
+}
+function phoneRow(m){
+  const el=document.createElement("div");
+  // no celular do cliente, a loja e quem entra pela esquerda
+  el.className="pb "+(m.who==="c"?"out":"in");
+  el.innerHTML=`${esc(m.txt)}<span class="t">${m.t}</span>`;
+  ph.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add("show"));
+  while(ph.children.length>5) ph.removeChild(ph.firstChild);
+}
+
+function setPct(p){
+  const frac=p/100;
+  $("#hb-dialVal").textContent=Math.round(p)+"%";
+  arc.style.strokeDashoffset=LEN*(1-frac);
+  $("#hb-mPct").textContent=Math.round(p)+"%";
+  $("#hb-mFill").style.width=p+"%";
+  $("#hb-mKnob").style.left=p+"%";
+  const n=Math.round(p);
+  $("#hb-mExpl").textContent=`${n} de cada 100 mensagens passam pela conexão híbrida; o restante segue pela API Oficial.`;
+  $("#hb-mEco").textContent=`Economia estimada: a cada 1.000 mensagens, cerca de ${brl(1000*frac*RATE)}.`;
+  const custo=MES*(1-frac)*RATE, eco=MES*frac*RATE;
+  $("#hb-kCusto").textContent=brl(custo);
+  $("#hb-kEco").textContent=brl(eco);
+  $("#hb-mkPct").textContent=Math.round(p)+"%";
+  $("#hb-mkCusto").textContent=brl(custo);
+  $("#hb-mkEco").textContent=brl(eco);
+}
+
+async function ramp(){
+  const dur=reduce?1:2200, t0=performance.now();
+  return new Promise(res=>{
+    (function step(now){
+      const k=Math.min(1,(now-t0)/dur);
+      const e=1-Math.pow(1-k,3);
+      setPct(PCT*e);
+      k<1?requestAnimationFrame(step):res();
+    })(performance.now());
+  });
+}
+
+let paused=true;
+const gate=async()=>{while(paused||document.hidden)await new Promise(r=>setTimeout(r,250));};
+
+function staticFrame(){
+  // movimento reduzido: monta o estado final de uma vez, sem loop
+  setPct(PCT);
+  THREAD.forEach(m=>{panelRow(m);phoneRow(m);});
+  modal.classList.remove("on");scrim.classList.remove("on");
+}
+
+async function run(){
+  if(reduce){staticFrame();return;}
+  while(true){
+    await gate();
+    // estado inicial
+    msgs.innerHTML="";ph.innerHTML="";setPct(0);
+    await sleep(700); await gate();
+    scrim.classList.add("on");modal.classList.add("on");
+    await sleep(700); await gate();
+    await ramp();
+    await sleep(700); await gate();
+    $("#hb-mSave").classList.add("press");
+    await sleep(220);
+    $("#hb-mSave").classList.remove("press");
+    modal.classList.remove("on");scrim.classList.remove("on");
+    await sleep(600); await gate();
+
+    for(const m of THREAD){
+      panelRow(m);
+      await sleep(400);
+      phoneRow(m);
+      await sleep(950);
+      await gate();
+    }
+    await sleep(3200);
+  }
+}
+
+new IntersectionObserver(es=>{paused=!es[0].isIntersecting;},{threshold:.12}).observe(root);
+run();
+})();
+
+})();
+
+        // ===== Animacao do Concatenador (secao #concatenador) =====
+(function(){
+
+(function(){
+const RATE=0.035;
+const root=document.getElementById("concatenador");
+const $=s=>root.querySelector(s);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const brl=(v,d=2)=>"R$ "+v.toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+const sleep=ms=>new Promise(r=>setTimeout(r,reduce?Math.min(ms,60):ms));
+
+const ABERTURA={who:"c",txt:"Oi! Meu pedido já está pronto?",t:"14:02"};
+const LOTE=[
+  "Oi, Marina! Tudo certo por aqui.",
+  "Seu pedido já está separado.",
+  "São 2 caixas do genérico e 1 do xarope.",
+  "Total deu R$ 47,80.",
+  "Pode retirar hoje até as 18h.",
+  "Qualquer coisa é só me chamar."
+];
+const HORA="14:03";
+
+const msgs=$("#cc-msgs"), ph=$("#cc-phMsgs"), tray=$("#cc-tray"), items=$("#cc-trayItems"), chip=$("#cc-chip");
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+function limpar(){
+  msgs.innerHTML="";ph.innerHTML="";items.innerHTML="";
+  tray.classList.remove("on","merge");
+  chip.classList.remove("on");
+  $("#cc-composer").textContent="Mensagem";
+  $("#cc-kSem").textContent=brl(RATE,3);
+  $("#cc-kOld").textContent=brl(RATE,3);
+  $("#cc-kEco").textContent=brl(0);
+  $("#cc-trayN").textContent="1 mensagem agrupada";
+  $("#cc-timer").textContent="3s";
+  $("#cc-ring").setAttribute("stroke-dashoffset","0");
+}
+
+function baloChat(m){
+  const el=document.createElement("div");
+  el.className="row "+(m.who==="c"?"in":"out");
+  el.innerHTML='<span class="bub">'+esc(m.txt)+'</span><span class="meta"><span>'+m.t+'</span>'+(m.who==="s"?'<span class="tick">✓✓</span>':'')+'</span>';
+  msgs.appendChild(el);requestAnimationFrame(()=>el.classList.add("show"));
+  return el;
+}
+function baloPhone(txt,mine,t){
+  const el=document.createElement("div");
+  el.className="pb "+(mine?"out":"in");
+  el.innerHTML=txt+'<span class="t">'+t+'</span>';
+  ph.appendChild(el);requestAnimationFrame(()=>el.classList.add("show"));
+  while(ph.children.length>4) ph.removeChild(ph.firstChild);
+  return el;
+}
+
+function quadroEstatico(){
+  // movimento reduzido: mostra o resultado final, sem loop
+  limpar();
+  baloChat(ABERTURA);
+  baloPhone(esc(ABERTURA.txt),true,ABERTURA.t);
+  const linhas=LOTE.map(t=>'<span class="ln">'+esc(t)+'</span>').join("");
+  const el=baloChat({who:"s",txt:"",t:HORA});
+  el.classList.add("merged");
+  el.querySelector(".bub").innerHTML=linhas;
+  el.querySelector(".meta").insertAdjacentHTML("afterbegin",'<span class="tag hib">1 mensagem · '+brl(RATE,3)+'</span>');
+  baloPhone(linhas,false,HORA);
+  $("#cc-kSem").textContent=brl(LOTE.length*RATE);
+  $("#cc-kOld").textContent=brl(LOTE.length*RATE);
+  $("#cc-kEco").textContent=brl(LOTE.length*RATE-RATE,3);
+  chip.classList.add("on");
+}
+
+async function run(){
+  if(reduce){quadroEstatico();return;}
+  while(true){
+    await gate();
+    limpar();
+    await sleep(600); await gate();
+    baloChat(ABERTURA);
+    await sleep(350);
+    baloPhone(esc(ABERTURA.txt),true,ABERTURA.t);
+    await sleep(900); await gate();
+
+    tray.classList.add("on");
+    for(let i=0;i<LOTE.length;i++){
+      $("#cc-composer").textContent=LOTE[i];
+      await sleep(520); await gate();
+      $("#cc-composer").textContent="Mensagem";
+      const li=document.createElement("div");
+      li.className="ti";
+      li.innerHTML=esc(LOTE[i])+'<span class="ghost">'+brl(RATE,3)+'</span>';
+      items.appendChild(li);requestAnimationFrame(()=>li.classList.add("show"));
+      const n=i+1;
+      $("#cc-trayN").textContent=n+(n===1?" mensagem agrupada":" mensagens agrupadas");
+      $("#cc-kSem").textContent=brl(n*RATE,n>1?2:3);
+      $("#cc-kOld").textContent=brl(n*RATE,n>1?2:3);
+      await sleep(260); await gate();
+    }
+
+    // contagem regressiva da janela
+    for(const s of [3,2,1]){
+      $("#cc-timer").textContent=s+"s";
+      $("#cc-ring").setAttribute("stroke-dashoffset", String(50.3*(1-s/3)));
+      await sleep(760); await gate();
+    }
+
+    // merge: a bandeja colapsa e vira um balao so
+    tray.classList.add("merge");
+    await sleep(620); await gate();
+    tray.classList.remove("on");
+    const linhas=LOTE.map(t=>'<span class="ln">'+esc(t)+'</span>').join("");
+    const el=baloChat({who:"s",txt:"",t:HORA});
+    el.classList.add("merged");
+    el.querySelector(".bub").innerHTML=linhas;
+    el.querySelector(".meta").insertAdjacentHTML("afterbegin",'<span class="tag hib">1 mensagem · '+brl(RATE,3)+'</span>');
+    requestAnimationFrame(()=>el.classList.add("pulse"));
+    $("#cc-kEco").textContent=brl(LOTE.length*RATE-RATE,3);
+
+    await sleep(420); await gate();
+    baloPhone(linhas,false,HORA);
+    await sleep(500);
+    chip.classList.add("on");
+    await sleep(3400); await gate();
+    chip.classList.remove("on");
+    await sleep(500);
+  }
+}
+
+let paused=true;
+const gate=async()=>{while(paused||document.hidden)await new Promise(r=>setTimeout(r,250));};
+new IntersectionObserver(es=>{paused=!es[0].isIntersecting;},{threshold:.12}).observe(root);
+run();
+})();
+
+})();
     </script>
     <!-- Tag Klicou - atribuicao de origem e leads (workspace FAZQVENDE) -->
         <script async src="https://go.klicou.com.br/tag.js?k=kt_e527dcc9a4672020"></script>
