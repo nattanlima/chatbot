@@ -77,13 +77,12 @@ function goToContato(agenda) {
 
 (async () => {
   console.log('\n[1] Estrutura: elementos-chave existem');
-  ['tab-api','tab-ai','content-api','content-ai','marketingRange','utilityRange','aiRange',
-   'totalApiCost','totalAiCost','scheduler-modal','qual-body','qual-progress','qual-progress-bar',
+  ['scheduler-modal','qual-body','qual-progress','qual-progress-bar',
    'qual-iframe','qual-cost-banner','lead-nome','lead-whatsapp','lead-email','lead-empresa',
    'lead-website','lead-error','lead-submit'].forEach(id => check('#'+id, !!$(id)));
 
   console.log('\n[2] Funcoes globais definidas');
-  ['switchTab','toggleScheduler','updateApiCost','updateAiCost','trackEvent','qualShow','qualReset',
+  ['toggleScheduler','trackEvent','qualShow','qualReset',
    'qualAnswer','qualOpenCalendar','qualBackFromCalendar','qualBackFromContato','qualSubmitContact',
    'leadEndpoint','isEmailValido'].forEach(fn => check('window.'+fn, typeof window[fn] === 'function'));
 
@@ -92,19 +91,6 @@ function goToContato(agenda) {
   const oaiInit = oaiCalls().find(c => c[0] === 'init');
   check('init com pixelId correto', !!oaiInit && oaiInit[1] && oaiInit[1].pixelId === 'Fm75B5NPoYhY18xKckDYmW');
   check('page_viewed no carregamento', oaiCalls('page_viewed').length === 1);
-
-  console.log('\n[3] BUG das abas corrigido (switchTab)');
-  window.switchTab('ai');
-  check('API recebe cinza', $('tab-api').classList.contains('text-slate-500'));
-  check('API perde brand-primary', !$('tab-api').classList.contains('text-brand-primary'));
-  window.switchTab('api');
-  check('volta: AI recebe cinza', $('tab-ai').classList.contains('text-slate-500'));
-
-  console.log('\n[4] Calculadoras (valores != default)');
-  $('marketingRange').value = '2000'; $('utilityRange').value = '1000'; window.updateApiCost();
-  check('API = 880,00', val('totalApiCost') === '880,00');
-  $('aiRange').value = '100'; window.updateAiCost();
-  check('IA = 21,00', val('totalAiCost') === '21,00');
 
   console.log('\n[5] Abertura inicia no passo decisor (25%)');
   window.toggleScheduler();
