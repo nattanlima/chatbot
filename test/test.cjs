@@ -200,6 +200,39 @@ function goToContato(agenda) {
   window.qualBackFromContato();
   check('voltar => quem', visibleStep() === 'quem');
 
+  console.log('\n[13] Worker respondeu erro (ex.: Resend fora): nao conta como enviado, agenda abre');
+  setEndpoint(TEST_ENDPOINT);
+  const fetchOk = window.fetch;
+  window.fetch = function (url, opts) {
+    window.__fetch.push({ url, opts });
+    return Promise.resolve({ ok: false, status: 502, json: () => Promise.resolve({ ok: false }), text: () => Promise.resolve('resend_failed') });
+  };
+  goToContato('especialistas');
+  const nEnv = window.__events.filter(e => e[1] === 'lead_enviado').length;
+  fillContact();
+  await window.qualSubmitContact();
+  check('erro 502: NAO registra lead_enviado', window.__events.filter(e => e[1] === 'lead_enviado').length === nEnv);
+  check('erro 502: registra lead_envio_falhou com status', (lastEvent('lead_envio_falhou') || {}).status === 502);
+  check('erro 502: agenda abre mesmo assim', visibleStep() === 'calendar');
+  window.fetch = fetchOk;
+
+  console.log('\n[14] Pagina sem dependencias pesadas/externas no caminho critico');
+  const head = html.split('</head>')[0];
+  check('sem Tailwind de runtime (CDN)', !html.includes('cdn.tailwindcss.com'));
+  check('CSS compilado referenciado no <head>', head.includes('href="./assets/tailwind.css"'));
+  check('CSS compilado existe no repo', fs.existsSync(path.join(__dirname, '..', 'assets', 'tailwind.css')));
+  check('sem Font Awesome', !html.includes('font-awesome') && !html.includes('fa-brands'));
+  check('Lucide fora do <head> e sem unpkg', !head.includes('lucide') && !html.includes('unpkg.com'));
+  check('icones gerados localmente (assets/icons.js)', html.includes('src="./assets/icons.js"') && fs.existsSync(path.join(__dirname, '..', 'assets', 'icons.js')));
+  check('sem avatares/imagens de terceiros (pravatar, user-images)', !html.includes('pravatar.cc') && !html.includes('user-images.githubusercontent'));
+  check('icones de marca em SVG inline', doc.querySelectorAll('svg.fa-svg').length >= 13);
+  check('fonte Inter servida pelo proprio site (sem Google Fonts)', !html.includes('fonts.googleapis.com') && fs.existsSync(path.join(__dirname, '..', 'assets', 'fonts', 'inter-latin-wght-normal.woff2')));
+
+  console.log('\n[15] Textos de conteudo corrigidos');
+  check('sem "Vale a partir de 1º de outubro" (cobranca ja vigente)', !html.includes('Vale a partir de'));
+  check('botao do Modo Hibrido leva ao simulador', !!doc.querySelector('#modo-hibrido a[href^="https://apioficial.prismeapp.com.br"]'));
+  check('sem promessa de treinamento/onboarding ilimitado', !/ilimitad/i.test(doc.body.textContent));
+
   console.log('\n========================================');
   console.log(`UI/FLUXO: ${pass} passou, ${fail} falhou`);
   console.log('========================================');

@@ -37,11 +37,8 @@
     <link rel="shortcut icon" href="./favicon.ico">
     <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 
-    <!-- Preconnect para origens externas (acelera DNS/TLS) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="https://unpkg.com">
+    <!-- Fonte Inter hospedada no próprio site (1 arquivo variável cobre todos os pesos) -->
+    <link rel="preload" href="./assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="dns-prefetch" href="https://bzrcdn.openai.com">
 
     <!-- OpenAI Ads Pixel (oaiq) — conversões de anúncios no ChatGPT.
@@ -63,54 +60,21 @@
         oaiq('measure', 'page_viewed', { type: 'contents' });
     </script>
 
-    <!-- Tailwind CSS (CDN) -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind compilado: gerado por "npm run build:css" a partir de tailwind.config.js.
+         Em push na main o GitHub Action build-css regera o arquivo sozinho. -->
+    <link rel="stylesheet" href="./assets/tailwind.css">
 
-    <!-- Google Fonts (Inter — apenas pesos usados) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome (ícones de marca) & Lucide (versão fixada) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://unpkg.com/lucide@1.17.0/dist/umd/lucide.min.js"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            base: '#1e1b4b', // Dark Indigo
-                            primary: '#4F46E5', // Indigo
-                            success: '#00C38D', // Green Prisme
-                            accent: '#7C3AED', // Purple
-                        }
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'blob': 'blob 7s infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
 
     <style>
+        /* Inter variável (OFL, ver assets/fonts/LICENSE-Inter.txt). Antes: Google Fonts com 5 arquivos de peso. */
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 100 900;
+            font-display: swap;
+            src: url(./assets/fonts/inter-latin-wght-normal.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
         .glass-dark {
             background: rgba(30, 27, 75, 0.8);
             backdrop-filter: blur(12px);
@@ -123,6 +87,11 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* Ícones de marca em SVG inline (antes: Font Awesome inteiro só para 5 logos) */
+        .fa-svg { display: inline-block; height: 1em; overflow: visible; vertical-align: -0.125em; fill: currentColor; }
+        /* Textura discreta do fundo do chat no mockup do hero (arquivo local, sem depender de terceiros) */
+        .chat-doodle { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.05' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M22 30c6-8 16-8 22 0M30 52a8 8 0 1 0 .01 0'/%3E%3Cpath d='M96 24h26v18H108l-8 8v-8h-4z'/%3E%3Cpath d='M180 20l6 12 13 2-9 9 2 13-12-6-12 6 2-13-9-9 13-2z'/%3E%3Cpath d='M232 44a10 10 0 1 0 .01 0M228 40l8 8'/%3E%3Cpath d='M40 112h22v16H40zM46 108h10v4H46z'/%3E%3Cpath d='M112 104c8-8 20 0 12 10l-12 12-12-12c-8-10 4-18 12-10z'/%3E%3Cpath d='M186 100v26M176 112h20'/%3E%3Cpath d='M228 106h20v20h-20zM232 114h12M232 120h8'/%3E%3Cpath d='M28 190a12 12 0 1 0 .01 0M28 178v-6'/%3E%3Cpath d='M92 182h28l-4 20H96zM100 182v-6a6 6 0 0 1 12 0v6'/%3E%3Cpath d='M170 186l10-10 10 10-10 10z'/%3E%3Cpath d='M226 176h22v14h-8l-6 6v-6h-8z'/%3E%3Cpath d='M60 236h20M70 228v16'/%3E%3Cpath d='M130 230a9 9 0 1 0 .01 0'/%3E%3Cpath d='M196 228h18v16h-18zM200 224h10'/%3E%3C/g%3E%3C/svg%3E"); background-size: 260px 260px; }
 
         /* Tipografia fina */
         h1, h2, h3, h4 { text-wrap: balance; }
@@ -799,7 +768,7 @@
             </h1>
 
             <p class="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-slate-600 mb-8 sm:mb-12 reveal" style="animation-delay: 0.2s">
-                Nós configuramos tudo para você. Conecte WhatsApp, Instagram, Messenger e TikTok em um só lugar. Treinamento ilimitado e suporte humanizado para sua equipe não parar nunca.
+                Nós configuramos tudo para você. Conecte WhatsApp, Instagram, Messenger e TikTok em um só lugar. Treinamento da equipe e suporte humanizado para sua operação não parar.
             </p>
 
             <div class="flex flex-col sm:flex-row justify-center gap-4 reveal" style="animation-delay: 0.3s">
@@ -839,7 +808,7 @@
                             <div class="h-16 border-b border-white/5 flex items-center px-4 justify-between hidden md:flex bg-slate-900/50">
                                 <div class="flex items-center gap-2">
                                     <div class="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center text-emerald-500">
-                                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                                        <svg class="fa-svg text-lg" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
                                     </div>
                                     <span class="font-bold text-slate-200 text-sm">WhatsApp API</span>
                                 </div>
@@ -867,10 +836,10 @@
                                 <div class="p-3 md:px-4 md:py-3 border-l-2 border-emerald-500 bg-slate-800/50 cursor-pointer flex items-center gap-3 group relative">
                                     <div class="relative shrink-0">
                                         <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-green-600 p-[2px]">
-                                            <img src="https://i.pravatar.cc/150?u=3" class="w-full h-full rounded-full border-2 border-slate-900" alt="">
+                                            <div class="w-full h-full rounded-full border-2 border-slate-900 bg-gradient-to-br from-rose-400 to-pink-600 text-white font-bold flex items-center justify-center text-xs">MC</div>
                                         </div>
                                         <div class="absolute -bottom-1 -right-1 bg-white rounded-full p-[2px] border border-slate-900">
-                                            <i class="fa-brands fa-whatsapp text-emerald-500 text-[10px]"></i>
+                                            <svg class="fa-svg text-emerald-500 text-[10px]" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
                                         </div>
                                     </div>
                                     <div class="hidden md:block flex-1 min-w-0">
@@ -894,7 +863,7 @@
                                             JP
                                         </div>
                                          <div class="absolute -bottom-1 -right-1 bg-white rounded-full p-[2px] border border-slate-900">
-                                            <i class="fa-brands fa-instagram text-pink-500 text-[10px]"></i>
+                                            <svg class="fa-svg text-pink-500 text-[10px]" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
                                         </div>
                                     </div>
                                     <div class="hidden md:block flex-1 min-w-0">
@@ -913,7 +882,7 @@
                                 <div class="p-3 md:px-4 md:py-3 border-l-2 border-transparent hover:bg-slate-800/30 cursor-pointer flex items-center gap-3">
                                     <div class="relative shrink-0">
                                         <div class="w-10 h-10 rounded-full bg-slate-700 overflow-hidden border border-white/5">
-                                             <img src="https://i.pravatar.cc/150?u=8" class="w-full h-full object-cover" alt="">
+                                             <div class="w-full h-full bg-slate-600 text-slate-100 font-bold flex items-center justify-center text-xs">ST</div>
                                         </div>
                                         <div class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center text-[10px] text-white font-bold border-2 border-slate-900 animate-pulse">1</div>
                                     </div>
@@ -941,14 +910,14 @@
                         </div>
 
                         <!-- Main Chat Area -->
-                        <div class="flex-1 min-w-0 flex flex-col bg-[#0B1120] relative bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] bg-repeat bg-opacity-5">
+                        <div class="flex-1 min-w-0 flex flex-col bg-[#0B1120] relative chat-doodle bg-opacity-5">
                             <div class="absolute inset-0 bg-[#0B1120]/95 pointer-events-none"></div>
 
                             <!-- Chat Header (Official API Style) -->
                             <div class="h-16 border-b border-white/5 flex items-center px-4 md:px-6 justify-between bg-slate-900/90 backdrop-blur-md relative z-10">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-full overflow-hidden border border-white/10 relative">
-                                        <img src="https://i.pravatar.cc/150?u=3" class="w-full h-full object-cover" alt="">
+                                        <div class="w-full h-full bg-gradient-to-br from-rose-400 to-pink-600 text-white font-bold flex items-center justify-center text-xs">MC</div>
                                     </div>
                                     <div>
                                         <div class="flex items-center gap-1.5">
@@ -959,7 +928,7 @@
                                         <div class="flex items-center gap-2">
                                             <span class="text-xs text-slate-400">Canal: </span>
                                             <span class="flex items-center gap-1 text-[10px] font-bold bg-emerald-500/10 text-emerald-500 px-1.5 rounded border border-emerald-500/20">
-                                                <i class="fa-brands fa-whatsapp"></i> Oficial
+                                                <svg class="fa-svg" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> Oficial
                                             </span>
                                         </div>
                                     </div>
@@ -1021,7 +990,7 @@
 
                                 <!-- Incoming Message -->
                                 <div class="flex items-end gap-3 group">
-                                    <img src="https://i.pravatar.cc/150?u=3" class="w-8 h-8 rounded-full mb-1 border border-white/10 shadow-lg" alt="">
+                                    <div class="w-8 h-8 shrink-0 rounded-full mb-1 border border-white/10 shadow-lg bg-gradient-to-br from-rose-400 to-pink-600 text-white font-bold flex items-center justify-center text-[10px]">MC</div>
                                     <div class="flex flex-col gap-1 max-w-[75%]">
                                         <div class="bg-slate-800 p-3.5 rounded-2xl rounded-bl-none border border-white/5 text-slate-200 text-sm leading-relaxed shadow-md">
                                             Olá! 👋 Vi o anúncio de vocês no Instagram.
@@ -1056,7 +1025,7 @@
 
                                  <!-- Incoming Message (File) -->
                                 <div class="flex items-end gap-3 group">
-                                    <img src="https://i.pravatar.cc/150?u=3" class="w-8 h-8 rounded-full mb-1 border border-white/10 shadow-lg" alt="">
+                                    <div class="w-8 h-8 shrink-0 rounded-full mb-1 border border-white/10 shadow-lg bg-gradient-to-br from-rose-400 to-pink-600 text-white font-bold flex items-center justify-center text-[10px]">MC</div>
                                     <div class="flex flex-col gap-1 max-w-[75%]">
                                         <div class="bg-slate-800 p-3.5 rounded-2xl rounded-bl-none border border-white/5 text-slate-200 text-sm leading-relaxed shadow-md flex items-center gap-3 hover:bg-slate-700/70 transition cursor-pointer">
                                             <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 border border-red-500/10">
@@ -1115,7 +1084,7 @@
                 <div class="reveal">
                     <h2 class="text-3xl md:text-4xl font-bold mb-6">Você não precisa parar para configurar nada.</h2>
                     <p class="text-indigo-200 text-lg mb-8 leading-relaxed">
-                        Diferente de outras plataformas “self-service”, na Prisme nós somos a sua equipe técnica. Nosso onboarding é <span class="text-brand-success font-bold">100% assistido e ilimitado</span>.
+                        Diferente de outras plataformas “self-service”, na Prisme nós somos a sua equipe técnica. Nosso onboarding é <span class="text-brand-success font-bold">100% assistido</span>.
                     </p>
                     <ul class="space-y-6">
                         <li class="flex items-start gap-4">
@@ -1123,8 +1092,8 @@
                                 <i data-lucide="graduation-cap" class="w-6 h-6 text-indigo-400"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-white text-lg">Treinamento Ilimitado</h4>
-                                <p class="text-indigo-200 text-sm">Treinamos sua equipe e novos funcionários sempre que necessário, sem custo extra.</p>
+                                <h4 class="font-bold text-white text-lg">Treinamento da Equipe</h4>
+                                <p class="text-indigo-200 text-sm">Treinamos seu time na implantação para todo mundo operar a plataforma com segurança.</p>
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
@@ -1154,8 +1123,8 @@
                             <div class="text-sm text-indigo-200">Tempo médio de implementação total</div>
                         </div>
                         <div class="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 animate-float" style="animation-delay: 1s">
-                            <div class="text-4xl font-bold text-indigo-400 mb-2">∞</div>
-                            <div class="text-sm text-indigo-200">Suporte e Treinamentos</div>
+                            <div class="text-4xl font-bold text-indigo-400 mb-2">100%</div>
+                            <div class="text-sm text-indigo-200">Onboarding assistido</div>
                         </div>
                         <div class="col-span-2 bg-gradient-to-r from-indigo-600 to-purple-600 p-8 rounded-2xl animate-float" style="animation-delay: 2s">
                             <div class="flex items-center gap-4 mb-4">
@@ -1184,22 +1153,22 @@
             <div class="flex flex-wrap justify-center gap-4 sm:gap-8 md:gap-12 mb-16">
                 <div class="flex flex-col items-center gap-2 group">
                     <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-white shadow-lg rounded-2xl flex items-center justify-center text-[#25D366] group-hover:scale-110 transition-transform">
-                        <i class="fa-brands fa-whatsapp"></i>
+                        <svg class="fa-svg" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
                     </div>
                 </div>
                 <div class="flex flex-col items-center gap-2 group">
-                    <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-white shadow-lg rounded-2xl flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 group-hover:scale-110 transition-transform">
-                        <i class="fa-brands fa-instagram"></i>
+                    <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-white shadow-lg rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="fa-svg" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><defs><linearGradient id="ig-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#facc15"/><stop offset=".5" stop-color="#ef4444"/><stop offset="1" stop-color="#9333ea"/></linearGradient></defs><path fill="url(#ig-grad)" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
                     </div>
                 </div>
                 <div class="flex flex-col items-center gap-2 group">
                     <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-white shadow-lg rounded-2xl flex items-center justify-center text-[#1877F2] group-hover:scale-110 transition-transform">
-                        <i class="fa-brands fa-facebook-messenger"></i>
+                        <svg class="fa-svg" style="width:1.0000em" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M256.55 8C116.52 8 8 110.34 8 248.57c0 72.3 29.71 134.78 78.07 177.94 8.35 7.51 6.63 11.86 8.05 58.23A19.92 19.92 0 0 0 122 502.31c52.91-23.3 53.59-25.14 62.56-22.7C337.85 521.8 504 423.7 504 248.57 504 110.34 396.59 8 256.55 8zm149.24 185.13l-73 115.57a37.37 37.37 0 0 1-53.91 9.93l-58.08-43.47a15 15 0 0 0-18 0l-78.37 59.44c-10.46 7.93-24.16-4.6-17.11-15.67l73-115.57a37.36 37.36 0 0 1 53.91-9.93l58.06 43.46a15 15 0 0 0 18 0l78.41-59.38c10.44-7.98 24.14 4.54 17.09 15.62z"/></svg>
                     </div>
                 </div>
                 <div class="flex flex-col items-center gap-2 group">
                     <div class="w-12 h-12 text-2xl sm:w-16 sm:h-16 sm:text-3xl bg-white shadow-lg rounded-2xl flex items-center justify-center text-black group-hover:scale-110 transition-transform">
-                        <i class="fa-brands fa-tiktok"></i>
+                        <svg class="fa-svg" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg>
                     </div>
                 </div>
             </div>
@@ -1256,7 +1225,7 @@
                     <div class="space-y-8">
                         <div class="flex gap-5 group">
                             <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center shrink-0 border border-green-100 group-hover:scale-110 transition-transform duration-300">
-                                <i class="fa-brands fa-whatsapp text-3xl text-[#25D366]"></i>
+                                <svg class="fa-svg text-3xl text-[#25D366]" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
                             </div>
                             <div>
                                 <h4 class="text-xl font-bold text-slate-900 group-hover:text-brand-success transition-colors">WhatsApp no Celular Ativo</h4>
@@ -1437,14 +1406,14 @@
             <div class="text-center max-w-3xl mx-auto mb-14 reveal">
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-800 font-semibold text-sm mb-6">
                     <i data-lucide="calendar-clock" class="w-4 h-4"></i>
-                    Vale a partir de 1º de outubro de 2026
+                    Em vigor desde 1º de outubro de 2026
                 </div>
                 <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
-                    Cada mensagem passa a ter preço.<br>
+                    Cada mensagem tem preço.<br>
                     <span class="text-gradient">Você decide por onde ela sai.</span>
                 </h2>
                 <p class="text-lg text-slate-600 leading-relaxed">
-                    As mensagens de serviço enviadas pela API Oficial passam a ser cobradas, mesmo dentro da janela de 24 horas. No Modo Híbrido você define qual fatia do tráfego sai pela conexão do seu app e qual continua pela API Oficial, com o mesmo número e na mesma conversa.
+                    Desde 1º de outubro, as mensagens de serviço enviadas pela API Oficial são cobradas, mesmo dentro da janela de 24 horas. No Modo Híbrido você define qual fatia do tráfego sai pela conexão do seu app e qual continua pela API Oficial, com o mesmo número e na mesma conversa.
                 </p>
             </div>
 
@@ -1507,7 +1476,7 @@
                             <div class="t">O cálculo é feito a cada 100 mensagens enviadas</div>
                             <p id="hb-mExpl">0 de cada 100 mensagens passam pela conexão híbrida; o restante segue pela API Oficial.</p>
                             <div class="eco" id="hb-mEco">Economia estimada: a cada 1.000 mensagens, cerca de R$ 0,00.</div>
-                            <div class="base">Base: API Oficial cobra R$ 0,035/msg (mensagens de serviço e utilidade, a partir de 01/10/2026). Valor estimado.</div>
+                            <div class="base">Base: API Oficial cobra R$ 0,035/msg (mensagens de serviço e utilidade, desde 01/10/2026). Valor estimado.</div>
                           </div>
                         </div>
                         <div class="mh-foot">
@@ -1586,10 +1555,10 @@
             </div>
 
             <div class="mt-12 text-center reveal">
-                <button onclick="toggleScheduler()" class="px-8 py-4 bg-brand-base text-white rounded-xl font-bold text-lg hover:bg-brand-primary transition-all shadow-lg hover:shadow-xl inline-flex items-center justify-center gap-2">
-                    <i data-lucide="calendar" class="w-5 h-5"></i>
-                    Quero calcular a minha economia
-                </button>
+                <a href="https://apioficial.prismeapp.com.br/" target="_blank" rel="noopener" onclick="trackEvent('abrir_simulador')" class="px-8 py-4 bg-brand-base text-white rounded-xl font-bold text-lg hover:bg-brand-primary transition-all shadow-lg hover:shadow-xl inline-flex items-center justify-center gap-2">
+                    <i data-lucide="calculator" class="w-5 h-5"></i>
+                    Simular minha economia
+                </a>
                 <p class="mt-6 text-sm text-slate-500">
                     Tem uma segunda alavanca logo abaixo:
                     <a href="#concatenador" class="text-brand-primary font-semibold hover:underline">agrupar as mensagens do atendente</a>.
@@ -1801,7 +1770,6 @@
         </div>
     </section>
 
-    <!-- Interactive Calculators -->
     <!-- WhatsApp Flows: carrinho de compras dentro da conversa -->
     <section id="carrinho-wa" class="py-24 bg-white relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1810,7 +1778,7 @@
                 <!-- Content Column -->
                 <div class="reveal">
                     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 font-semibold text-sm mb-6">
-                        <i class="fa-brands fa-whatsapp text-base"></i>
+                        <svg class="fa-svg text-base" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
                         WhatsApp Flows
                     </div>
                     <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
@@ -2121,8 +2089,8 @@
                         Conectamos sua empresa ao futuro do atendimento. Automação, IA e Humanização em uma única plataforma.
                     </p>
                     <div class="flex gap-4">
-                        <a href="https://instagram.com/prisme.sales" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Prisme" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xl" aria-hidden="true"></i></a>
-                        <a href="https://www.youtube.com/@fazqvende" target="_blank" rel="noopener noreferrer" aria-label="YouTube da Prisme" class="hover:text-white transition-colors"><i class="fa-brands fa-youtube text-xl" aria-hidden="true"></i></a>
+                        <a href="https://instagram.com/prisme.sales" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Prisme" class="hover:text-white transition-colors"><svg class="fa-svg text-xl" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a>
+                        <a href="https://www.youtube.com/@fazqvende" target="_blank" rel="noopener noreferrer" aria-label="YouTube da Prisme" class="hover:text-white transition-colors"><svg class="fa-svg text-xl" style="width:1.1250em" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></a>
                     </div>
                 </div>
                 <div>
@@ -2136,8 +2104,7 @@
                 <div>
                     <h4 class="text-white font-bold mb-4">Legal</h4>
                     <ul class="space-y-2">
-                        <li><a href="https://www.prismesales.com.br/politica-de-privacidade" class="hover:text-brand-primary transition-colors">Termos de Uso</a></li>
-                        <li><a href="https://www.prismesales.com.br/politica-de-privacidade" class="hover:text-brand-primary transition-colors">Privacidade</a></li>
+                        <li><a href="https://www.prismesales.com.br/politica-de-privacidade" class="hover:text-brand-primary transition-colors">Política de Privacidade</a></li>
                         <li>CNPJ: 34.322.622/0001-58</li>
                     </ul>
                 </div>
@@ -2201,7 +2168,7 @@
                     <h4 class="text-2xl font-bold text-slate-900 mb-3">A call precisa ser com o decisor</h4>
                     <p class="text-slate-500 max-w-md mb-8">Nossa call é uma <strong>apresentação estratégica</strong> da plataforma. Para que ela seja realmente útil, ela só pode ser marcada com o <strong>decisor (dono)</strong> da empresa. Converse com o responsável e retorne para agendar — ou fale com a gente no WhatsApp para dúvidas iniciais.</p>
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <a href="https://wa.me/5524992592320?text=Tenho%20interesse%20no%20Prisme%20chatbot%20e%20gostaria%20de%20mais%20informacoes" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-brand-success text-emerald-950 font-bold hover:bg-emerald-400 transition flex items-center justify-center gap-2"><i class="fa-brands fa-whatsapp"></i> Dúvidas no WhatsApp</a>
+                        <a href="https://wa.me/5524992592320?text=Tenho%20interesse%20no%20Prisme%20chatbot%20e%20gostaria%20de%20mais%20informacoes" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-brand-success text-emerald-950 font-bold hover:bg-emerald-400 transition flex items-center justify-center gap-2"><svg class="fa-svg" style="width:0.8750em" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> Dúvidas no WhatsApp</a>
                         <button onclick="qualShow('decisor')" class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition">Voltar</button>
                     </div>
                 </div>
@@ -2348,6 +2315,8 @@
     </div>
 
     <!-- Scripts -->
+    <!-- Ícones Lucide: só os usados na página (gerado por "npm run build:icons"; antes vinha a biblioteca inteira do unpkg) -->
+    <script src="./assets/icons.js"></script>
     <script>
         // Init Lucide Icons (com guarda: se o CDN de ícones falhar, o resto do script sobrevive)
         try { if (window.lucide) lucide.createIcons(); } catch (e) { /* ícones são aprimoramento progressivo */ }
@@ -2573,12 +2542,14 @@
                 const label = document.getElementById('lead-submit-label');
                 btn.disabled = true; label.textContent = 'Enviando...';
                 try {
-                    await fetch(endpoint, {
+                    const res = await fetch(endpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-                    trackEvent('lead_enviado', { agenda: qualData.quem });
+                    // So conta como enviado se o Worker confirmou (antes um erro 502 do Resend contava como sucesso)
+                    if (res && res.ok) trackEvent('lead_enviado', { agenda: qualData.quem });
+                    else trackEvent('lead_envio_falhou', { agenda: qualData.quem, status: res ? res.status : 0 });
                 } catch (e) {
                     // a notificacao nao deve bloquear o agendamento do cliente
                     trackEvent('lead_envio_falhou', { agenda: qualData.quem });

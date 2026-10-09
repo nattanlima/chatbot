@@ -173,3 +173,38 @@ screenshot em 1440px e 390px. Suíte de testes intacta (89/89).
 `overused-font` (Inter) e `ai-color-palette` — todos são a identidade incumbente do site em produção.
 
 > Documento gerado como baseline. Cada fase pode virar uma PR pequena e isolada, mantendo o deploy atual no GitHub Pages.
+
+---
+
+## 11. Correções de performance e conteúdo (09/10/2026) ✅
+
+Medição em réplica local com Lighthouse 12.8 (perfil do PageSpeed, mediana de 5 rodadas), antes das correções:
+celular nota 38 (FCP 5,6 s, LCP 5,8 s, TBT 1,6 s), desktop nota 68.
+
+**Performance**
+- Tailwind de CDN (compilava no navegador) → CSS compilado em `assets/tailwind.css` + Action que regera a cada push.
+- Font Awesome inteiro (CSS 100 KB + fonte 106 KB) para 5 logos → SVG inline.
+- Lucide inteiro do unpkg (393 KB) → `assets/icons.js` só com os 57 ícones usados (11 KB), gerado por script.
+- Google Fonts (5 arquivos, 120 KB) → Inter variável hospedada no site (48 KB) com preload.
+- Avatares do `i.pravatar.cc` → iniciais; fundo do chat puxado de um upload de terceiro no GitHub → textura SVG local.
+
+**Conteúdo**
+- Seção Modo Híbrido no presente (cobrança vigente desde 01/10/2026).
+- "Quero calcular a minha economia" abria o agendamento → agora "Simular minha economia" leva ao simulador (apioficial.prismeapp.com.br).
+- Removida a promessa de treinamento/onboarding "ilimitado" (alinhado à retirada do item nos planos em 30/09).
+- Print da Coex (`1.webp`) não mostra mais o nome do portfólio de um cliente.
+- "Termos de Uso" e "Privacidade" apontavam para a mesma página → um link só, "Política de Privacidade".
+
+**Resultado (mesma medição, mediana de 5):**
+
+| | Antes | Depois |
+|---|---|---|
+| Nota celular | 38 | 98 |
+| LCP celular | 5,8 s | 2,1 s |
+| TBT celular | 1.574 ms | 3 ms |
+| Nota desktop | 68 | 99 |
+| Peso transferido | 462 KiB | 102 KiB |
+
+**Comportamento**
+- Erro do Worker (ex.: Resend fora) deixava de ser detectado e contava como `lead_enviado`. Agora registra `lead_envio_falhou` com o status.
+
