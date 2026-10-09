@@ -1,0 +1,58 @@
+# Regera assets/tailwind.css e assets/icons.js sempre que o index.html (ou a config) muda na main.
+# Assim dá para continuar editando a página direto pelo GitHub: se entrar classe ou ícone novo,
+# os arquivos gerados são atualizados e commitados sozinhos em ~1 minuto.
+name: build-css
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'tailwind.config.js'
+      - 'src/**'
+      - 'scripts/**'
+      - 'package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: build-css
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Gera CSS e ícones
+        run: npm run build
+
+      - name: Commita os arquivos gerados se mudaram
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- assets/; then
+            echo "assets/ já está em dia"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/tailwind.css assets/icons.js
+          git commit -m "chore: regera CSS e ícones (assets/)"
+          git push
+          # commit feito pelo token do Actions nem sempre dispara o Pages: pede o build explicitamente
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
+
+      - name: Testes
+        run: npm test

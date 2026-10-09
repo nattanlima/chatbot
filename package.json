@@ -1,9 +1,11 @@
 {
   "name": "lp-chatbot",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build:css && npm run build:icons",
+    "build:css": "tailwindcss -c tailwind.config.js -i src/tailwind.css -o assets/tailwind.css --minify",
+    "build:icons": "node scripts/build-icons.mjs",
+    "test": "node test/test.cjs && node test/worker.test.mjs"
   },
   "repository": {
     "type": "git",
@@ -16,11 +18,14 @@
     "url": "https://github.com/nattanlima/chatbot/issues"
   },
   "homepage": "https://github.com/nattanlima/chatbot#readme",
-  "description": "",
+  "description": "Landing page do Prisme.chatbot (chatbot.prismeapp.com.br)",
   "dependencies": {
     "jsdom": "^29.1.1"
   },
   "devDependencies": {
+    "lucide": "^1.17.0",
+    "tailwindcss": "3.4.17",
     "wrangler": "^4.98.0"
-  }
+  },
+  "private": true
 }

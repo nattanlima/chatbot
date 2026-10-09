@@ -3,7 +3,7 @@
 Landing page da plataforma de atendimento omnichannel **Prisme.chatbot**.
 
 - **Produção:** https://chatbot.prismeapp.com.br (GitHub Pages + domínio via `CNAME`)
-- **Stack:** HTML estático + Tailwind (CDN) + Lucide/Font Awesome + JS vanilla
+- **Stack:** HTML estático + Tailwind **compilado** (`assets/tailwind.css`) + ícones Lucide gerados (`assets/icons.js`) + fonte Inter hospedada no site + JS vanilla. Logos de marca em SVG inline.
 - **Backend de leads:** Cloudflare Worker + Resend (e-mail) — ver [worker/](worker/)
 
 ---
@@ -12,6 +12,13 @@ Landing page da plataforma de atendimento omnichannel **Prisme.chatbot**.
 
 ```
 index.html            # a landing page inteira (single-file)
+assets/tailwind.css   # CSS gerado pelo Tailwind (não editar à mão: npm run build:css)
+assets/icons.js       # só os ícones Lucide usados na página (não editar à mão: npm run build:icons)
+assets/fonts/         # Inter variável (1 arquivo para todos os pesos, licença OFL)
+scripts/build-icons.mjs # gera o assets/icons.js lendo os data-lucide do index.html
+tailwind.config.js    # cores da marca, fonte e animações do Tailwind
+src/tailwind.css      # entrada do build do Tailwind
+.github/workflows/    # build-css: regera CSS e ícones sozinho a cada push na main
 1.webp / *.avif        # imagens otimizadas (mockups e selos)
 logo.webp              # logo do rodapé
 og-image.png           # imagem de compartilhamento (Open Graph 1200x630)
@@ -109,6 +116,18 @@ Resend  →  call@prismesales.com.br  →  nattan.lima@prismeapp.com.br
 Faça `commit` + `push` na branch `main`. O GitHub Pages publica automaticamente em
 `chatbot.prismeapp.com.br`.
 
+**CSS do Tailwind:** a página não usa mais o Tailwind de CDN (ele compilava o CSS no navegador
+e deixava a página ~5 s em branco no celular). O CSS é gerado a partir das classes usadas no `index.html`:
+
+```bash
+npm install
+npm run build       # gera assets/tailwind.css e assets/icons.js
+npm test            # 87 checks de fluxo + 39 do Worker
+```
+
+Editou o `index.html` direto pelo GitHub e usou uma classe ou um ícone (`data-lucide`) novo? Não precisa
+fazer nada: o Action `build-css` regera e commita os arquivos de `assets/` sozinho logo após o push.
+
 ### Worker (Cloudflare)
 Ver passo a passo em [worker/README.md](worker/README.md). Resumo:
 ```bash
@@ -124,7 +143,7 @@ npx wrangler secret put RESEND_API_KEY
 
 ```bash
 npm install              # instala jsdom (na raiz)
-node test/test.cjs       # fluxo/UI (qualificação, calculadoras, pixel OpenAI)   — 89 checks
+node test/test.cjs       # fluxo/UI (qualificação, envio do lead, pixel OpenAI, dependências) — 87 checks
 node test/worker.test.mjs# lógica do Worker (CORS, Resend, honeypot, OpenAI CAPI) — 39 checks
 ```
 
@@ -142,7 +161,11 @@ são mockados.
 
 - **Imagens:** otimize antes de subir (a `1.png` original tinha 5 MB; virou `1.webp` com 60 KB).
   Sirva por caminho relativo, não por `raw.githubusercontent.com`.
-- **Tailwind via CDN:** funciona, mas para produção de alto tráfego o ideal é compilar um
-  CSS estático (ver Fase 4 do [DIAGNOSTICO.md](DIAGNOSTICO.md)).
+- **Tailwind:** compilado desde 09/10/2026 (antes era CDN de runtime). Cores e fonte da marca ficam no `tailwind.config.js`.
+- **Ícones:** continue usando `<i data-lucide="nome" class="w-5 h-5"></i>` no HTML; o `assets/icons.js` traz só os
+  ícones usados (11 KB, antes era a biblioteca inteira do unpkg). Logos de marca (WhatsApp, Instagram, Messenger, TikTok,
+  YouTube) são SVG inline com a classe `.fa-svg`; não há mais Font Awesome.
+- **Fonte:** Inter variável em `assets/fonts/` (antes Google Fonts com 5 arquivos).
+- **Imagens:** nada de imagem de terceiros (avatares, fundos). Tudo fica no próprio repositório.
 - **Domínios:** o site é `*.prismeapp.com.br`; o e-mail sai de `*.prismesales.com.br`
   (domínio verificado no Resend).
