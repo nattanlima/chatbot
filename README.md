@@ -22,7 +22,7 @@ src/tailwind.css      # entrada do build do Tailwind
 1.webp / *.avif        # imagens otimizadas (mockups e selos)
 logo.webp              # logo do rodapé
 og-image.png           # imagem de compartilhamento (Open Graph 1200x630)
-favicon*.{png,ico}     # favicons + apple-touch-icon
+favicon.svg / favicon*.{png,ico}  # favicons da marca Prisme (mesmo ícone do prismelite.app) + apple-touch-icon
 robots.txt / sitemap.xml
 CNAME                  # domínio do GitHub Pages
 DIAGNOSTICO.md         # auditoria técnica (perf/SEO/a11y) + roadmap + refinamento de design (§10)
