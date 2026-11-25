@@ -260,6 +260,14 @@ function ateContato(quem) {
   check('todo arquivo de assets/ citado existe (' + refs.length + ' citados)' + (faltam.length ? ' faltam: ' + faltam.join(', ') : ''), refs.length >= 15 && faltam.length === 0);
   ['assets/3d/cena-porte.js', 'assets/3d/boneco-dados.js', 'assets/3d/mulher-dados.js'].forEach(f => check(f + ' existe', fs.existsSync(path.join(RAIZ, f))));
   ['favicon.svg', 'favicon.ico', 'apple-touch-icon.png', 'og-image.png', 'logo.webp', 'CNAME'].forEach(f => check(f + ' existe', fs.existsSync(path.join(RAIZ, f))));
+  {
+    const og = (doc.querySelector('meta[property="og:image"]') || {}).content || '';
+    const arq = og.replace('https://chatbot.prismeapp.com.br/', '');
+    const existe = og.startsWith('https://chatbot.prismeapp.com.br/') && fs.existsSync(path.join(RAIZ, arq));
+    check('imagem de compartilhamento existe no repositório (' + arq + ')', existe);
+    check('imagem de compartilhamento leve o bastante para o WhatsApp (abaixo de 300 KB)', existe && fs.statSync(path.join(RAIZ, arq)).size < 300 * 1024);
+    check('Twitter Card usa a mesma imagem', (doc.querySelector('meta[name="twitter:image"]') || {}).content === og);
+  }
   check('fontes hospedadas no site, com preload', (html.match(/rel="preload"[^>]+as="font"/g) || []).length === 2);
   check('imagens.css entra depois do <style> (as fotos ganham na cascata)', html.indexOf('assets/imagens.css') > html.indexOf('</style>'));
   check('página inicial leve (HTML abaixo de 260 KB)', Buffer.byteLength(html) < 260 * 1024);
