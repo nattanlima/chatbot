@@ -17,3 +17,5 @@ npm-debug.log*
 .codex/
 .cursor/
 .impeccable/hook.cache.json
+fonte/3d/node_modules/
+test/qa/capturas/

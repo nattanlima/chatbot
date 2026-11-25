@@ -1,0 +1,91 @@
+<title>Prisme.chatbot | A Plataforma de Atendimento Omnichannel Definitiva</title>
+<meta name="description" content="Centralize WhatsApp, Instagram, Messenger e TikTok. CRM incluso, automação com IA e implementação completa em 7 dias.">
+<link rel="canonical" href="https://chatbot.prismeapp.com.br/">
+<meta name="theme-color" content="#eaf3ff">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Lima Consultoria">
+<!-- Endpoint do Cloudflare Worker que envia o lead por e-mail (ver worker/README.md). Vazio = não envia e segue para a agenda. -->
+<meta name="lead-endpoint" content="https://lead.prismesales.com.br">
+<!-- Open Graph (Facebook / WhatsApp / LinkedIn) -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Prisme.chatbot">
+<meta property="og:url" content="https://chatbot.prismeapp.com.br/">
+<meta property="og:title" content="Prisme.chatbot | Atendimento Omnichannel sem dor de cabeça">
+<meta property="og:description" content="Centralize WhatsApp, Instagram, Messenger e TikTok. CRM incluso, automação com IA e implementação completa em 7 dias.">
+<meta property="og:image" content="https://chatbot.prismeapp.com.br/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Prisme.chatbot: atendimento omnichannel">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prisme.chatbot | Atendimento Omnichannel sem dor de cabeça">
+<meta name="twitter:description" content="Centralize WhatsApp, Instagram, Messenger e TikTok. CRM, automação com IA e implementação em 7 dias.">
+<meta name="twitter:image" content="https://chatbot.prismeapp.com.br/og-image.png">
+<!-- Favicons da marca Prisme, hospedados no próprio site -->
+<link rel="icon" type="image/svg+xml" href="./favicon.svg?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png?v=2">
+<link rel="shortcut icon" href="./favicon.ico?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=2">
+<!-- As duas fontes entram cedo: o título do topo depende delas -->
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/dm-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="dns-prefetch" href="https://bzrcdn.openai.com">
+<!-- OpenAI Ads Pixel (oaiq): conversões de anúncios no ChatGPT.
+     Os eventos padrão saem da função trackEvent, no fim da página:
+     checkout_started, lead_created e appointment_scheduled. -->
+<script>
+(function (w, d, s, u) {
+    if (w.oaiq) return;
+    var q = function () { q.q.push(arguments); };
+    q.q = [];
+    w.oaiq = q;
+    var js = d.createElement(s);
+    js.async = true;
+    js.src = u;
+    var f = d.getElementsByTagName(s)[0];
+    f.parentNode.insertBefore(js, f);
+})(window, document, 'script', 'https://bzrcdn.openai.com/sdk/oaiq.min.js');
+oaiq('init', { pixelId: 'Fm75B5NPoYhY18xKckDYmW' });
+oaiq('measure', 'page_viewed', { type: 'contents' });
+</script>
+<!-- Dados estruturados (Organization + WebSite + Product com os três planos) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://chatbot.prismeapp.com.br/#organization",
+      "name": "Prisme.chatbot",
+      "url": "https://chatbot.prismeapp.com.br/",
+      "logo": "https://chatbot.prismeapp.com.br/logo.webp",
+      "description": "Plataforma de atendimento omnichannel com CRM, automação e IA.",
+      "sameAs": [
+        "https://instagram.com/prisme.sales",
+        "https://www.youtube.com/@fazqvende"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://chatbot.prismeapp.com.br/#website",
+      "url": "https://chatbot.prismeapp.com.br/",
+      "name": "Prisme.chatbot",
+      "inLanguage": "pt-BR",
+      "publisher": { "@id": "https://chatbot.prismeapp.com.br/#organization" }
+    },
+    {
+      "@type": "Product",
+      "name": "Prisme.chatbot",
+      "description": "Atendimento omnichannel: WhatsApp, Instagram, Messenger e TikTok com CRM Kanban e automação por IA.",
+      "brand": { "@id": "https://chatbot.prismeapp.com.br/#organization" },
+      "offers": [
+        { "@type": "Offer", "name": "Essencial", "price": "599.90", "priceCurrency": "BRL", "url": "https://chatbot.prismeapp.com.br/#planos", "availability": "https://schema.org/InStock" },
+        { "@type": "Offer", "name": "Integrador", "price": "799.90", "priceCurrency": "BRL", "url": "https://chatbot.prismeapp.com.br/#planos", "availability": "https://schema.org/InStock" },
+        { "@type": "Offer", "name": "IA Power", "price": "999.90", "priceCurrency": "BRL", "url": "https://chatbot.prismeapp.com.br/#planos", "availability": "https://schema.org/InStock" }
+      ]
+    }
+  ]
+}
+</script>

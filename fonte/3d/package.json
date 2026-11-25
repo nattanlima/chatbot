@@ -1,0 +1,12 @@
+{
+  "name": "cena-porte",
+  "private": true,
+  "description": "Cena 3D do bloco \"Foi feito pra mim?\". Gera assets/3d/cena-porte.js.",
+  "scripts": {
+    "build": "esbuild cena.js --bundle --minify --format=esm --target=es2020 --external:./boneco-dados.js --external:./mulher-dados.js --outfile=../../assets/3d/cena-porte.js"
+  },
+  "dependencies": {
+    "esbuild": "^0.28.2",
+    "three": "^0.187.0"
+  }
+}

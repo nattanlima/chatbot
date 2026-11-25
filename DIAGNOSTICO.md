@@ -1,3 +1,5 @@
+> Este diagnóstico é da versão anterior da página (até 10/2026). A página atual foi redesenhada em 11/2026; ver o README.
+
 # Diagnóstico Técnico — Prisme.chatbot (Landing Page)
 
 **Data:** 08/06/2026
