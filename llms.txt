@@ -1,0 +1,55 @@
+# Prisme Chatbot
+
+> Plataforma brasileira de atendimento omnichannel pelo WhatsApp e outros canais, com CRM, automação e inteligência artificial. A Prisme é provedora de tecnologia habilitada pela Meta e faz a implantação completa para o cliente em até 7 dias.
+
+Site: https://chatbot.prismeapp.com.br/
+Empresa: Prisme (LN Gestão Comercial e Serviços Ltda, CNPJ 34.322.622/0001-58)
+Idioma: português do Brasil
+
+## O que a plataforma faz
+
+- Centraliza em um só painel as conversas de WhatsApp, Instagram, Messenger e Web Chat do site.
+- Organiza o atendimento em setores, com rodízio entre atendentes, respostas rápidas, mensagem de ausência, tarefas e avaliações.
+- Automatiza com Flowbuilder (menus com botões, perguntas, horário de expediente), agendamento de mensagens, follow-up por inatividade e remarketing disparado por tag.
+- Inclui CRM de vendas em Kanban, com funis, oportunidades, tarefas e tags.
+- Oferece IA treinada no negócio do cliente, que atende, qualifica e agenda antes de passar para um humano, além de análise de atendimento e MCP (conforme o plano).
+- Integra com outros sistemas por API pública, webhooks (n8n, Typebot) e iframe.
+
+## Para quem é
+
+- Pequeno negócio: uma ou duas pessoas atendendo, que precisam de resposta fora do horário, lembretes e retomada de clientes que sumiram.
+- Média empresa: equipe dividida por setor, como farmácia ou loja, que precisa de menu por setor, rodízio e campanhas.
+- Grande operação: várias unidades e alto volume, que precisa de integração com sistema próprio, IA e permissões por perfil.
+
+## Diferenciais
+
+- Coexistência: o mesmo número funciona ao mesmo tempo no aplicativo do WhatsApp Business no celular e na plataforma, pela API Oficial da Meta. É preciso abrir o aplicativo ao menos uma vez a cada 14 dias.
+- WhatsApp Flows: o cliente escolhe produto, monta carrinho, agenda consulta ou faz pedido dentro da conversa, sem sair do WhatsApp.
+- Suporte no grupo: todo cliente, em qualquer plano, tem um grupo de WhatsApp com o time da Prisme e a assistente Eve para dúvidas e dicas.
+- Relatório quinzenal: nos dias 1 e 15 o cliente recebe no grupo os números de atendimento, vendas e conversão, com recomendações.
+- Controle de custo da API Oficial: o Concatenador junta mensagens enviadas em sequência em uma só cobrança; o Modo Híbrido envia parte das mensagens pela conexão do aplicativo, sem custo por mensagem, e deve ser usado com cuidado, como paliativo.
+- Comunidade Faz que Vende: canal no YouTube (https://www.youtube.com/@fazqvende) e comunidade no WhatsApp para donos de pequenas e médias empresas.
+
+## Planos
+
+Pagamento mensal pré-pago, sem fidelidade.
+
+- Essencial: R$ 599,90 por mês, mais R$ 1.500,00 de implementação, uma única vez. Inclui 1 conexão de WhatsApp, Modo Híbrido, CRM com Kanban, Concatenador de mensagens, até 8 usuários e aplicativo para Android (PWA).
+- Integrador: R$ 799,90 por mês, implementação a combinar. Inclui tudo do Essencial, usuários ilimitados, WhatsApp Flows, Webchat, webhooks, integração externa, API pública e suporte prioritário.
+- IA Power: R$ 999,90 por mês, implementação a combinar. Inclui tudo do Integrador, módulo de IA nativo, treinamento da IA, análise de sentimento e MCP. Os tokens de IA são pagos à parte, conforme o uso.
+- Conexões extras (Instagram, Webchat ou outros números de WhatsApp): R$ 147,90 por mês cada.
+
+## Perguntas comuns
+
+- Por que existe taxa de implementação? Ela cobre a análise do portfólio empresarial na Meta, a adequação e verificação da empresa, a conexão do número, a configuração inicial feita pela Prisme, os treinamentos da equipe e a análise inicial de performance.
+- Por que a implementação dos planos Integrador e IA Power é "a combinar"? Cada projeto é customizado e o valor depende da complexidade inicial (integrações, volume, times e fluxos). O valor é fechado em uma call.
+- Em quanto tempo entra no ar? Em até 7 dias: reunião, criação do grupo de implantação, configuração feita pela Prisme e treinamento da equipe.
+- Preciso trocar de número ou perder o aplicativo? Não. Com a coexistência o número continua no celular e passa a funcionar também na plataforma.
+- Tem fidelidade? Não. O plano pode ser cancelado quando o cliente quiser.
+
+## Contato
+
+- Agendar demonstração: botão "Agendar Demonstração" em https://chatbot.prismeapp.com.br/
+- WhatsApp: https://wa.me/5524992592320
+- Central de ajuda: https://ajuda.prismeapp.com.br
+- Política de privacidade: https://www.prismesales.com.br/politica-de-privacidade

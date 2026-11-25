@@ -17,7 +17,7 @@ da raiz são **saída do build**: o que for editado direto neles se perde na pr�
 ```bash
 python3 fonte/build.py                 # produção: regrava index.html e assets/
 python3 fonte/build.py --unico /tmp/x  # prévia: um index.html só, com tudo embutido, sem rastreamento
-npm test                               # 122 checagens da página + 39 do Worker
+npm test                               # 130 checagens da página + 39 do Worker
 ```
 
 Editou um arquivo de `fonte/` direto pelo GitHub? Não precisa rodar nada: o Action `site`
@@ -53,6 +53,8 @@ og-image-v2.jpg         # imagem de compartilhamento (WhatsApp, redes), gerada p
 og-image.png, favicon*   # imagem de compartilhamento anterior (mantida para links antigos) e favicons
 logo.webp, 1.webp, *.avif na raiz  # imagens da versão anterior, mantidas para não quebrar links externos
 robots.txt / sitemap.xml / CNAME
+llms.txt                 # resumo em texto para robôs de IA (ChatGPT, Claude, Perplexity). Mudou preço ou plano? Atualize aqui também
+fonte/prerender.cjs      # grava no HTML o conteúdo da visão padrão, para quem não executa JavaScript
 ```
 
 ---
@@ -170,7 +172,7 @@ npx wrangler secret put RESEND_API_KEY
 
 ```bash
 npm install
-node test/test.cjs         # página: agendamento, envio do lead, pixel, dependências, conteúdo (122 checagens)
+node test/test.cjs         # página: agendamento, envio do lead, pixel, dependências, conteúdo (130 checagens)
 node test/worker.test.mjs  # Worker: CORS, Resend, honeypot, OpenAI CAPI (39 checagens)
 ```
 
