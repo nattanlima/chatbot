@@ -1,0 +1,70 @@
+# Monta a página a partir de fonte/ e roda os testes.
+# Na main: se alguém editou fonte/ direto pelo GitHub, a página gerada (index.html e assets/)
+# é atualizada e commitada sozinha em cerca de um minuto. Em pull request: só confere e testa.
+name: site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'fonte/**'
+      - 'index.html'
+      - 'assets/**'
+      - 'test/**'
+      - 'worker/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/site.yml'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Monta a página
+        run: python3 fonte/build.py
+
+      - name: Avisa se o pull request esqueceu de rodar o build
+        if: github.event_name == 'pull_request'
+        run: |
+          if ! git diff --quiet -- index.html assets/; then
+            echo "::warning::index.html ou assets/ estão diferentes do que fonte/build.py gera. Na main isso é corrigido sozinho."
+          fi
+
+      - name: Commita a página gerada se mudou
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- index.html assets/; then
+            echo "página já está em dia"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets/site.js assets/imagens.css assets/img assets/fonts
+          git commit -m "chore: regera a página (fonte/build.py)"
+          git push
+          # commit feito pelo token do Actions nem sempre dispara o Pages: pede o build explicitamente
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
+
+      - name: Testes
+        run: npm test

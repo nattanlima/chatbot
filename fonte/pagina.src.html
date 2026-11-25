@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{HEAD}}
+<style>
+/* Fontes variáveis hospedadas no próprio site (licença OFL em assets/fonts/). */
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:200 800;font-stretch:75% 100%;font-display:swap;src:url("{{FONT_DISPLAY}}") format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:100 1000;font-display:swap;src:url("{{FONT_BODY}}") format("woff2")}
+
+:root{
+  --hx-ink:#151716; --hx-paper:#fff; --hx-mist:#f1f3f2; --hx-sage:#e9ede9;
+  --hx-green:#16c172; --hx-green-deep:#0e8a52;
+  --hx-eve-a:#49cdf3; --hx-eve-b:#1766d8;
+  --hx-sky-a:#eaf3ff; --hx-sky-b:#fdf4e6;
+  /* degradê da IA: do azul da Eve ao verde da Prisme */
+  --hx-ia:linear-gradient(115deg,#1766d8 0%,#22b3e0 50%,#16c172 100%);
+  --hx-ia-ink:linear-gradient(100deg,#1759c4 0%,#0b86a6 55%,#0e8a52 100%);
+  --hx-display:"Bricolage Grotesque",system-ui,sans-serif;
+  --hx-body:"DM Sans",system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--hx-paper);color:var(--hx-ink);font-family:var(--hx-body);-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+.hx-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:focus-visible{outline:2px solid var(--hx-eve-b);outline-offset:3px;border-radius:8px}
+
+/* ================= HEADER: no topo só a marca; menus chegam ao rolar ================= */
+.hx-nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;justify-content:center;padding:12px 12px 0;pointer-events:none}
+.hx-cap{pointer-events:auto;display:flex;align-items:center;gap:20px;height:56px;width:100%;max-width:1152px;padding:0 16px;
+  border-radius:40px;border:1px solid transparent;background:transparent;
+  justify-content:center;transition:background-color .4s,box-shadow .4s,border-color .4s}
+.hx-logo{display:flex;align-items:center;gap:8px;flex:none}
+.hx-logo img{width:30px;height:30px;display:block}
+.hx-logo span{font-size:17px;font-weight:700;letter-spacing:-.02em}
+.hx-logo em{font-style:normal;margin-left:6px;padding:2px 6px;border-radius:6px;background:var(--hx-mist);font-size:11px;font-weight:700;vertical-align:middle}
+.hx-links{flex:1;display:none;justify-content:center;gap:24px}
+.hx-links a{font-size:14px;font-weight:500;color:rgba(21,23,22,.6);white-space:nowrap;transition:color .15s}
+.hx-links a:hover{color:var(--hx-ink)}
+.hx-navcta{margin-left:auto}
+.hx-nav:not(.is-rolled) .hx-links,.hx-nav:not(.is-rolled) .hx-navcta{display:none}
+.hx-nav.is-rolled .hx-links,.hx-nav.is-rolled .hx-navcta{animation:hx-menu .45s cubic-bezier(.22,1,.36,1) .12s both}
+@keyframes hx-menu{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.hx-logo{will-change:transform}
+.hx-nav.is-rolled .hx-cap{justify-content:flex-start;max-width:880px;border-radius:16px;border-color:rgba(21,23,22,.06);background:rgba(255,255,255,.72);
+  box-shadow:0 8px 30px rgba(21,23,22,.08);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+@media (min-width:900px){.hx-links{display:flex}.hx-navcta{margin-left:0}}
+
+/* ================= BOTÕES ================= */
+.hx-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:10px;background:var(--hx-ink);color:#fff;
+  font-weight:600;font-size:15px;line-height:1;padding:15px 26px;white-space:nowrap;
+  transition:transform .12s cubic-bezier(.23,1,.32,1),background-color .15s}
+.hx-btn:hover{background:#2a2d2b}
+.hx-btn:active{transform:scale(.97)}
+.hx-btn svg{width:18px;height:18px;flex:none}
+.hx-btn--light{background:#fff;color:var(--hx-ink);box-shadow:inset 0 0 0 1px rgba(21,23,22,.12)}
+.hx-btn--light:hover{background:var(--hx-mist)}
+.hx-btn--sm{min-height:44px;padding:11px 20px;font-size:14px}
+
+/* ================= HERO ================= */
+.hx-nav{--kb:1}
+.hx-logo{zoom:var(--kb)}
+.hx-nav.is-rolled .hx-logo{zoom:1}
+.hx{--k:1;--kb:1;--mx:0;--my:0;--sp:0;--hw:390px;--hh:700px;--ex:195px;--ey:430px;--sx:20px;--sy:300px;--sw:350px;--sh:264px;
+  --ox:20px;--oy:300px;--bw:350px;--bh:264px;
+  position:relative;display:flex;flex-direction:column;min-height:100vh;min-height:100svh;overflow:clip;
+  background:linear-gradient(180deg,var(--hx-sky-a) 0%,#f6fafe 46%,var(--hx-sky-b) 100%)}
+.hx-grid{position:absolute;inset:0;pointer-events:none}
+.hx-grid{background-image:linear-gradient(to right,rgba(21,23,22,.05) 1px,transparent 1px),linear-gradient(to bottom,rgba(21,23,22,.05) 1px,transparent 1px);
+  background-size:44px 44px;-webkit-mask-image:radial-gradient(75% 70% at 50% 42%,#000 30%,transparent 100%);mask-image:radial-gradient(75% 70% at 50% 42%,#000 30%,transparent 100%);
+  transform:translate3d(calc(var(--mx)*6px),calc(var(--sp)*70px),0)}
+.hx-stage::before{content:"";position:absolute;inset:-30% -12%;pointer-events:none;background:
+  radial-gradient(34% 44% at 43% 50%,rgba(34,179,224,.18),transparent 70%),
+  radial-gradient(30% 42% at 58% 56%,rgba(22,193,114,.15),transparent 70%),
+  radial-gradient(24% 30% at 50% 44%,rgba(23,102,216,.10),transparent 70%)}
+
+.hx-copy{position:relative;z-index:4;text-align:center;padding:clamp(72px,10.5svh,96px) 20px 0;
+  transform:translate3d(0,calc(var(--sp)*-46px),0);opacity:calc(1 - var(--sp)*1.25)}
+/* Bricolage em peso médio e largura quase normal: firme sem gritar */
+.hx-h1{margin:0;font-family:var(--hx-display);font-weight:620;font-stretch:90%;line-height:1.02;letter-spacing:-.03em;
+  font-size:clamp(32px,min(10.2vw,6.4svh),104px)}
+.hx-grad{color:#0b86a6}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .hx-h1 .hx-grad{background:var(--hx-ia);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.08em}
+}
+.hx-h1 span{display:block}
+.hx-h1 .hx-l2 span{display:inline}
+.hx-sub{margin:calc(12px*var(--k)) auto 0;max-width:40ch;font-size:calc(16px*var(--k));line-height:1.45;color:rgba(21,23,22,.68);text-wrap:balance}
+.hx-foot{position:relative;z-index:7;padding:12px 20px clamp(16px,3.4svh,40px);}
+.hx-ctas{zoom:var(--kb);display:flex;justify-content:center;gap:8px}
+.hx-ctas .hx-btn{flex:1 1 0;max-width:220px;padding:15px 8px;font-size:13.5px}
+.hx-ctas .hx-btn svg{display:none}
+@media (max-width:349px){.hx-ctas{flex-direction:column;align-items:stretch}.hx-ctas .hx-btn{max-width:none}}
+@media (min-width:600px){
+  .hx-sub{font-size:calc(17px*var(--k));margin-top:calc(15px*var(--k));max-width:48ch}
+  .hx-ctas{gap:12px}
+  .hx-foot{padding:14px 20px clamp(20px,5.6svh,110px)}
+  .hx-ctas .hx-btn{flex:none;max-width:none;padding:15px 26px;font-size:15px}
+  .hx-ctas .hx-btn svg{display:block}
+}
+@media (min-width:900px){
+  .hx-copy{padding-top:clamp(76px,11svh,190px)}
+  .hx-h1{font-size:clamp(40px,min(5.8vw,9.3svh),170px)}
+  .hx-h1 span{display:inline}
+  .hx-h1 .hx-l1,.hx-h1 .hx-l2{display:block;white-space:nowrap}
+}
+/* entrada da carga: texto nasce VISÍVEL (LCP) e só desliza */
+.hx-in{animation:hx-in .6s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--n,0)*70ms)}
+@keyframes hx-in{from{transform:translateY(-10px)}to{transform:none}}
+
+/* ================= NUVEM DE CLIENTES: dezenas de balões com foto + selo do canal ================= */
+.hx-cloud{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:calc(1 - var(--sp)*1.15)}
+/* três camadas por balão: posição/junção -> parallax -> flutuação */
+.hx-bal{--px:var(--xm);--py:var(--ym);position:absolute;left:0;top:0;opacity:0;transition:none;will-change:transform,opacity;
+  transform:translate(-50%,-50%) translate(calc(var(--ox) + var(--px)*var(--bw)/100),calc(var(--oy) + var(--py)*var(--bh)/100)) scale(.4)}
+.hx-bal.hx-dk{display:none}
+@media (min-width:900px){.hx-bal{--px:var(--x);--py:var(--y)}.hx-bal.hx-dk{display:block}}
+.hx-par{transform:translate3d(calc(var(--mx)*var(--d)*-11px),calc(var(--my)*var(--d)*-8px - var(--sp)*var(--d)*60px),0);
+  transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.hx-bub{zoom:var(--k);display:flex;align-items:center;gap:9px;background:#fff;white-space:nowrap;
+  box-shadow:0 6px 24px rgba(21,23,22,.14);animation:hx-float 5.5s ease-in-out infinite alternate;animation-delay:calc(var(--o)*-.47s)}
+@keyframes hx-float{from{transform:translateY(-5px)}to{transform:translateY(7px)}}
+.hx-full .hx-bub{padding:5px 14px 5px 5px;border-radius:18px;font-size:12.5px;font-weight:500}
+.hx-full[data-lado="e"] .hx-bub{border-bottom-left-radius:6px}
+.hx-full[data-lado="d"] .hx-bub{border-bottom-right-radius:6px}
+.hx-full{--av:30px}
+.hx-mini .hx-bub{padding:3px;border-radius:50%}
+.hx-mini[data-d="1"]{--av:26px}.hx-mini[data-d="2"]{--av:34px}.hx-mini[data-d="3"]{--av:42px}
+.hx-bal[data-d="1"] .hx-bub{opacity:.78;box-shadow:0 3px 12px rgba(21,23,22,.1)}
+@media (min-width:900px){
+  .hx-full{--av:38px}
+  .hx-full .hx-bub{font-size:15px;gap:11px;padding:6px 18px 6px 6px;border-radius:22px}
+  .hx-mini[data-d="1"]{--av:34px}.hx-mini[data-d="2"]{--av:46px}.hx-mini[data-d="3"]{--av:58px}
+}
+
+/* foto do cliente + selo do canal */
+.hx-av{position:relative;flex:none;width:var(--av,30px);height:var(--av,30px);border-radius:50%;background-color:var(--hx-sage);background-size:cover;background-position:center}
+{{FACES_CSS}}
+/* sem foto disponível: iniciais (cada pessoa aparece uma vez só) */
+.hx-ini{display:grid;place-items:center;font-size:calc(var(--av,30px)*.36);font-weight:700;letter-spacing:-.02em;line-height:1}
+.hx-ini[data-t="0"]{background:#dbeafe;color:#1d4ed8}.hx-ini[data-t="1"]{background:#dff5e9;color:#0b6b40}.hx-ini[data-t="2"]{background:#fdecc8;color:#8a5a00}
+.hx-ini[data-t="3"]{background:#ebe5ff;color:#5a39c9}.hx-ini[data-t="4"]{background:#ffe1e6;color:#b4234a}.hx-ini[data-t="5"]{background:#d8f3f6;color:#0b6f8c}
+.hx-ini[data-t="6"]{background:#ececec;color:#3b3f3d}
+.hx-src{flex:none;display:grid;place-items:center;width:var(--av,30px);height:var(--av,30px);border-radius:50%;background:#dff5e9;color:#0e8a52}
+.hx-src svg{width:54%;height:54%;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.hx-chip{position:absolute;right:-4px;bottom:-4px;display:grid;place-items:center;width:max(15px,46%);height:max(15px,46%);border-radius:50%;color:#fff;box-shadow:0 0 0 2px #fff}
+.hx-chip svg{width:58%;height:58%;fill:currentColor}
+.hx-chip[data-c="wa"]{background:#25d366}
+.hx-chip[data-c="ig"]{background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888)}
+.hx-chip[data-c="fb"]{background:#1877f2}
+.hx-chip[data-c="tt"]{background:#111}
+.hx-chip[data-c="ml"]{background:#ffe600;color:#2d3277}
+.hx-chip[data-c="rcs"]{background:#1a73e8}
+.hx-chip[data-c="ml"] svg,.hx-chip[data-c="rcs"] svg{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+.hx[data-phase="chegam"] .hx-bal{opacity:1;
+  transform:translate(-50%,-50%) translate(calc(var(--ox) + var(--px)*var(--bw)/100),calc(var(--oy) + var(--py)*var(--bh)/100)) scale(1);
+  transition:transform .7s cubic-bezier(.34,1.56,.64,1) calc(var(--o)*.072s + .1s),opacity .3s ease calc(var(--o)*.072s + .1s)}
+.hx[data-phase="juntam"] .hx-bal,.hx[data-phase="organiza"] .hx-bal,.hx[data-phase="responde"] .hx-bal{opacity:0;
+  transform:translate(-50%,-50%) translate(var(--ex),var(--ey)) scale(.15);
+  transition:transform .95s cubic-bezier(.6,0,.3,1) calc(var(--o)*.027s),opacity .3s ease calc(var(--o)*.027s + .62s)}
+
+/* ================= PALCO: a Eve + painel que se abre ================= */
+.hx-stage{--eve:clamp(104px,17svh,210px);position:relative;z-index:6;flex:1 1 auto;width:100%;margin:0 auto;
+  min-height:268px;opacity:calc(1 - var(--sp)*1.15)}
+@media (min-width:900px){.hx-stage{--eve:clamp(150px,21.5svh,340px);min-height:300px}}
+.hx-core{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transform:translate3d(calc(var(--mx)*7px),calc(var(--my)*5px - var(--sp)*26px),0);transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.hx-eve{position:relative;z-index:2;flex:none;width:var(--eve);height:var(--eve);
+  transition:width .7s cubic-bezier(.22,1,.36,1),height .7s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.34,1.4,.64,1)}
+.hx-halo{position:absolute;inset:-8%;border-radius:50%;background:var(--hx-ia);filter:blur(26px);opacity:.3;
+  transition:opacity .8s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+.hx-ring{position:absolute;inset:2%;width:96%;height:96%;transform:rotate(-90deg);opacity:0;transition:opacity .35s ease;overflow:visible}
+.hx-ring circle{fill:none}
+.hx-ring-t{stroke:rgba(23,102,216,.13);stroke-width:2.5}
+.hx-ring-p{stroke:url(#hxR);stroke-width:4;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset .28s cubic-bezier(.22,1,.36,1)}
+.hx-count{zoom:var(--k);position:absolute;left:50%;top:calc(100% + 4px);transform:translate(-50%,8px);opacity:0;white-space:nowrap;background:#fff;border-radius:999px;
+  padding:7px 15px;font-size:13px;font-weight:500;color:rgba(21,23,22,.7);box-shadow:0 1px 2px rgba(21,23,22,.06),0 8px 24px rgba(21,23,22,.1);
+  transition:opacity .3s ease,transform .45s cubic-bezier(.22,1,.36,1)}
+.hx-count b{display:inline-block;min-width:1.25em;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;color:#1766d8}
+.hx[data-phase="juntam"] .hx-ring{opacity:1}
+.hx[data-phase="juntam"] .hx-count{opacity:1;transform:translate(-50%,0)}
+@media (min-width:900px){.hx-count{font-size:15px;padding:9px 19px}}
+.hx-eve-host{position:absolute;inset:0}
+@keyframes hx-bob{from{transform:translateY(-3%) rotate(-2deg)}to{transform:translateY(3%) rotate(2deg)}}
+@keyframes hx-blink{0%,91%,100%{transform:scaleY(1)}95%{transform:scaleY(.12)}}
+@keyframes hx-wave{from{opacity:.55;transform:scale(1)}to{opacity:0;transform:scale(2.5)}}
+@keyframes hx-talk{0%,100%{opacity:.25}50%{opacity:1}}
+.hx[data-phase="juntam"] .hx-halo{opacity:.42}
+.hx[data-phase="organiza"] .hx-eve,.hx[data-phase="responde"] .hx-eve{width:calc(84px*var(--k));height:calc(84px*var(--k))}
+.hx[data-phase="organiza"] .hx-halo,.hx[data-phase="responde"] .hx-halo{opacity:.2}
+
+.hx-pw{zoom:var(--k);display:grid;grid-template-rows:0fr;width:min(94%,720px);margin-top:-20px;opacity:0;background:#fff;border-radius:24px;
+  border:1px solid rgba(21,23,22,.07);box-shadow:0 2px 6px rgba(21,23,22,.05),0 24px 70px rgba(21,23,22,.13);
+  transition:grid-template-rows .7s cubic-bezier(.22,1,.36,1),opacity .45s ease}
+.hx-pi{min-height:0;overflow:hidden}
+.hx-pp{padding:24px 10px 10px}
+.hx[data-phase="organiza"] .hx-pw,.hx[data-phase="responde"] .hx-pw{grid-template-rows:1fr;opacity:1}
+
+.hx-status{position:relative;height:18px;margin-bottom:8px;text-align:center;font-size:13px;font-weight:600;line-height:18px;color:rgba(21,23,22,.72)}
+.hx-status span{position:absolute;inset:0;opacity:0;transition:opacity .35s ease}
+.hx[data-phase="organiza"] .hx-status span:first-child,
+.hx[data-phase="responde"] .hx-status span:last-child,
+.hx[data-phase="sai"] .hx-status span:last-child{opacity:1}
+
+.hx-rows{display:grid;grid-template-columns:1fr;gap:4px}
+.hx-row{--av:30px;display:flex;align-items:center;gap:11px;min-width:0;padding:7px 10px 7px 8px;border-radius:14px;background:var(--hx-mist);
+  opacity:0;transform:translateY(8px)}
+.hx-row:nth-child(1){--i:0}.hx-row:nth-child(2){--i:1}.hx-row:nth-child(3){--i:2}
+.hx-row:nth-child(4){--i:3}.hx-row:nth-child(5){--i:4}.hx-row:nth-child(6){--i:5}
+.hx-row:nth-child(n+4){display:none}
+.hx-rt{flex:1;min-width:0;text-align:left}
+.hx-rn{font-size:12px;font-weight:700;line-height:1.25}
+.hx-rn i{font-style:normal;font-weight:500;color:rgba(21,23,22,.5)}
+.hx-msg{position:relative;height:16px;font-size:12px;line-height:16px}
+.hx-q,.hx-a,.hx-dots{position:absolute;left:0;top:0;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hx-q{color:rgba(21,23,22,.62)}
+.hx-a{opacity:0;font-weight:600;color:#0b6f8c}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .hx-a{background:var(--hx-ia-ink);-webkit-background-clip:text;background-clip:text;color:transparent}
+}
+.hx-dots{display:flex;align-items:center;gap:3px;height:16px;opacity:0}
+.hx-dots i{width:5px;height:5px;border-radius:50%;background:#22b3e0;animation:hx-dot 1s ease-in-out infinite}
+.hx-dots i:nth-child(2){animation-delay:.15s}.hx-dots i:nth-child(3){animation-delay:.3s}
+@keyframes hx-dot{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-3px);opacity:1}}
+.hx-tag{flex:none;display:inline-flex;align-items:center;gap:3px;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:700;
+  opacity:0;transform:scale(.6)}
+.hx-tag[data-s="vendas"]{background:#d9f5e6;color:#0b6b40}
+.hx-tag[data-s="financeiro"]{background:#fdecc8;color:#8a5a00}
+.hx-tag[data-s="suporte"]{background:#dbeafe;color:#1d4ed8}
+.hx-tag[data-s="agenda"]{background:#ebe5ff;color:#5a39c9}
+.hx-tag svg{width:0;height:11px;opacity:0;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.hx-more{margin:8px 0 2px;text-align:center;font-size:12px;color:rgba(21,23,22,.55);opacity:0}
+.hx-more .hx-md{display:none}
+
+.hx[data-phase="organiza"] .hx-row,.hx[data-phase="responde"] .hx-row,.hx[data-phase="sai"] .hx-row{opacity:1;transform:none;
+  transition:opacity .4s cubic-bezier(.23,1,.32,1) calc(var(--i)*.13s + .45s),transform .4s cubic-bezier(.23,1,.32,1) calc(var(--i)*.13s + .45s)}
+.hx[data-phase="organiza"] .hx-tag,.hx[data-phase="responde"] .hx-tag,.hx[data-phase="sai"] .hx-tag{opacity:1;transform:none;
+  transition:opacity .25s ease calc(var(--i)*.13s + 1.05s),transform .45s cubic-bezier(.34,1.56,.64,1) calc(var(--i)*.13s + 1.05s)}
+.hx[data-phase="organiza"] .hx-more,.hx[data-phase="responde"] .hx-more,.hx[data-phase="sai"] .hx-more{opacity:1;transition:opacity .4s ease 1.6s}
+
+/* respostas: pergunta sai, "digitando", resposta em degradê entra, tag ganha o check */
+.hx[data-phase="responde"] .hx-q{animation:hx-out .3s ease both;animation-delay:calc(var(--i)*.6s + .3s)}
+.hx[data-phase="responde"] .hx-dots{animation:hx-blip .75s ease both;animation-delay:calc(var(--i)*.6s + .45s)}
+.hx[data-phase="responde"] .hx-a{animation:hx-rise .4s cubic-bezier(.23,1,.32,1) both;animation-delay:calc(var(--i)*.6s + 1.15s)}
+.hx[data-phase="responde"] .hx-tag svg{animation:hx-check .35s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i)*.6s + 1.25s)}
+.hx[data-phase="sai"] .hx-q{opacity:0}
+.hx[data-phase="sai"] .hx-a{opacity:1}
+.hx[data-phase="sai"] .hx-tag svg{width:11px;opacity:1}
+@keyframes hx-out{to{opacity:0;transform:translateY(-5px)}}
+@keyframes hx-blip{0%{opacity:0}20%,75%{opacity:1}100%{opacity:0}}
+@keyframes hx-rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes hx-check{from{width:0;opacity:0}to{width:11px;opacity:1}}
+
+@media (min-width:600px){
+  .hx-rows{grid-template-columns:1fr 1fr;gap:5px}
+  .hx-row:nth-child(n+4){display:flex}
+  .hx-pp{padding:26px 12px 12px}
+}
+@media (min-width:900px){
+  .hx-pw{width:min(94%,860px)}
+  .hx[data-phase="organiza"] .hx-eve,.hx[data-phase="responde"] .hx-eve{width:calc(108px*var(--k));height:calc(108px*var(--k))}
+  .hx-row{--av:36px;padding:9px 13px 9px 10px;gap:13px}
+  .hx-rn,.hx-msg{font-size:13.5px}.hx-msg{height:18px;line-height:18px}
+  .hx-tag{font-size:12px;padding:5px 11px}
+  .hx-status{font-size:14.5px;margin-bottom:10px}
+  .hx-more{font-size:13px}
+  .hx-more .hx-md{display:inline}.hx-more .hx-mm{display:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hx-in,.hx-bub,.hx-dots i{animation:none}
+  .hx-copy,.hx-foot,.hx-grid,.hx-par,.hx-core{transform:none}
+  .hx-cloud *,.hx-stage *{transition:none!important;animation:none!important}
+  .hx[data-phase="responde"] .hx-q{opacity:0}
+  .hx[data-phase="responde"] .hx-a{opacity:1}
+  .hx[data-phase="responde"] .hx-tag svg{width:11px;opacity:1}
+  .hx-ring,.hx-count{display:none}
+}
+
+/* ================= MÓDULO "FOI FEITO PRA MIM?": três portes em 3D ================= */
+.pm{--ch:80vw;position:relative;padding:clamp(48px,9svh,130px) 0 clamp(36px,6svh,90px);text-align:center;overflow:clip;
+  background:linear-gradient(180deg,var(--hx-sky-b) 0%,#f4f9fd 26%,#e9f3ff 62%,#f6fafe 100%)}
+.pm-h2{margin:0;padding:0 20px;font-family:var(--hx-display);font-weight:620;font-stretch:90%;line-height:1.02;letter-spacing:-.03em;font-size:clamp(30px,min(8.6vw,5.4svh),64px)}
+.pm-sub{margin:10px auto 0;padding:0 20px;max-width:44ch;font-size:16px;line-height:1.45;color:rgba(21,23,22,.68)}
+.pm-cena{position:relative;max-width:1560px;margin:clamp(6px,1.5svh,22px) auto 0;padding-top:var(--ch)}
+.pm-canvas{position:absolute;top:0;left:50%;width:100vw;transform:translateX(-50%);height:var(--ch);pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%);mask-image:linear-gradient(180deg,transparent 0,#000 9%)}
+.pm.sem-3d{--ch:0px}.pm.sem-3d .pm-canvas{display:none}
+.pm-opcoes{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:0 8px}
+.pm-op{appearance:none;border:0;background:none;margin:0;padding:0 4px;display:flex;justify-content:center;align-items:flex-start;text-align:center;-webkit-tap-highlight-color:transparent}
+.pm-op:focus-visible{outline:none}
+.pm-card{display:block;width:100%;max-width:330px;padding:9px 6px;border-radius:16px;background:rgba(255,255,255,.7);box-shadow:inset 0 0 0 1px rgba(21,23,22,.07);
+  transition:background-color .25s,box-shadow .25s,transform .3s cubic-bezier(.22,1,.36,1),opacity .25s}
+.pm-card b{display:block;font-size:13.5px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.pm-card i{display:none;font-style:normal;margin-top:4px;font-size:14px;line-height:1.35;color:rgba(21,23,22,.62)}
+.pm-pts{display:none;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .4s cubic-bezier(.22,1,.36,1),opacity .3s}
+.pm-pts ul{min-height:0;overflow:hidden;margin:0;padding:0;list-style:none;text-align:left}
+.pm-pts li{position:relative;margin-top:7px;padding-left:22px;font-size:13.5px;line-height:1.35;color:rgba(21,23,22,.78)}
+.pm-pts li:first-child{margin-top:11px}
+.pm-pts li::before{content:"";position:absolute;left:3px;top:.42em;width:9px;height:9px;border-radius:50%;background:var(--hx-green)}
+.pm-op:hover .pm-card,.pm-op:focus-visible .pm-card{background:#fff;box-shadow:inset 0 0 0 1.5px #a9e8c8,0 10px 30px rgba(21,23,22,.1);transform:translateY(-3px)}
+.pm-op:focus-visible .pm-card{box-shadow:inset 0 0 0 2px var(--hx-eve-b),0 10px 30px rgba(21,23,22,.1)}
+.pm-op[aria-pressed="true"] .pm-card{background:#fff;box-shadow:inset 0 0 0 2px var(--hx-green),0 12px 34px rgba(14,138,82,.16)}
+.pm[data-porte] .pm-op[aria-pressed="false"] .pm-card{opacity:.6}
+.pm[data-porte] .pm-op[aria-pressed="false"]:hover .pm-card{opacity:1}
+.pm-res{margin:18px auto 0;padding:0 20px;max-width:56ch;min-height:44px;font-size:15px;line-height:1.45;color:rgba(21,23,22,.72)}
+.pm-res button{appearance:none;border:0;background:none;padding:0 0 0 6px;font-weight:600;color:var(--hx-eve-b);text-decoration:underline;text-underline-offset:3px}
+@media (min-width:760px){
+  .pm{--ch:clamp(280px,40vw,640px)}
+  .pm-sub{font-size:calc(17px*var(--kb,1))}
+  .pm-cena{padding-top:0}
+  .pm-opcoes{padding:0}
+  .pm-op{padding:var(--ch) 12px 0}
+  .pm-card{padding:16px 20px 18px;border-radius:22px;text-align:left}
+  .pm-card b{font-size:19px}
+  .pm-card i{display:block}
+  .pm-pts{display:grid}
+  .pm-op:hover .pm-pts,.pm-op:focus-visible .pm-pts,.pm-op[aria-pressed="true"] .pm-pts{grid-template-rows:1fr;opacity:1}
+  .pm-res{font-size:16px}
+}
+
+/* ================= EVE ACOMPANHANTE: desce do hero e segue a jornada ================= */
+.ed{position:fixed;right:max(12px,2vw);bottom:max(12px,2svh);z-index:60;display:flex;align-items:center;gap:6px;pointer-events:none;
+  opacity:0;transform:translate3d(0,24px,0) scale(.6);transition:opacity .3s ease,transform .45s cubic-bezier(.22,1,.36,1)}
+.ed.is-on{opacity:1;transform:none}
+/* esperando a escolha: fica no alto, ao lado do título, sem cobrir as opções */
+@media (min-width:1100px){.ed.is-on.esperando.no-pm{transform:translate3d(0,calc(-100svh + 100% + clamp(84px,13svh,150px)),0)}}
+.ed.is-on.is-chegando{animation:ed-desce .95s cubic-bezier(.22,1,.36,1) both}
+@keyframes ed-desce{from{opacity:0;transform:translate3d(calc(-50vw + 60%),-100svh,0) scale(1.9)}35%{opacity:1}}
+.ed-eve{flex:none;width:76px;height:76px}
+.ed-fala{max-width:min(250px,62vw);padding:10px 15px;border-radius:18px 18px 6px 18px;background:#fff;font-size:14px;font-weight:500;line-height:1.35;text-align:left;
+  box-shadow:0 1px 2px rgba(21,23,22,.06),0 10px 30px rgba(21,23,22,.14);opacity:0;transform:translateX(10px) scale(.96);transform-origin:100% 100%;
+  transition:opacity .3s ease,transform .4s cubic-bezier(.34,1.4,.64,1)}
+.ed.tem-fala .ed-fala{opacity:1;transform:none}
+/* áudio da seção: o botão fica sobre a Eve, as ondas atrás dela e o balão transcreve a fala */
+.ed{--ev:76px}
+.ed-som{position:absolute;right:0;top:50%;width:var(--ev);height:var(--ev);margin-top:calc(var(--ev) / -2);padding:0;border:0;border-radius:50%;background:none;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s}
+.ed-som i{position:absolute;left:-6px;bottom:-2px;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--hx-ink);color:#fff;box-shadow:0 0 0 3px #fff,0 8px 18px rgba(21,23,22,.25);transform:scale(.4);transition:transform .45s cubic-bezier(.34,1.6,.64,1),background-color .25s}
+.ed-som svg{width:17px;height:17px}
+.ed-som .s-pausa,.ed.tocando .ed-som .s-toca{display:none}
+.ed.tocando .ed-som .s-pausa{display:block}
+.ed.tocando .ed-som i{background:var(--hx-green-deep)}
+.ed.tem-audio.is-on .ed-som{opacity:1;pointer-events:auto}
+.ed.tem-audio .ed-som i{transform:none}
+.ed.tem-audio:not(.tocando) .ed-som i::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 0 rgba(21,23,22,.4);animation:ed-pulso 1.8s ease-out infinite}
+@keyframes ed-pulso{to{box-shadow:0 0 0 14px rgba(21,23,22,0)}}
+.ed-som:focus-visible{outline:2px solid var(--hx-eve-b);outline-offset:2px}
+.ed-ondas{position:absolute;z-index:-1;right:calc(var(--ev) * -.6);top:50%;width:calc(var(--ev) * 2.2);height:calc(var(--ev) * 2.2);margin-top:calc(var(--ev) * -1.1);pointer-events:none;opacity:0;transition:opacity .4s}
+.ed.tem-audio .ed-ondas{opacity:1}
+.ed.tem-audio.is-on .ed-fala{max-width:min(300px,66vw)}
+.ed.tem-audio.is-on.tem-fala .ed-fala{pointer-events:auto;cursor:pointer}
+.ed-fala u{text-decoration:none;opacity:.3;transition:opacity .22s}
+.ed-fala u.dito{opacity:1}
+@media (min-width:760px){.ed{--ev:104px}.ed-eve{width:104px;height:104px}.ed-fala{font-size:15.5px;padding:12px 18px}}
+@media (prefers-reduced-motion:reduce){.ed-som i::after{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.ed,.ed.is-on.is-chegando,.ed-fala,.pm-card,.pm-pts{animation:none;transition:none}}
+
+/* ================= COMO FUNCIONA: três faixas com cena animada ================= */
+.cf{padding:clamp(48px,8svh,104px) clamp(20px,5vw,72px);overflow:clip}
+.cf--a{background:linear-gradient(180deg,#fff 0%,var(--hx-mist) 100%)}
+.cf--c{background:var(--hx-mist)}
+.cf h2{margin:0;max-width:15ch;font-family:var(--hx-display);font-weight:620;font-stretch:90%;line-height:1.04;letter-spacing:-.03em;font-size:clamp(30px,4.2vw,54px);text-wrap:balance}
+.cf-grid{display:grid;gap:40px clamp(32px,6vw,96px);align-items:center}
+.cf-ic{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#fff;flex:none}
+.cf-ic svg{width:58%;height:58%;fill:currentColor}
+.cf-ic[data-c="wa"]{background:#25d366}.cf-ic[data-c="fb"]{background:#fff;color:#1877f2}.cf-ic[data-c="fb"] svg{width:100%;height:100%}
+.cf-ic[data-c="ig"]{background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888)}
+/* etapas da implantação */
+.cf-etapas{list-style:none;margin:clamp(24px,4svh,40px) 0 0;padding:0;counter-reset:et}
+.cf-etapas li{position:relative;counter-increment:et;padding:0 0 22px 46px;opacity:.42;transition:opacity .35s}
+.cf-etapas li:last-child{padding-bottom:0}
+.cf-etapas li::before{content:counter(et);position:absolute;left:0;top:-3px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#fff;box-shadow:inset 0 0 0 1.5px rgba(21,23,22,.2);font-size:14px;font-weight:700;transition:background-color .35s,color .35s,box-shadow .35s}
+.cf-etapas li::after{content:"";position:absolute;left:14px;top:31px;bottom:1px;width:2px;background:rgba(21,23,22,.14)}
+.cf-etapas li:last-child::after{display:none}
+.cf-etapas li.on,.cf-etapas li.feito{opacity:1}
+.cf-etapas li.on::before{background:var(--hx-ink);color:#fff;box-shadow:none}
+.cf-etapas li.feito::before{background:var(--hx-green);color:#fff;box-shadow:none}
+.cf-etapas b{display:block;font-size:clamp(17px,1.4vw,20px);letter-spacing:-.01em}
+.cf-etapas span{display:block;margin-top:3px;font-size:15px;line-height:1.4;color:rgba(21,23,22,.66)}
+.cf-etapas .hx-btn{margin-top:12px}
+/* celular pela metade, com a base sumindo */
+.cf-vis{position:relative;display:flex;flex-direction:column;align-items:center}
+.cf-dias{width:min(100%,460px);display:flex;align-items:center;gap:12px;margin-bottom:22px;font-size:13.5px;font-weight:600;color:rgba(21,23,22,.62)}
+.cf-dias i{flex:1;height:6px;border-radius:99px;background:rgba(21,23,22,.1);overflow:hidden}
+.cf-dias u{display:block;height:100%;width:100%;border-radius:99px;background:var(--hx-ia);transform-origin:0 50%;transform:scaleX(.04);transition:transform .9s cubic-bezier(.22,1,.36,1)}
+.cf-dias span:last-child{transition:color .3s}
+.cf-dias.fim span:last-child{color:var(--hx-green-deep)}
+.cf-cena{position:relative;display:flex;justify-content:center;align-items:flex-start;width:100%}
+.cf-fone{position:relative;flex:none;width:min(300px,78vw);height:470px;padding:10px 10px 0;border-radius:42px 42px 0 0;background:var(--hx-ink);
+  -webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,#000 70%,transparent 100%)}
+.cf-tela{height:100%;border-radius:32px 32px 0 0;overflow:hidden;background:#efeae2;display:flex;flex-direction:column}
+.cf-topo{display:flex;align-items:center;gap:10px;padding:26px 14px 10px;background:#fff;box-shadow:0 1px 0 rgba(21,23,22,.08);text-align:left}
+.cf-topo img{width:36px;height:36px;padding:7px;border-radius:50%;background:var(--hx-mist)}
+.cf-topo b{display:block;font-size:15px;line-height:1.2}
+.cf-topo span{display:block;font-size:12.5px;color:rgba(21,23,22,.58)}
+.cf-chat{height:286px;flex:none;padding:10px 10px 12px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 34px);mask-image:linear-gradient(180deg,transparent 0,#000 34px)}
+.wa{max-width:86%;padding:7px 10px 8px;border-radius:10px;font-size:14px;line-height:1.36;text-align:left;box-shadow:0 1px .5px rgba(11,20,26,.13);animation:waEntra .34s cubic-bezier(.22,1,.36,1) both}
+.wa-in{align-self:flex-start;background:#fff;border-top-left-radius:3px}
+.wa-out{align-self:flex-end;background:#d9fdd3;border-top-right-radius:3px}
+.wa-in>em{display:block;margin-bottom:1px;font-style:normal;font-size:12.5px;font-weight:700;color:var(--hx-green-deep)}
+.wa-sis{align-self:center;max-width:92%;padding:4px 10px;border-radius:8px;background:rgba(255,255,255,.92);font-size:12px;color:rgba(21,23,22,.62);box-shadow:0 1px .5px rgba(11,20,26,.1);animation:waEntra .3s ease both}
+.wa-ics{display:inline-flex;gap:4px;margin-left:6px;vertical-align:-6px}
+.wa-ics .cf-ic{width:21px;height:21px}
+.wa-dig{display:inline-flex;gap:4px;padding:11px 12px}
+.wa-dig i{width:6px;height:6px;border-radius:50%;background:rgba(21,23,22,.38);animation:waPonto 1s infinite}
+.wa-dig i:nth-child(2){animation-delay:.15s}.wa-dig i:nth-child(3){animation-delay:.3s}
+.wa small{float:right;display:inline-flex;align-items:center;gap:3px;margin:7px -2px -3px 10px;font-size:11px;line-height:1;color:rgba(21,23,22,.46)}
+.wa small svg{width:16px;height:11px}
+.wa small:empty{display:none}
+.wa q{display:block;quotes:none;margin:-2px -4px 6px;padding:5px 9px 6px;border-radius:7px;border-left:4px solid #06cf9c;background:rgba(11,20,26,.06);font-size:12.5px;line-height:1.3;color:rgba(21,23,22,.62)}
+.wa q b{display:block;color:#008069;font-size:12.5px}
+.wa-grupo{align-self:flex-start;display:flex;flex-direction:column;gap:3px;width:min(86%,290px);animation:waEntra .34s cubic-bezier(.22,1,.36,1) both}
+.wa-grupo .wa{max-width:none;animation:none;border-bottom-left-radius:10px}
+.wa-bts{display:grid;gap:3px}
+.wa-bts span{display:flex;align-items:center;justify-content:center;gap:7px;padding:9px 10px;border-radius:10px;background:#fff;box-shadow:0 1px .5px rgba(11,20,26,.13);font-size:14px;font-weight:500;color:#027eb5;transition:background-color .2s,transform .2s}
+.wa-bts svg{width:15px;height:15px}
+.wa-bts span.toque{background:#d5edf8;transform:scale(.97)}
+.cf-topo--palco{padding:13px 16px 12px}
+@keyframes waEntra{from{opacity:0;transform:translateY(10px) scale(.97)}}
+@keyframes waPonto{0%,60%,100%{opacity:.35;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+/* a Eve executando a configuração */
+.cf-eve{position:relative;z-index:2;flex:none;width:min(250px,84vw);margin:-128px 0 0;padding:14px 16px 14px;border-radius:20px;background:#fff;box-shadow:0 20px 50px rgba(21,23,22,.14),inset 0 0 0 1px rgba(21,23,22,.06);text-align:left}
+.cf-eve-topo{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:14px;font-weight:700}
+.cf-eve-topo>div{width:52px;height:52px;flex:none;margin:-8px 0 -6px -8px}
+.cf-eve ul{list-style:none;margin:0;padding:0}
+.cf-eve li{display:flex;align-items:center;gap:9px;padding:6px 0;font-size:14px;color:rgba(21,23,22,.5);transition:color .3s}
+.cf-eve li::before{content:"";flex:none;width:17px;height:17px;border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(21,23,22,.22);transition:background-color .3s,box-shadow .3s}
+.cf-eve li.fazendo{color:var(--hx-ink)}
+.cf-eve li.fazendo::before{box-shadow:none;border:2px solid rgba(23,102,216,.22);border-top-color:var(--hx-eve-b);animation:cfGira .7s linear infinite}
+.cf-eve li.ok{color:var(--hx-ink)}
+.cf-eve li.ok::before{box-shadow:none;background:var(--hx-green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 17 17' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 8.8 2.4 2.4L12 6.4'/%3E%3C/svg%3E") center/100% no-repeat}
+.cf-eve li span{display:inline-flex;gap:3px;margin-left:auto}
+.cf-eve li span .cf-ic{width:19px;height:19px;opacity:.35;filter:grayscale(1);transition:opacity .3s,filter .3s}
+.cf-eve li.ok span .cf-ic{opacity:1;filter:none}
+@keyframes cfGira{to{transform:rotate(1turn)}}
+/* coexistência */
+.cf-coex{position:relative;justify-self:center;width:min(300px,76vw)}
+.cf-coex>img{display:block;width:100%;height:auto;-webkit-mask-image:linear-gradient(180deg,#000 58%,transparent 98%);mask-image:linear-gradient(180deg,#000 58%,transparent 98%)}
+.cf-sinc{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);width:min(330px,88vw);padding:6px;border-radius:20px;background:#fff;box-shadow:0 20px 50px rgba(21,23,22,.16),inset 0 0 0 1px rgba(21,23,22,.06);text-align:left}
+.cf-sinc>div{display:flex;align-items:center;gap:10px;padding:9px 10px}
+.cf-sinc>div+div{border-top:1px solid rgba(21,23,22,.08)}
+.cf-sinc small{display:block;font-size:12px;color:rgba(21,23,22,.56)}
+.cf-sinc b{display:block;font-size:14.5px;font-weight:600;line-height:1.3}
+.cf-sinc img{width:26px;height:26px;padding:5px;border-radius:50%;background:var(--hx-mist);flex:none}
+.cf-sinc b.novo{animation:waEntra .34s cubic-bezier(.22,1,.36,1) both}
+.cf-pts{list-style:none;margin:clamp(22px,3.5svh,36px) 0 0;padding:0;max-width:44ch}
+.cf-pts li{padding:16px 0;border-top:1px solid rgba(21,23,22,.14)}
+.cf-selo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px}
+.cf-selo img{height:clamp(40px,3.6vw,52px);width:auto;mix-blend-mode:multiply}
+.cf-pts b{display:block;font-size:clamp(17px,1.4vw,20px);letter-spacing:-.01em}
+.cf-pts span{display:block;margin-top:3px;font-size:15px;line-height:1.4;color:rgba(21,23,22,.66)}
+/* exemplos na prática */
+.cf-abas{margin-top:clamp(22px,3.5svh,36px);display:grid;gap:8px;max-width:420px}
+.cf-abas button{position:relative;appearance:none;border:0;text-align:left;padding:14px 16px 15px;border-radius:14px;background:transparent;color:rgba(21,23,22,.6);overflow:hidden;transition:background-color .25s,color .25s,box-shadow .25s}
+.cf-abas button:hover{color:var(--hx-ink)}
+.cf-abas b{display:block;font-size:clamp(16px,1.3vw,18.5px);letter-spacing:-.01em}
+.cf-abas span{display:grid;grid-template-rows:0fr;font-size:14.5px;line-height:1.4;transition:grid-template-rows .35s cubic-bezier(.22,1,.36,1)}
+.cf-abas span>i{font-style:normal;min-height:0;overflow:hidden}
+.cf-abas button[aria-selected="true"]{background:#fff;color:var(--hx-ink);box-shadow:0 8px 26px rgba(21,23,22,.07),inset 0 0 0 1px rgba(21,23,22,.06)}
+.cf-abas button[aria-selected="true"] span{grid-template-rows:1fr}
+.cf-abas button[aria-selected="true"] span>i{padding-top:3px;color:rgba(21,23,22,.66)}
+.cf-abas u{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--hx-green);transform-origin:0 50%;transform:scaleX(0)}
+.cf-abas button[aria-selected="true"] u.anda{animation:cfAnda var(--dur,7s) linear both}
+@keyframes cfAnda{to{transform:scaleX(1)}}
+.cf-palco{justify-self:center;width:min(440px,100%);border-radius:26px;background:#efeae2;box-shadow:0 24px 60px rgba(21,23,22,.12),inset 0 0 0 1px rgba(21,23,22,.06);overflow:hidden}
+.cf-gat{display:flex;align-items:center;gap:8px;padding:13px 16px;background:#fff;box-shadow:0 1px 0 rgba(21,23,22,.08);font-size:14px;font-weight:600;text-align:left}
+.cf-gat svg{width:17px;height:17px;flex:none;color:rgba(21,23,22,.55)}
+.cf-conv{height:clamp(260px,38svh,330px);-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30px);mask-image:linear-gradient(180deg,transparent 0,#000 30px);padding:12px 12px 6px;display:flex;flex-direction:column;justify-content:flex-end;gap:7px;overflow:hidden}
+.wa-auto{align-self:center;display:inline-flex;align-items:center;gap:6px;padding:5px 11px 5px 7px;border-radius:99px;background:#fff;font-size:12.5px;font-weight:600;color:var(--hx-eve-b);box-shadow:0 1px .5px rgba(11,20,26,.1);animation:waEntra .3s ease both}
+.wa-auto::before{content:"";width:16px;height:16px;border-radius:50%;background:var(--hx-ia)}
+.cf-res{margin:6px 12px 12px;padding:11px 14px;border-radius:14px;background:#fff;display:flex;align-items:center;gap:9px;font-size:14.5px;font-weight:600;text-align:left;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .4s cubic-bezier(.22,1,.36,1)}
+.cf-res::before{content:"";flex:none;width:20px;height:20px;border-radius:50%;background:var(--hx-green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 17 17' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 8.8 2.4 2.4L12 6.4'/%3E%3C/svg%3E") center/100% no-repeat}
+.cf-res.on{opacity:1;transform:none}
+@media (min-width:900px){
+  .cf-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}
+  .cf-grid--inv>.cf-coex{order:-1}
+  .cf-cena{justify-content:center}
+  .cf-eve{margin:150px 0 0 -14px}
+  .cf-sinc{left:auto;right:-46%;bottom:16%;transform:none}
+  .cf-coex{justify-self:start;margin-left:8%}
+}
+@media (max-width:899px){
+  .cf-cena{flex-direction:column;align-items:center}
+  .cf-grid--inv>.cf-coex{margin-bottom:8px}
+}
+@media (prefers-reduced-motion:reduce){.wa,.wa-sis,.wa-auto,.cf-sinc b.novo{animation:none}.wa-dig i,.cf-eve li.fazendo::before{animation:none}.cf-dias u{transition:none}}
+
+/* ================= CUSTOS: a mesma conversa vista no painel e no celular do cliente ================= */
+.cs-topo{display:grid;gap:28px clamp(32px,6vw,96px);align-items:end}
+.cs-lado{display:grid;gap:16px;justify-items:start}
+.cs-abas{display:grid;gap:8px;width:100%;max-width:460px}
+.cs-abas button{appearance:none;border:0;text-align:left;padding:14px 16px;border-radius:14px;background:transparent;color:rgba(21,23,22,.58);transition:background-color .25s,color .25s,box-shadow .25s}
+.cs-abas button:hover{color:var(--hx-ink)}
+.cs-abas b{display:block;font-size:clamp(16px,1.3vw,18.5px);letter-spacing:-.01em}
+.cs-abas span{display:block;margin-top:2px;font-size:14.5px;line-height:1.4}
+.cs-abas button[aria-selected="true"]{background:var(--hx-mist);color:var(--hx-ink);box-shadow:inset 0 0 0 1.5px var(--hx-green)}
+.cs-passos{list-style:none;margin:clamp(30px,5svh,52px) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+/* cada etapa tem uma linha em onda que cresce enquanto ela acontece: é o tempo passando */
+.cs-passos li{position:relative;padding-top:24px;font-size:14px;line-height:1.3;color:rgba(21,23,22,.45);transition:color .3s}
+.cs-passos li::before{content:"";position:absolute;left:0;right:0;top:7px;height:2px;border-radius:9px;background:rgba(21,23,22,.12);transition:opacity .3s}
+.cs-passos svg{position:absolute;left:0;top:0;width:100%;height:16px;overflow:visible;clip-path:inset(-4px 100% -4px 0)}
+.cs-passos path{fill:none;stroke:var(--hx-green);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.cs-passos li.on{color:var(--hx-ink);font-weight:600}
+.cs-passos li.on::before,.cs-passos li.feito::before{opacity:0}
+.cs-passos li.on svg{animation:csCobra var(--dur,4s) linear both}
+.cs-passos li.feito svg{clip-path:none}
+.cs-passos li.feito path{stroke:#a9e8c8}
+.cs-pausa .cs-passos li.on svg{animation-play-state:paused}
+@keyframes csCobra{from{clip-path:inset(-4px 100% -4px 0)}to{clip-path:inset(-4px 0 -4px 0)}}
+.cs-palco{--csh:clamp(380px,54svh,500px);margin-top:18px;display:grid;gap:26px 28px;align-items:start;padding:clamp(16px,2.4vw,32px);border-radius:28px;background:linear-gradient(160deg,var(--hx-sky-a),#f6fafe 55%,var(--hx-sky-b))}
+.cs-palco figure{margin:0;min-width:0}
+.cs-palco figcaption{margin-bottom:10px;font-size:13.5px;font-weight:600;color:rgba(21,23,22,.62)}
+.cs-app{position:relative;border-radius:18px;background:#fff;box-shadow:0 18px 44px rgba(21,23,22,.1),inset 0 0 0 1px rgba(21,23,22,.07);overflow:hidden}
+.cs-app-topo{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(21,23,22,.08);text-align:left}
+.cs-av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--hx-ink);color:#fff;font-size:14px;font-weight:700}
+.cs-app-topo b{display:block;font-size:14.5px;line-height:1.2}
+.cs-app-topo small{display:block;font-size:12.5px;color:rgba(21,23,22,.56)}
+.cs-modo{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:99px;background:#dff7ea;color:var(--hx-green-deep);font-size:12.5px;font-weight:600}
+.cs-modo::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--hx-green)}
+.cs-app{display:flex;flex-direction:column;height:var(--csh)}
+.cs-app-topo{flex:none}
+.cs-app-corpo{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--hx-mist);padding:0 12px 12px}
+.cs-msgs{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding-top:12px;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30px);mask-image:linear-gradient(180deg,transparent 0,#000 30px)}
+.cs-l{display:flex;flex-direction:column;max-width:84%;animation:waEntra .34s cubic-bezier(.22,1,.36,1) both}
+.cs-l.in{align-self:flex-start;align-items:flex-start}.cs-l.out{align-self:flex-end;align-items:flex-end}
+.cs-l>span{padding:8px 11px;border-radius:12px;font-size:14px;line-height:1.36;text-align:left;box-shadow:0 1px .5px rgba(11,20,26,.1)}
+.cs-l.in>span{background:#fff;border-top-left-radius:3px}.cs-l.out>span{background:#d9fdd3;border-top-right-radius:3px}
+.cs-l>span i{display:block;font-style:normal}
+.cs-l.pulso>span{animation:csPulso .7s ease}
+@keyframes csPulso{30%{box-shadow:0 0 0 5px rgba(22,193,114,.28)}}
+.cs-tag{margin-top:4px;padding:2px 8px;border-radius:99px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.cs-tag.hib{background:#dff7ea;color:var(--hx-green-deep)}.cs-tag.ofi{background:#e3e6e4;color:rgba(21,23,22,.72)}
+.cs-tray{flex:none;display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .35s cubic-bezier(.22,1,.36,1),opacity .25s,transform .45s cubic-bezier(.5,0,.75,0)}
+.cs-tray.on{grid-template-rows:1fr;opacity:1}
+.cs-tray.junta{transform:scale(.86,.3);opacity:0}
+.cs-tray>div{min-height:0;overflow:hidden}
+.cs-tray-in{margin-top:8px;padding:10px 12px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1.5px #a9e8c8;text-align:left}
+.cs-tray-topo{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px;font-weight:600}
+.cs-rel{display:inline-flex;align-items:center;gap:6px;color:rgba(21,23,22,.62);font-weight:500}
+.cs-rel svg{width:18px;height:18px;transform:rotate(-90deg)}
+.cs-rel circle{fill:none;stroke-width:2.6}
+.cs-rel circle+circle{stroke:var(--hx-green);stroke-linecap:round;stroke-dasharray:50.3;transition:stroke-dashoffset .7s linear}
+.cs-ti{display:flex;justify-content:space-between;gap:10px;margin-top:6px;font-size:13px;line-height:1.3;animation:waEntra .28s ease both}
+.cs-ti s{flex:none;color:rgba(21,23,22,.42);font-size:12px}
+.cs-comp{flex:none;display:flex;align-items:center;gap:10px;margin-top:8px;padding:10px 12px 10px 14px;border-radius:99px;background:#fff;box-shadow:inset 0 0 0 1px rgba(21,23,22,.08);font-size:14px;color:rgba(21,23,22,.45);text-align:left}
+.cs-comp span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs-comp span.dig{color:var(--hx-ink)}
+.cs-comp i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--hx-green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12M13 7l5 5-5 5'/%3E%3C/svg%3E") center/62% no-repeat}
+.cs-veu{position:absolute;inset:0;background:rgba(21,23,22,.28);opacity:0;pointer-events:none;transition:opacity .3s}
+.cs-modal{position:absolute;left:50%;top:50%;width:min(340px,88%);padding:18px 18px 16px;border-radius:18px;background:#fff;box-shadow:0 30px 70px rgba(21,23,22,.28);text-align:left;opacity:0;pointer-events:none;transform:translate(-50%,-46%) scale(.96);transition:opacity .25s,transform .4s cubic-bezier(.22,1,.36,1)}
+.cs-app.modal .cs-veu{opacity:1}
+.cs-app.modal .cs-modal{opacity:1;transform:translate(-50%,-50%)}
+.cs-modal b{display:block;font-size:16px}
+.cs-modal small{display:block;font-size:12.5px;color:rgba(21,23,22,.58)}
+.cs-pct{margin-top:14px;font-family:var(--hx-display);font-weight:620;font-stretch:90%;font-size:44px;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.cs-trilho{position:relative;height:6px;margin:14px 9px 0;border-radius:9px;background:rgba(21,23,22,.12)}
+.cs-trilho u{position:absolute;left:0;top:0;bottom:0;border-radius:9px;background:var(--hx-green)}
+.cs-trilho em{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(21,23,22,.3),inset 0 0 0 2px var(--hx-green)}
+.cs-expl{margin:14px 0 0;font-size:13px;line-height:1.4;color:rgba(21,23,22,.68)}
+.cs-botoes{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.cs-botoes span{padding:9px 16px;border-radius:9px;font-size:13.5px;font-weight:600;transition:transform .12s}
+.cs-botoes span:last-child{background:var(--hx-ink);color:#fff}
+.cs-botoes span.aperta{transform:scale(.92)}
+.cs-cliente{position:relative;justify-self:center}
+.cs-cliente .cf-fone{height:var(--csh)}
+.cs-cliente .cf-chat{height:calc(var(--csh)*.68 - 84px)}
+.cf-topo .cs-loja{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--hx-green);color:#fff;font-size:15px;font-weight:700}
+.cs-cliente.foco .cf-fone{filter:drop-shadow(0 0 0 rgba(0,0,0,0))}
+.cs-notif{position:absolute;left:50%;bottom:46px;z-index:2;transform:translate(-50%,10px) scale(.9);padding:9px 14px;border-radius:99px;background:var(--hx-ink);color:#fff;font-size:13.5px;font-weight:600;white-space:nowrap;opacity:0;transition:opacity .3s,transform .4s cubic-bezier(.34,1.4,.64,1)}
+.cs-notif.on{opacity:1;transform:translate(-50%,0)}
+.cs-kpis{margin:18px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;border-radius:18px;overflow:hidden;background:rgba(21,23,22,.1);box-shadow:inset 0 0 0 1px rgba(21,23,22,.1)}
+.cs-kpis div{padding:14px 16px;background:#fff}
+.cs-kpis dt{font-size:13px;color:rgba(21,23,22,.6)}
+.cs-kpis dd{margin:4px 0 0;font-family:var(--hx-display);font-weight:620;font-stretch:90%;font-size:clamp(20px,2.2vw,30px);letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.cs-kpis div.bom dd{color:var(--hx-green-deep)}
+.cs-kpis dd s{margin-right:6px;font-size:.6em;font-weight:500;color:rgba(21,23,22,.45)}
+.cs-kpis dt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs-base{margin:12px 0 0;font-size:13px;color:rgba(21,23,22,.56)}
+@media (min-width:900px){
+  .cs-topo{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .cs-palco{grid-template-columns:minmax(0,1fr) 300px}
+  .cs-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+.cs-legenda{display:none;margin:10px 0 0;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:899px){.cs-passos li{font-size:0;padding-top:16px}.cs-legenda{display:block}}
+@media (prefers-reduced-motion:reduce){.cs-passos li.on svg{animation:none;clip-path:none}.cs-l,.cs-ti{animation:none}.cs-tray,.cs-modal,.cs-veu,.cs-notif{transition:none}}
+
+{{SP_CSS}}
+{{FIM_CSS}}
+/* ================= JORNADA POR PORTE: os blocos abaixo trocam de conteúdo conforme a escolha ================= */
+.jr{padding:clamp(64px,10svh,128px) clamp(20px,5vw,72px)}
+.jr-in{max-width:1180px;margin:0 auto}
+.jr h2{margin:0;max-width:19ch;font-family:var(--hx-display);font-weight:620;font-stretch:90%;line-height:1.04;letter-spacing:-.03em;font-size:clamp(30px,4.5vw,58px);text-wrap:balance}
+.jr-sub{margin:20px 0 0;max-width:58ch;font-size:clamp(16px,1.3vw,19px);line-height:1.5;color:rgba(21,23,22,.68)}
+.jr h3{margin:0;font-size:clamp(17px,1.4vw,20px);font-weight:700;letter-spacing:-.01em;line-height:1.25}
+/* a fala do cliente entre aspas e a Eve, que voa do canto da tela para responder */
+.jr-dor{display:grid;gap:28px clamp(24px,4vw,64px);align-items:center}
+.jr-dor h2{max-width:15ch}
+.jr-resp{display:flex;align-items:flex-end;justify-content:flex-end;gap:4px}
+.jr-balao{position:relative;margin:0 0 clamp(48px,9vw,120px);padding:clamp(14px,1.4vw,20px) clamp(16px,1.7vw,24px);max-width:27ch;border-radius:24px 24px 6px 24px;background:#fff;
+  box-shadow:0 20px 50px rgba(21,23,22,.1),inset 0 0 0 1px rgba(21,23,22,.07);font-size:clamp(16px,1.6vw,23px);line-height:1.4;font-weight:500;letter-spacing:-.005em;
+  transform-origin:100% 100%;transition:transform .4s cubic-bezier(.34,1.4,.64,1),opacity .25s}
+.jr-balao.some{opacity:0;transform:scale(.7)}
+.jr-balao .jr-dig{position:absolute;left:clamp(16px,1.7vw,24px);top:clamp(14px,1.4vw,20px);padding:8px 0}
+.jr-eve{flex:none;width:clamp(116px,20vw,290px);aspect-ratio:1;opacity:0}
+.jr-eve.aqui{opacity:1}
+.ed.ausente{opacity:0!important;transform:translate3d(0,10px,0) scale(.5)!important}
+@media (min-width:900px){.jr-dor{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media (max-width:899px){.jr-balao{max-width:none;flex:1}}
+.jr-troca{transition:opacity .22s ease}
+.jr-troca.saindo{opacity:0}
+.jr-ver{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:clamp(28px,5svh,56px)}
+.jr-ver>span{font-size:14px;color:rgba(21,23,22,.6)}
+.jr-seg{display:inline-flex;padding:4px;border-radius:999px;background:var(--hx-mist)}
+.jr-seg button{appearance:none;border:0;background:none;min-height:44px;padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;color:rgba(21,23,22,.62);transition:background-color .2s,color .2s,box-shadow .2s}
+.jr-seg button:hover{color:var(--hx-ink)}
+.jr-seg button[aria-pressed="true"]{background:#fff;color:var(--hx-ink);box-shadow:0 1px 2px rgba(21,23,22,.08),inset 0 0 0 1.5px var(--hx-green)}
+.jr-aviso{margin:0;flex-basis:100%;font-size:14px;color:rgba(21,23,22,.6)}
+.jr-aviso:empty{display:none}
+.jr-passos{list-style:none;margin:clamp(36px,6svh,72px) 0 0;padding:0;display:grid;gap:28px clamp(24px,3vw,48px)}
+.jr-passos li{padding-top:18px;border-top:1.5px solid var(--hx-ink)}
+.jr-passos b{display:block;margin-bottom:14px;font-family:var(--hx-display);font-weight:620;font-stretch:90%;font-size:clamp(34px,3.4vw,48px);line-height:1;letter-spacing:-.03em;color:var(--hx-green-deep)}
+.jr-passos p,.jr-mods p,.jr-pts p,.jr-onb p{margin:8px 0 0;font-size:15.5px;line-height:1.5;color:rgba(21,23,22,.68)}
+.jr-mods{margin-top:clamp(32px,5svh,60px);display:grid;gap:0 clamp(24px,3vw,48px)}
+.jr-mods>div{padding:22px 0 24px;border-top:1px solid rgba(21,23,22,.14)}
+.jr-mods em{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:#fff3d6;font-style:normal;font-size:11.5px;font-weight:600;color:#7a5a12;vertical-align:middle}
+.jr-extras{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.jr-extras>span{margin-right:4px;font-size:14.5px;color:rgba(21,23,22,.62)}
+.jr-extras i{font-style:normal;padding:8px 13px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(21,23,22,.1);font-size:14px;font-weight:500}
+.jr-extras [data-f]{--c:#0e8a52;--b:#e3f6ec}
+.jr-extras [data-f="1"]{--c:#a15c07;--b:#fdf0d9}
+.jr-extras [data-f="2"]{--c:#6d3fd1;--b:#efe9fd}
+.jr-extras [data-f="3"]{--c:#1766d8;--b:#e4f0ff}
+.jr-extras i[data-f]{background:var(--b);color:var(--c);box-shadow:none;font-weight:600}
+.jr-sim{display:inline-block;width:1.08em;height:1.08em;margin-left:.42em;vertical-align:-.16em;flex:none}
+.jr-leg{flex-basis:100%;display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 0 0!important;font-size:13.5px}
+.jr-leg b{display:inline-flex;align-items:center;gap:7px;font-weight:500;color:rgba(21,23,22,.66)}
+.jr-leg b::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c)}
+.jr-custo{display:grid;gap:36px clamp(32px,6vw,96px);align-items:start}
+.jr-custo .hx-btn{margin-top:28px}
+.jr-pts{display:grid;gap:0}
+.jr-pts>div{padding:20px 0;border-top:1px solid rgba(21,23,22,.14)}
+.jr-pts>div:last-child{border-bottom:1px solid rgba(21,23,22,.14)}
+.jr--salvia{background:var(--hx-sage)}
+.jr-onb{margin-top:clamp(32px,5svh,60px);display:grid;gap:28px clamp(24px,3vw,48px)}
+.jr--planos{background:linear-gradient(180deg,#fff 0%,var(--hx-sky-a) 100%)}
+.jr--planos h2,.jr--planos .jr-sub,.jr--fim h2,.jr--fim .jr-sub{margin-left:auto;margin-right:auto;text-align:center}
+.jr-planos{margin-top:clamp(32px,5svh,60px);display:grid;gap:18px;align-items:stretch}
+.jr-plano{position:relative;container-type:inline-size;display:flex;flex-direction:column;padding:28px clamp(16px,2.4vw,26px) 26px;border-radius:22px;background:#fff;box-shadow:inset 0 0 0 1px rgba(21,23,22,.1)}
+.jr-plano.dest{box-shadow:inset 0 0 0 2px var(--hx-ink),0 22px 50px rgba(21,23,22,.1)}
+.jr-plano .selo{position:absolute;top:-12px;left:26px;padding:5px 11px;border-radius:999px;background:var(--hx-ink);color:#fff;font-size:12px;font-weight:600}
+.jr-plano>p{margin:8px 0 0;min-height:3em;font-size:15px;line-height:1.45;color:rgba(21,23,22,.66)}
+.jr-preco{margin-top:20px;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 8px;white-space:nowrap;font-family:var(--hx-display);font-weight:620;font-stretch:90%;letter-spacing:-.03em;font-size:clamp(32px,19cqw,44px);line-height:1}
+.jr-preco small{flex-basis:100%;font-family:var(--hx-body);font-size:15px;font-weight:500;letter-spacing:0;color:rgba(21,23,22,.6)}
+.jr-impl{margin-top:8px;font-size:14px;color:rgba(21,23,22,.62)}
+.jr-plano ul{flex:1;list-style:none;margin:22px 0 26px;padding:20px 0 0;border-top:1px solid rgba(21,23,22,.12)}
+.jr-plano li{position:relative;padding-left:24px;margin-top:10px;font-size:15px;line-height:1.4}
+.jr-plano li:first-child{margin-top:0}
+.jr-plano li::before{content:"";position:absolute;left:2px;top:.36em;width:11px;height:6px;border-left:2px solid var(--hx-green-deep);border-bottom:2px solid var(--hx-green-deep);transform:rotate(-45deg)}
+.jr-plano .hx-btn{width:100%;min-height:48px;padding:12px 10px;white-space:normal;text-align:center;line-height:1.2;text-wrap:balance}
+/* cada item explica o que é num balão: abre no mouse, no foco, no toque e sozinho, em sequência */
+.jr-plano [data-dica]>span{cursor:help;border-bottom:1.5px dotted rgba(21,23,22,.3);transition:border-color .2s}
+.jr-plano [data-dica].aberto>span,.jr-plano [data-dica]:hover>span{border-bottom-color:var(--hx-green-deep)}
+.jr-plano [data-dica]:focus-visible{outline:2px solid var(--hx-eve-b);outline-offset:3px;border-radius:6px}
+.jr-mcp{display:inline-block;width:17px;height:17px;margin-left:7px;vertical-align:-3px}
+.jr-dica{position:absolute;z-index:5;left:14px;right:-6px;top:calc(100% + 9px);padding:12px 14px 13px;border-radius:14px;background:var(--hx-ink);color:#fff;font-size:14px;line-height:1.42;box-shadow:0 16px 36px rgba(21,23,22,.24);
+  opacity:0;visibility:hidden;transform:translateY(-6px) scale(.97);transform-origin:24px 0;transition:opacity .2s,transform .28s cubic-bezier(.34,1.4,.64,1),visibility 0s .2s}
+.jr-dica::before{content:"";position:absolute;left:20px;top:-6px;width:13px;height:13px;border-radius:3px;background:var(--hx-ink);transform:rotate(45deg)}
+.jr-dica a{display:inline-block;margin-top:7px;color:#8ff0c2;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.jr-plano .aberto{z-index:6}
+.jr-impl{position:relative}
+.jr-dica::after{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
+.jr-dica b{display:block;margin-bottom:5px;font-size:15px}
+.jr-dica ul{margin:8px 0 0!important;padding:0!important;list-style:none;display:grid;gap:5px}
+.jr-dica ul li{position:relative;padding:0 0 0 18px!important;margin:0!important;border:0!important;font-size:13.5px;color:rgba(255,255,255,.9)}
+.jr-dica ul li::before{content:"";position:absolute;left:2px;top:.5em;width:7px;height:7px;border-radius:50%;background:#8ff0c2}
+.jr-dica .hx-btn{margin-top:11px;width:100%;background:#fff;color:var(--hx-ink)}
+.jr-plano .aberto .jr-dica{opacity:1;visibility:visible;transform:none;transition:opacity .2s,transform .28s cubic-bezier(.34,1.4,.64,1),visibility 0s}
+@media (prefers-reduced-motion:reduce){.jr-dica{transition:none}}
+.jr-nota{margin:26px auto 0;max-width:60ch;text-align:center;font-size:15px;line-height:1.5;color:rgba(21,23,22,.66)}
+.jr--fim{text-align:center}
+.jr--fim .jr-ctas{margin-top:30px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+@media (min-width:820px){
+  .jr-passos,.jr-onb,.jr-planos{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .jr-mods{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .jr-custo{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media (min-width:560px) and (max-width:819px){.jr-mods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){.jr-troca{transition:none}}
+</style>
+{{CSS_IMAGENS}}</head>
+<body>
+
+<header class="hx-nav" id="hxNav">
+  <nav class="hx-cap" aria-label="Navegação principal">
+    <a class="hx-logo" href="#topo" aria-label="Prisme Chatbot, voltar ao topo">
+      <img src="{{LOGO}}" alt="" width="32" height="32">
+      <span>Prisme<em>Chatbot</em></span>
+    </a>
+    <div class="hx-links">
+      <a href="#onboarding">Como funciona</a>
+      <a href="#modulos">Funcionalidades</a>
+      <a href="#modo-hibrido">Custos</a>
+      <a href="#so-a-prisme">Diferenciais</a>
+      <a href="#planos">Planos</a>
+    </div>
+    <a class="hx-btn hx-btn--sm hx-navcta" href="#planos">Ver Planos</a>
+  </nav>
+</header>
+
+<section class="hx" id="topo" data-phase="sai">
+  <div class="hx-grid" aria-hidden="true"></div>
+
+  <div class="hx-cloud" aria-hidden="true">
+{{BALOES}}
+  </div>
+
+  <div class="hx-copy">
+    <h1 class="hx-h1 hx-in">
+      <span class="hx-l1"><span>Atendimento</span> <span class="hx-grad">omnichannel</span></span>
+      <span class="hx-l2"><span>sem dor</span> <span>de cabeça</span></span>
+    </h1>
+    <p class="hx-sub hx-in" style="--n:1">A gente configura tudo: seus canais em um só painel, com a IA organizando e respondendo cada conversa.</p>
+  </div>
+
+  <p class="hx-sr">Animação ilustrativa: dezenas de clientes chegam por WhatsApp, Instagram, Messenger, TikTok, Mercado Livre e RCS, a Eve junta todas as conversas em um painel, classifica por setor e responde cada uma.</p>
+
+  <div class="hx-stage" id="hxStage" aria-hidden="true">
+    <div class="hx-core">
+      <div class="hx-eve">
+        <span class="hx-halo"></span>
+        <svg class="hx-ring" viewBox="0 0 100 100"><defs><linearGradient id="hxR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1766d8"/><stop offset=".5" stop-color="#22b3e0"/><stop offset="1" stop-color="#16c172"/></linearGradient></defs><circle class="hx-ring-t" cx="50" cy="50" r="47"/><circle class="hx-ring-p" id="hxRing" cx="50" cy="50" r="47" pathLength="100"/></svg>
+        <!-- Eve de verdade: suporte-ia/eve-bot-frontend/eve-character.js (branch eve-bot-atendimentos do CRM) -->
+        <div class="hx-eve-host" id="hxEve"></div>
+        <span class="hx-count"><b id="hxN">0</b> conversas recebidas</span>
+      </div>
+      <div class="hx-pw"><div class="hx-pi"><div class="hx-pp">
+        <div class="hx-status"><span>Eve está separando por setor</span><span>Eve está respondendo</span></div>
+        <div class="hx-rows">
+{{ROWS}}
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+
+  <div class="hx-foot">
+    <div class="hx-ctas hx-in" style="--n:2">
+      <a class="hx-btn" href="#planos">
+        Escolher meu Plano
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      </a>
+      <button type="button" class="hx-btn hx-btn--light" data-agendar>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
+        Agendar Demonstração
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="pm" id="pra-mim">
+  <h2 class="pm-h2">Foi feito pra mim?</h2>
+  <p class="pm-sub">Qual desses simboliza o tamanho do seu negócio?</p>
+  <div class="pm-cena">
+    <div class="pm-canvas" id="pmCanvas" aria-hidden="true"></div>
+    <div class="pm-opcoes" role="group" aria-label="Tamanho do negócio">
+      <button type="button" class="pm-op" data-i="0" aria-pressed="false"><span class="pm-card"><b>Pequeno negócio</b><i>Você e mais uma ou duas pessoas atendendo.</i><span class="pm-pts"><ul><li>Todos os canais em um número só</li><li>IA no primeiro contato, você fecha</li><li>A gente configura tudo pra você</li></ul></span></span></button>
+      <button type="button" class="pm-op" data-i="1" aria-pressed="false"><span class="pm-card"><b>Média empresa</b><i>Equipe dividida por setor, como uma farmácia ou loja.</i><span class="pm-pts"><ul><li>Filas por setor e por atendente</li><li>Carrinho e estoque do ERP no WhatsApp</li><li>Campanhas e follow-up automáticos</li></ul></span></span></button>
+      <button type="button" class="pm-op" data-i="2" aria-pressed="false"><span class="pm-card"><b>Grande operação</b><i>Várias unidades, times e alto volume de conversas.</i><span class="pm-pts"><ul><li>Várias conexões e departamentos</li><li>API, webhooks e integrações</li><li>IA treinada no seu negócio</li></ul></span></span></button>
+    </div>
+  </div>
+  <p class="pm-res" id="pmRes" aria-live="polite"></p>
+</section>
+
+<div class="ed" id="eveDock"><span class="ed-fala" id="edFala"></span><canvas class="ed-ondas" id="edOndas" aria-hidden="true"></canvas><div class="ed-eve" id="edEve" aria-hidden="true"></div><button type="button" class="ed-som" id="edSom" tabindex="-1" aria-label="Ouvir a explicação"><i><svg class="s-toca" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.500 9a4.200 4.200 0 0 1 0 6M18.500 6.500a8 8 0 0 1 0 11"/></svg><svg class="s-pausa" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4.200" height="14" rx="1.300"/><rect x="13.800" y="5" width="4.200" height="14" rx="1.300"/></svg></i></button></div>
+
+<!-- jornada por porte: o conteúdo destes blocos vem do objeto VISOES no script -->
+<section class="jr" id="diferenciais">
+  <div class="jr-in">
+    <div class="jr-ver">
+      <span>Vendo como</span>
+      <div class="jr-seg" role="group" aria-label="Porte da empresa">
+        <button type="button" data-v="0" aria-pressed="false">Pequeno negócio</button>
+        <button type="button" data-v="1" aria-pressed="false">Média empresa</button>
+        <button type="button" data-v="2" aria-pressed="false">Grande operação</button>
+      </div>
+      <p class="jr-aviso" id="jrAviso"></p>
+    </div>
+    <div class="jr-troca">
+      <div class="jr-dor">
+        <h2 id="jrDor"></h2>
+        <div class="jr-resp" id="jrResp"><p class="jr-balao" id="jrSub" aria-live="polite"></p><div class="jr-eve" id="jrEve" aria-hidden="true"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cf cf--a" id="onboarding">
+  <div class="jr-in cf-grid">
+    <div>
+      <h2>No ar em até 7 dias.</h2>
+      <p class="jr-sub">Você não configura nada. O time da Prisme executa.</p>
+      <ol class="cf-etapas" id="cfEtapas">
+        <li class="on"><b>Reunimos</b><span>Uma chamada para entender sua operação.</span><button type="button" class="hx-btn hx-btn--sm" data-agendar>Agendar apresentação</button></li>
+        <li><b>Criamos o grupo</b><span>Você e a Prisme juntos no WhatsApp.</span></li>
+        <li><b>Configuramos tudo</b><span>Canais, filas, usuários e fluxos.</span></li>
+        <li><b>Treinamos sua equipe</b><span>E a operação entra no ar.</span></li>
+      </ol>
+    </div>
+    <div class="cf-vis" id="cfVis" aria-hidden="true">
+      <div class="cf-dias" id="cfDias"><span>Dia 1</span><i><u id="cfBarra"></u></i><span>Dia 7</span></div>
+      <div class="cf-cena">
+        <div class="cf-fone"><div class="cf-tela">
+          <div class="cf-topo"><img loading="lazy" decoding="async" src="{{LOGO}}" alt=""><div><b>Implantação Prisme</b><span>Time Prisme, você</span></div></div>
+          <div class="cf-chat" id="cfChat"></div>
+        </div></div>
+        <div class="cf-eve">
+          <div class="cf-eve-topo"><div id="cfEve"></div>Prisme configurando</div>
+          <ul id="cfTarefas">
+            <li>Canais <span><i class="cf-ic" data-c="wa">{{IC_WA}}</i><i class="cf-ic" data-c="ig">{{IC_IG}}</i><i class="cf-ic" data-c="fb">{{IC_FB}}</i></span></li>
+            <li>Filas</li>
+            <li>Usuários</li>
+            <li>Fluxos</li>
+            <li>Treinamento</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cf" id="coex">
+  <div class="jr-in cf-grid cf-grid--inv">
+    <div>
+      <h2>Seu número continua no seu celular.</h2>
+      <p class="jr-sub">Com o Coex, o app do WhatsApp e a plataforma atendem juntos, no mesmo número.</p>
+      <ul class="cf-pts">
+        <li><b>Responda pelo app quando quiser</b><span>Áudios, status e conversas seguem no aparelho.</span></li>
+        <li class="cf-selo"><div><b>API Oficial por trás</b><span>Conexão homologada pela Meta.</span></div><img loading="lazy" decoding="async" src="{{SELO_META}}" width="416" height="110" alt="Meta, Provedor de Tecnologia Habilitado"></li>
+      </ul>
+    </div>
+    <div class="cf-coex">
+      <img loading="lazy" decoding="async" src="{{COEX}}" width="480" height="760" alt="WhatsApp Business no celular com a conta conectada à Prisme pela Plataforma comercial">
+      <div class="cf-sinc" aria-hidden="true">
+        <div><i class="cf-ic" data-c="wa">{{IC_WA}}</i><p style="margin:0"><small>No app do celular</small><b id="cfSincA">Posso retirar hoje?</b></p></div>
+        <div><img loading="lazy" decoding="async" src="{{LOGO}}" alt=""><p style="margin:0"><small>Na Prisme, ao mesmo tempo</small><b id="cfSincB">Posso retirar hoje?</b></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cf cf--c" id="na-pratica">
+  <div class="jr-in cf-grid">
+    <div class="jr-troca">
+      <h2 id="cfPratH"></h2>
+      <div class="cf-abas" id="cfAbas" role="tablist" aria-label="Exemplos na prática"></div>
+    </div>
+    <div class="cf-palco" aria-hidden="true">
+      <div class="cf-topo cf-topo--palco"><span class="cs-loja">L</span><div><b>Loja</b><span>Conta comercial</span></div></div>
+      <div class="cf-conv" id="cfConv"></div>
+      <div class="cf-res" id="cfRes"></div>
+    </div>
+  </div>
+</section>
+
+<section class="jr" id="modulos">
+  <div class="jr-in jr-troca">
+    <h2 id="jrModsH"></h2>
+    <p class="jr-sub">A plataforma é a mesma para todo mundo. O que muda é por onde faz sentido começar.</p>
+    <div class="jr-mods" id="jrMods"></div>
+    <div class="jr-extras" id="jrExtras"></div>
+  </div>
+</section>
+
+<section class="jr" id="modo-hibrido">
+  <div class="jr-in">
+    <div class="cs-topo">
+      <div class="jr-troca">
+        <h2 id="jrCustoH"></h2>
+        <p class="jr-sub">Desde 1º de outubro a Meta cobra as mensagens de serviço da API Oficial, mesmo dentro da janela de 24 horas.</p>
+      </div>
+      <div class="cs-lado">
+        <div class="cs-abas" id="csAbas" role="tablist" aria-label="Formas de reduzir o custo">
+          <button type="button" role="tab" aria-selected="true"><b>Modo Híbrido</b><span>Você decide por onde cada mensagem sai.</span></button>
+          <button type="button" role="tab" aria-selected="false"><b>Concatenador</b><span>Seis mensagens, uma cobrança só.</span></button>
+        </div>
+        <a class="hx-btn hx-btn--light" href="https://apioficial.prismeapp.com.br" target="_blank" rel="noopener">Simular minha economia</a>
+      </div>
+    </div>
+    <div id="csCena" aria-hidden="true">
+      <ol class="cs-passos" id="csPassos"><li></li><li></li><li></li><li></li></ol>
+      <p class="cs-legenda" id="csLegenda"></p>
+      <div class="cs-palco">
+        <figure>
+          <figcaption>No painel da Prisme</figcaption>
+          <div class="cs-app" id="csApp">
+            <div class="cs-app-topo"><span class="cs-av">A</span><div><b>Ana Souza</b><small>Atendimento da loja</small></div><span class="cs-modo" id="csModo">Modo Híbrido</span></div>
+            <div class="cs-app-corpo">
+              <div class="cs-msgs" id="csMsgs"></div>
+              <div class="cs-tray" id="csTray"><div><div class="cs-tray-in">
+                <div class="cs-tray-topo"><span id="csTrayN"></span><span class="cs-rel"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" stroke="rgba(21,23,22,.14)"/><circle cx="10" cy="10" r="8" id="csAnel"/></svg>envia em <b id="csTimer">3s</b></span></div>
+                <div id="csTrayItens"></div>
+              </div></div></div>
+              <div class="cs-comp"><span id="csComp">Mensagem</span><i></i></div>
+            </div>
+            <div class="cs-veu"></div>
+            <div class="cs-modal">
+              <b>Modo Híbrido</b><small>API Oficial e conexão do app</small>
+              <div class="cs-pct" id="csPct">0%</div>
+              <div class="cs-trilho"><u id="csFill"></u><em id="csKnob"></em></div>
+              <p class="cs-expl" id="csExpl"></p>
+              <div class="cs-botoes"><span>Cancelar</span><span id="csSalvar">Salvar</span></div>
+            </div>
+          </div>
+        </figure>
+        <figure class="cs-cliente">
+          <figcaption>No celular do cliente</figcaption>
+          <div class="cf-fone"><div class="cf-tela">
+            <div class="cf-topo"><span class="cs-loja">L</span><div><b>Loja</b><span>online</span></div></div>
+            <div class="cf-chat" id="csFone"></div>
+          </div></div>
+          <div class="cs-notif" id="csNotif">1 notificação, não 6</div>
+        </figure>
+      </div>
+      <dl class="cs-kpis" id="csKpis"></dl>
+      <p class="cs-base">Base: R$ 0,035 por mensagem de serviço na API Oficial. Valores estimados.</p>
+    </div>
+  </div>
+</section>
+
+{{SP_HTML}}
+<section class="jr jr--planos" id="planos">
+  <div class="jr-in">
+    <h2>Três planos, sem fidelidade.</h2>
+    <p class="jr-sub">Pagamento mensal pré-pago. Cancele quando quiser.</p>
+    <div class="jr-planos">
+      <article class="jr-plano">
+        <h3>Essencial</h3>
+        <p>Para centralizar o atendimento e organizar o time.</p>
+        <div class="jr-preco">R$ 599,90 <small>por mês</small></div>
+        <div class="jr-impl" data-dica="A Prisme entrega tudo pronto, você não configura nada sozinho. Esse valor cobre:" data-dica-t="Por que eu pago uma implementação?" data-lista="Análise do seu portfólio empresarial na Meta|Adequação e verificação da empresa|Conexão do número|Configuração inicial feita pela Prisme|Treinamentos da equipe|Análise inicial de performance"><span>Mais R$ 1.500,00 de implementação, uma única vez</span></div>
+        <ul><li data-dica="Dá direito a 1 conexão de WhatsApp, pela API Oficial ou pela não oficial."><span>1 conexão de WhatsApp</span></li><li data-dica="Envie pela conexão não oficial, sem pagar por mensagem, no mesmo número da API Oficial e no mesmo chat." data-link="#modo-hibrido" data-link-txt="Ver a animação"><span>Modo Híbrido</span></li><li data-dica="CRM de vendas com oportunidades, tarefas, tags, usuários e automações."><span>CRM com Kanban</span></li><li data-dica="Junta as mensagens em rajada do atendente e envia como uma só. Você paga por uma." data-link="#modo-hibrido" data-link-txt="Ver a animação"><span>Concatenador de mensagens</span></li><li data-dica="No Essencial você cadastra até 8 usuários. No Integrador são ilimitados."><span>Até 8 usuários</span></li><li data-dica="Aplicativo instalável no Android, com o atendimento na palma da mão."><span>App para Android (PWA)</span></li></ul>
+        <button type="button" class="hx-btn hx-btn--light" data-agendar data-plano="Essencial">Saber mais sobre o Essencial</button>
+      </article>
+      <article class="jr-plano dest">
+        <span class="selo">Mais popular</span>
+        <h3>Integrador</h3>
+        <p>Para conectar o atendimento a outros sistemas.</p>
+        <div class="jr-preco">R$ 799,90 <small>por mês</small></div>
+        <div class="jr-impl" data-dica="Cada projeto é customizado, então o valor é definido pela complexidade inicial: integrações, volume, times e fluxos. Em uma call rápida a gente entende sua operação e passa o valor fechado." data-dica-t="Por que a combinar?" data-call="Agendar uma call"><span>Implementação a combinar</span></div>
+        <ul><li>Tudo do Essencial</li><li data-dica="Cadastre quantos usuários a operação precisar."><span>Usuários ilimitados</span></li><li data-dica="Formulários, catálogo e carrinho dentro da própria conversa do WhatsApp." data-link="#whatsapp-flows" data-link-txt="Ver a funcionalidade"><span>WhatsApp Flows</span></li><li data-dica="Popup de atendimento no seu site, para integrar em apps por API ou HTML."><span>Webchat</span></li><li data-dica="Receba por API tudo o que acontece na plataforma." data-link="https://ajuda.prismeapp.com.br" data-link-txt="Ver na central de ajuda"><span>Webhooks (n8n, Typebot)</span></li><li data-dica="Por API ou por código nativo, com iframe dentro do app."><span>Integração externa</span></li><li data-dica="Envie mensagens e gerencie atendimentos, contatos e CRM a partir do seu sistema." data-link="https://ajuda.prismeapp.com.br" data-link-txt="Ver na central de ajuda"><span>API pública</span></li><li data-dica="Pelo WhatsApp, com resposta em até 20 minutos."><span>Suporte prioritário</span></li></ul>
+        <button type="button" class="hx-btn" data-agendar data-plano="Integrador">Saber mais sobre o Integrador</button>
+      </article>
+      <article class="jr-plano">
+        <h3>IA Power</h3>
+        <p>Automação máxima com inteligência artificial.</p>
+        <div class="jr-preco">R$ 999,90 <small>por mês</small></div>
+        <div class="jr-impl" data-dica="Cada projeto é customizado, então o valor é definido pela complexidade inicial: integrações, volume, times e fluxos. Em uma call rápida a gente entende sua operação e passa o valor fechado." data-dica-t="Por que a combinar?" data-call="Agendar uma call"><span>Implementação a combinar</span></div>
+        <ul><li>Tudo do Integrador</li><li data-dica="A IA conversa, tira dúvidas, agenda e qualifica o lead antes de passar para um humano."><span>Módulo de IA nativo</span></li><li data-dica="A IA é treinada com as informações do seu negócio."><span>Treinamento da IA</span></li><li data-dica="A IA lê as conversas e etiqueta quem está quente, curioso ou reclamando."><span>Análise de sentimento</span></li><li data-dica="Seu assistente de IA, como Claude ou ChatGPT, consulta e opera o atendimento na Prisme, com a sua permissão." data-link="https://ajuda.prismeapp.com.br" data-link-txt="Ver na central de ajuda"><span>MCP<svg class="jr-mcp" viewBox="0 0 195 195" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" aria-hidden="true"><path d="M25 97.8528L92.8823 29.9706C102.255 20.598 117.451 20.598 126.823 29.9706V29.9706C136.196 39.3431 136.196 54.5391 126.823 63.9117L75.5581 115.177"/><path d="M76.2653 114.47L126.823 63.9117C136.196 54.5391 151.392 54.5391 160.765 63.9117L161.118 64.2652C170.491 73.6378 170.491 88.8338 161.118 98.2063L99.7248 159.6C96.6006 162.724 96.6006 167.789 99.7248 170.913L112.331 183.52"/><path d="M109.853 46.9411L59.6482 97.1457C50.2757 106.518 50.2757 121.714 59.6482 131.087V131.087C69.0208 140.459 84.2168 140.459 93.5894 131.087L143.794 80.8822"/></svg></span></li><li data-dica="O consumo da IA é cobrado conforme o uso, fora da mensalidade."><span>Tokens pagos à parte</span></li></ul>
+        <button type="button" class="hx-btn hx-btn--light" data-agendar data-plano="IA Power">Saber mais sobre o IA Power</button>
+      </article>
+    </div>
+    <p class="jr-nota">Precisa de mais conexões? Instagram, Webchat ou números extras de WhatsApp saem por R$ 147,90 por mês cada.</p>
+  </div>
+</section>
+
+<section class="jr jr--salvia jr--fim">
+  <div class="jr-in">
+    <h2>Quer ver funcionando na sua operação?</h2>
+    <p class="jr-sub">Em uma chamada a gente mostra a plataforma com o seu cenário e diz qual plano encaixa.</p>
+    <div class="jr-ctas">
+      <button type="button" class="hx-btn" data-agendar>Agendar Demonstração</button>
+      <a class="hx-btn hx-btn--light" href="#planos">Escolher meu Plano</a>
+    </div>
+  </div>
+</section>
+{{FIM_HTML}}
+
+<script>
+{{EVE_JS}}
+</script>
+<script>
+(function(){
+  var nav=document.getElementById('hxNav'),stage=document.getElementById('hxStage'),hero=stage.closest('.hx');
+  var reduz=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* a marca abre centralizada e desliza para a esquerda quando o menu chega (FLIP) */
+  var logo=nav.querySelector('.hx-logo'),rolado=false,kb=1;
+  function rolar(on){
+    if(on===rolado)return;rolado=on;
+    var a=logo.getBoundingClientRect().left;nav.classList.toggle('is-rolled',on);var dx=a-logo.getBoundingClientRect().left;
+    if(reduz||!dx)return;
+    logo.style.transition='none';logo.style.transform='translateX('+(dx/(on?1:kb))+'px)';logo.getBoundingClientRect();
+    logo.style.transition='transform .55s cubic-bezier(.22,1,.36,1)';logo.style.transform='';
+  }
+
+  /* header + parallax de rolagem (uma leitura por frame) */
+  var tick=false;
+  function aoRolar(){
+    if(tick)return;tick=true;
+    requestAnimationFrame(function(){
+      tick=false;var y=window.scrollY||0;
+      rolar(y>40);
+      if(typeof eveDesce==='function')eveDesce(y>hero.offsetHeight*.5);
+      if(!reduz)hero.style.setProperty('--sp',Math.min(1,y/Math.max(1,hero.offsetHeight)).toFixed(3));
+    });
+  }
+  window.addEventListener('scroll',aoRolar,{passive:true});aoRolar();
+
+  /* parallax de ponteiro: só mouse (no toque fica o da rolagem) */
+  if(!reduz&&window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+    var mt=false,mx=0,my=0;
+    hero.addEventListener('pointermove',function(e){
+      var r=hero.getBoundingClientRect();
+      mx=((e.clientX-r.left)/r.width-.5)*2;my=((e.clientY-r.top)/r.height-.5)*2;
+      if(mt)return;mt=true;
+      requestAnimationFrame(function(){mt=false;hero.style.setProperty('--mx',mx.toFixed(3));hero.style.setProperty('--my',my.toFixed(3));});
+    });
+    hero.addEventListener('pointerleave',function(){mx=my=0;hero.style.setProperty('--mx',0);hero.style.setProperty('--my',0);});
+  }
+
+  /* o hero informa o próprio tamanho e onde a Eve está: os balões se posicionam em % dele
+     e convergem para ela, em qualquer tela */
+  function medir(){
+    var w=hero.clientWidth,h=hero.offsetHeight,vh=window.innerHeight;
+    var lg=window.matchMedia('(min-width: 900px)').matches;
+    var k=lg?Math.min(w/1440,vh/900):Math.min(w/390,vh/720);k=Math.max(lg?.88:.92,Math.min(lg?2.4:1.6,k));
+    kb=Math.max(1,Math.min(1.5,lg?k:Math.min(w/390,vh/800)));
+    hero.style.setProperty('--k',k.toFixed(3));hero.style.setProperty('--kb',kb.toFixed(3));nav.style.setProperty('--kb',kb.toFixed(3));
+    hero.style.setProperty('--hw',w+'px');hero.style.setProperty('--hh',h+'px');
+    var copy=hero.querySelector('.hx-copy'),h1=hero.querySelector('.hx-h1'),foot=hero.querySelector('.hx-foot');
+    var largo=window.matchMedia('(min-width: 900px)').matches,topo=copy.offsetTop+h1.offsetTop;
+    hero.style.setProperty('--ox',(largo?0:stage.offsetLeft)+'px');hero.style.setProperty('--oy',(largo?topo:stage.offsetTop)+'px');
+    hero.style.setProperty('--bw',(largo?w:stage.offsetWidth)+'px');hero.style.setProperty('--bh',(largo?foot.offsetTop-topo:stage.offsetHeight)+'px');
+    hero.style.setProperty('--ex',(stage.offsetLeft+stage.offsetWidth/2)+'px');
+    hero.style.setProperty('--ey',(stage.offsetTop+stage.offsetHeight/2)+'px');
+  }
+  medir();
+  if('ResizeObserver' in window){var ro=new ResizeObserver(medir);ro.observe(hero);ro.observe(stage);}
+  else window.addEventListener('resize',medir);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(medir);
+
+  /* roteiro da cena: o mesmo relógio para qualquer tela (o CSS só reposiciona) */
+  var ROTEIRO=[['chegam',4300],['juntam',2400],['organiza',2600],['responde',5400],['sai',900]];
+  var passo=0,timer=null,rodando=false;
+  /* a Eve atua em cada fase com os estados do próprio personagem: ouve e olha quem chega,
+     consulta enquanto os balões entram, pensa, digita e fala as respostas */
+  var eve=null,host=document.getElementById('hxEve'),fila=[];
+  try{if(window.EveCharacter&&host)eve=window.EveCharacter.mount(host,{forma:'prisma',tema:'light',spawn:true});}catch(e){}
+  function depois(ms,fn){fila.push(setTimeout(fn,ms));}
+  function atuar(f){
+    fila.forEach(function(t){clearTimeout(t);clearInterval(t);});fila=[];
+    if(!eve)return;
+    eve.setTalking(false);
+    if(f==='chegam'){
+      eve.setState('listening');
+      var bs=[].slice.call(hero.querySelectorAll('.hx-bal')).filter(function(b){return b.offsetParent!==null;})
+        .sort(function(a,b){return a.style.getPropertyValue('--o')-b.style.getPropertyValue('--o');}),i=0;
+      fila.push(setInterval(function(){if(i<bs.length){eve.lookAtElement(bs[i]);i+=4;}else eve.lookFree();},330));
+      depois(3300,function(){eve.play('nod');});
+    }else if(f==='juntam'){
+      eve.lookFree();eve.setState('listening');
+    }else if(f==='organiza'){
+      eve.setState('typing');
+    }else if(f==='responde'){
+      eve.setState('speaking');eve.setTalking(true);
+      depois(4300,function(){eve.setTalking(false);eve.play('celebrate');});
+    }else{eve.lookFree();eve.setState('idle');}
+  }
+  /* processamento: o anel e o contador avançam no instante em que cada balão entra na Eve */
+  var anel=document.getElementById('hxRing'),num=document.getElementById('hxN');
+  function visiveis(){return [].slice.call(hero.querySelectorAll('.hx-bal')).filter(function(b){return b.offsetParent!==null;});}
+  function contar(f){
+    if(f!=='juntam'){if(f!=='organiza'){anel.style.strokeDashoffset=100;num.textContent='0';}return;}
+    var bs=visiveis(),n=bs.length,c=0;
+    bs.map(function(b){return +b.style.getPropertyValue('--o');}).sort(function(a,b){return a-b;}).forEach(function(o,i){
+      depois(o*27+780,function(){
+        c++;num.textContent=c;anel.style.strokeDashoffset=(100-100*c/n).toFixed(1);
+        if(eve&&i%4===0)eve.play('tick');
+        if(c===n&&eve)eve.play('nod');
+      });
+    });
+  }
+  function fase(f){hero.setAttribute('data-phase',f);atuar(f);contar(f);}
+  function tocar(){
+    fase(ROTEIRO[passo][0]);
+    timer=setTimeout(function(){passo=(passo+1)%ROTEIRO.length;tocar();},ROTEIRO[passo][1]);
+  }
+  function iniciar(){
+    if(rodando||reduz)return;rodando=true;passo=0;fase('sai');
+    requestAnimationFrame(function(){requestAnimationFrame(function(){if(rodando)tocar();});});
+  }
+  function parar(){rodando=false;clearTimeout(timer);fase('sai');}
+
+  if(reduz)fase('responde');
+  else{
+  var visivel=true;
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){visivel=es[0].isIntersecting;(visivel&&!document.hidden)?iniciar():parar();},{threshold:.15}).observe(stage);
+  }else{iniciar();}
+  document.addEventListener('visibilitychange',function(){(document.hidden||!visivel)?parar():iniciar();});
+  }
+
+  /* ===== módulo "Foi feito pra mim?" + Eve acompanhante ===== */
+  var pm=document.getElementById('pra-mim'),ops=[].slice.call(pm.querySelectorAll('.pm-op')),res=document.getElementById('pmRes'),cena3d=null,porte=-1;
+  var foras=0;function dockFora(d){foras=Math.max(0,foras+d);dock.classList.toggle('ausente',foras>0);}
+  var dock=document.getElementById('eveDock'),edFala=document.getElementById('edFala'),eveD=null,falaT=0,dockOn=false,somLock=false,somGuarda=null,falaTemp=false,somRever=null;
+  var NOMES=['pequeno negócio','média empresa','grande operação'];
+  var FALAS=['Pequeno e ágil. Vou te mostrar só o essencial.','Equipe com setores. Vou te mostrar filas, carrinho e campanhas.','Operação grande. Vou te mostrar integrações e IA própria.'];
+  function falar(txt,ms){if(somLock){somGuarda={txt:txt,on:!ms};return;}clearTimeout(falaT);falaTemp=!!ms;edFala.textContent=txt;dock.classList.add('tem-fala');if(ms)falaT=setTimeout(function(){falaTemp=false;dock.classList.remove('tem-fala');balaoBase();},ms);}
+  /* a pergunta do porte acompanha o bloco "Foi feito pra mim?"; fora dele o balão some para não cobrir o conteúdo */
+  var pmVisivel=false;
+  function balaoBase(){
+    if(somLock||!dockOn||falaTemp)return;
+    if(porte<0&&pmVisivel)falar('Me conta: qual é o tamanho do seu negócio?');else dock.classList.remove('tem-fala');
+  }
+  if('IntersectionObserver' in window)new IntersectionObserver(function(es){pmVisivel=es[0].isIntersecting;dock.classList.toggle('no-pm',pmVisivel);balaoBase();},{threshold:.2}).observe(pm);
+  else{pmVisivel=true;dock.classList.add('no-pm');}
+  function eveDesce(on){
+    if(!dock||on===dockOn)return;dockOn=on;
+    if(on&&!eveD){
+      try{if(window.EveCharacter)eveD=window.EveCharacter.mount(document.getElementById('edEve'),{forma:'prisma',tema:'light',spawn:false});}catch(e){}
+      dock.classList.add('is-chegando');setTimeout(function(){dock.classList.remove('is-chegando');},1000);
+    }
+    dock.classList.toggle('is-on',on);dock.classList.toggle('esperando',porte<0);
+    if(on){
+      if(porte<0&&eveD){eveD.setState('listening');eveD.lookAtElement(pm.querySelector('.pm-opcoes'));}
+      balaoBase();
+    }else dock.classList.remove('tem-fala');
+  }
+  function apontar(i){
+    if(cena3d)cena3d.apontar(i);
+    if(eveD&&porte<0){if(i>=0){eveD.lookAtElement(ops[i].querySelector('.pm-card'));eveD.play('tick');}else eveD.lookAtElement(pm.querySelector('.pm-opcoes'));}
+  }
+  function escolher(i){
+    porte=i;if(i<0)dock.classList.add('esperando');else setTimeout(function(){if(porte===i)dock.classList.remove('esperando');},6600);
+    ops.forEach(function(b,n){b.setAttribute('aria-pressed',n===i?'true':'false');});
+    if(i<0){pm.removeAttribute('data-porte');res.textContent='';}
+    else{
+      pm.setAttribute('data-porte',i);
+      res.innerHTML='Combinado: <b>'+NOMES[i]+'</b>. Daqui pra frente a página mostra o que serve para esse tamanho.<button type="button" id="pmTroca">Trocar</button>';
+      document.getElementById('pmTroca').addEventListener('click',function(){escolher(-1);});
+    }
+    mostrarVisao(i);
+    if(cena3d)cena3d.escolher(i);
+    if(eveD){
+      if(i>=0){eveD.lookFree();eveD.play('celebrate');falar(FALAS[i],6500);setTimeout(function(){if(porte===i)eveD.setState('idle');},2400);}
+      else{eveD.setState('listening');falar('Sem problema. Qual é o tamanho do seu negócio?');}
+    }
+  }
+  /* ---------- as três leituras da página: edite aqui os textos de cada porte ---------- */
+  var VISOES=[
+    {dor:'Atendo sozinho e ainda perco mensagem.',
+     sub:'Deixa comigo. A gente configura, treina, e você segue no WhatsApp do jeito que já usa.',
+     prat:{h:'O repetitivo anda sozinho.',cenas:[
+       {aba:['Fora do horário','Quem chama de noite recebe resposta e entra na fila.'],gat:'22:47, loja fechada',hora:'22:47',msgs:[['c','Vocês abrem amanhã?'],['a','Mensagem de ausência'],['p','Oi! Abrimos às 8h. Já deixei você na fila.']],res:'Na fila para amanhã cedo'},
+       {aba:['Lembrete','A mensagem sai no dia e na hora marcados.'],gat:'Sexta, 9h, agendamento',hora:'09:00',msgs:[['a','Agendamento'],['p','Oi, Carla! Seu horário é hoje às 15h.'],['c','Confirmado 👍']],res:'Confirmado sem você digitar'},
+       {aba:['Cliente sumiu','Sem resposta, o sistema chama de novo.'],gat:'2 dias sem resposta',hora:'10:15',msgs:[['a','Follow-up por inatividade'],['p','Oi, João! Ainda quer o orçamento?'],['c','Quero sim! Pode mandar.']],res:'Conversa retomada'}]},
+     mods:[['Respostas rápidas','Texto, mídia e localização prontos em um atalho.'],
+           ['Mensagem de ausência','Quem chama fora do horário recebe resposta e fica na fila.'],
+           ['Follow-up por inatividade','Se o cliente parar de responder, o sistema chama de novo.'],
+           ['Agendamentos','Mensagem marcada para o dia e a hora certos.'],
+           ['Instagram "Eu quero"','Comentou a palavra no post, recebe a resposta no Direct.'],
+           ['CRM Kanban','Cada conversa vira um card: novo, negociando, fechado.']],
+     extras:['App no celular com notificação','Tags automáticas','Tarefas','Campanhas','Flowbuilder','Web Chat'],
+     custo:'Pague menos por mensagem sem mudar seu jeito de atender.'},
+    {dor:'Cinco pessoas no mesmo número e ninguém sabe quem respondeu.',
+     sub:'Eu coloco cada conversa no setor certo, com dono e histórico. Você enxerga a fila inteira.',
+     prat:{h:'Cada conversa acha o setor sozinha.',cenas:[
+       {aba:['Menu por setor','O cliente escolhe o assunto antes de chegar em alguém.'],gat:'Novo contato no WhatsApp',hora:'09:12',msgs:[['c','Oi, bom dia!'],['a','Flowbuilder'],['b','Bom dia! Com quem você quer falar?',['Vendas','Financeiro','Suporte']],['c','Financeiro',{toca:1,cita:'Bom dia! Com quem você quer falar?'}]],res:'Na fila do Financeiro'},
+       {aba:['Rodízio','A fila distribui entre os atendentes.'],gat:'3 conversas aguardando em Vendas',hora:'14:20',msgs:[['a','Rodízio de atendimento'],['s','Marina assumiu a conversa'],['p','Oi! Aqui é a Marina. Como posso ajudar?']],res:'Ninguém sobrecarregado'},
+       {aba:['Remarketing','Uma etiqueta dispara o retorno na hora certa.'],gat:'Etiqueta "Orçamento enviado", 30 min',hora:'16:40',msgs:[['a','Remarketing por tag'],['p','Oi! Ficou alguma dúvida sobre o orçamento?'],['c','Fechado, pode separar.']],res:'Venda recuperada'}]},
+     mods:[['Setores e rodízio','Filas por equipe, com distribuição equilibrada entre os atendentes.'],
+           ['Flowbuilder','Menus, perguntas e horário de expediente montados arrastando blocos.'],
+           ['Carrinho no WhatsApp','Catálogo, carrinho e pagamento na conversa, com preço e estoque do seu ERP.'],
+           ['Campanhas e remarketing','Promoção pela API Oficial e fluxo automático quando uma etiqueta é aplicada.'],
+           ['Tarefas e avaliações','Pendência com prazo e responsável, e nota do cliente ao encerrar.'],
+           ['Carteira de clientes','O contato vai direto para o atendente que já cuida dele.']],
+     extras:['CRM com funis','Leads de anúncio','Agendamentos','Respostas rápidas','Instagram e Web Chat','App no celular'],
+     custo:'Mais gente respondendo é mais mensagem cobrada. Dá para controlar.'},
+    {dor:'Volume alto, vários times e nada conversa com o meu sistema.',
+     sub:'Junto números, canais e unidades em um painel e ligo tudo ao sistema que você já usa.',
+     prat:{h:'A IA resolve antes de chegar no time.',cenas:[
+       {aba:['Consulta no seu sistema','A IA busca o dado pela API e responde.'],gat:'Pergunta sobre pedido',hora:'11:05',msgs:[['c','Qual o status do pedido 4821?'],['a','IA consultando seu sistema'],['p','Saiu para entrega hoje às 10h.']],res:'Resolvido sem atendente'},
+       {aba:['Classificação','Cada conversa sai etiquetada para o time certo.'],gat:'Conversa em andamento',hora:'15:30',msgs:[['c','Quero o plano anual para 3 unidades.'],['a','IA classificando'],['s','Etiquetas: Lead quente, Plano anual']],res:'Enviado ao Comercial'},
+       {aba:['Passagem para humano','Quando precisa de gente, vai com o histórico.'],gat:'Pedido de atendente',hora:'17:45',msgs:[['c','Preciso falar com alguém.'],['a','IA transferindo'],['p','Já te passo para um especialista.'],['s','Transferido para Suporte N2']],res:'Histórico junto na transferência'}]},
+     mods:[['API pública e webhooks','Mensagens, tickets, contatos e CRM acessíveis pelo seu sistema.'],
+           ['IA treinada no seu negócio','Atende, qualifica e agenda antes de passar para um humano.'],
+           ['Análise de atendimento','A IA aponta objeções e pontos de melhoria em cada conversa.',1],
+           ['CRM com vários funis','Oportunidades, propostas, ranking e auditoria de vendas.'],
+           ['Permissões por perfil','Cada time enxerga e altera só o que é dele.'],
+           ['MCP','Seu assistente de IA consulta e opera a plataforma, com aprovação.',1]],
+     extras:['Copilot da raia','Ligações PABX e VoIP','Transcrição de áudio','Leads de anúncio','Carrinho no WhatsApp','Campanhas','Flowbuilder'],
+     custo:'Em escala, centavo por mensagem vira linha de orçamento.'}
+  ];
+  /* ---------- cenas de conversa: implantação, coexistência e exemplos na prática ---------- */
+  var ICS='<span class="wa-ics"><i class="cf-ic" data-c="wa">{{IC_WA}}</i><i class="cf-ic" data-c="ig">{{IC_IG}}</i><i class="cf-ic" data-c="fb">{{IC_FB}}</i></span>';
+  var TIQUES='<svg viewBox="0 0 18 12" fill="none" stroke="#53bdeb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m1 6.5 3.2 3.3L10.6 2"/><path d="m7.4 9.4.4.4L14.6 2"/></svg>';
+  var SETA='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 6 6v4"/></svg>';
+  function balao(tipo,txt,extra,hora){
+    var d=document.createElement('div');
+    if(tipo==='s'){d.className='wa-sis';d.textContent=txt;}
+    else if(tipo==='a'){d.className='wa-auto';d.textContent=txt;}
+    else{
+      /* "c" e "out" são de quem está com o celular na mão: saem à direita, em verde, com os tiques */
+      var meu=tipo==='c'||tipo==='out',ex=extra||'',b=document.createElement('div');
+      b.className='wa '+(meu?'wa-out':'wa-in');
+      b.innerHTML=(tipo==='in'?'<em>Time Prisme</em>':'')+(ex.cita?'<q><b>Loja</b>'+esc(ex.cita)+'</q>':'')+esc(txt).replace(/\n/g,'<br>')+(typeof ex==='string'?ex:'')+'<small>'+(hora||'')+(meu?TIQUES:'')+'</small>';
+      if(tipo!=='b')return b;
+      d.className='wa-grupo';d.appendChild(b);
+      var bts=document.createElement('div');bts.className='wa-bts';bts.innerHTML=ex.map(function(t){return '<span>'+SETA+esc(t)+'</span>';}).join('');d.appendChild(bts);
+    }
+    return d;
+  }
+  /* toca uma lista de mensagens dentro de "corpo"; quem digita mostra os três pontinhos antes */
+  function conversar(corpo,msgs,digita,aoPasso,aoFim,hora){
+    var vivo=true,fila=[];
+    function espera(ms,fn){fila.push(setTimeout(function(){if(vivo)fn();},ms));}
+    function passo(i){
+      if(i>=msgs.length){if(aoFim)aoFim();return;}
+      var m=msgs[i],por=function(){corpo.appendChild(balao(m[0],m[1],m[2],hora));while(corpo.children.length>9)corpo.removeChild(corpo.firstChild);if(aoPasso)aoPasso(i,m);espera(m[0]==='s'||m[0]==='a'?750:1250,function(){passo(i+1);});};
+      if(m[2]&&m[2].toca!==undefined){
+        var gs=corpo.querySelectorAll('.wa-bts'),alvo=gs.length?gs[gs.length-1].children[m[2].toca]:null;
+        if(alvo)alvo.classList.add('toque');espera(520,por);return;
+      }
+      if(digita.indexOf(m[0])>=0){
+        var p=document.createElement('div');p.className='wa wa-dig '+(m[0]==='c'||m[0]==='out'?'wa-out':'wa-in');p.innerHTML='<i></i><i></i><i></i>';corpo.appendChild(p);
+        espera(850,function(){corpo.removeChild(p);por();});
+      }else por();
+    }
+    espera(450,function(){passo(0);});
+    return function(){vivo=false;fila.forEach(clearTimeout);};
+  }
+  function aoVer(el,liga,desliga){
+    if(!('IntersectionObserver' in window)){liga();return;}
+    new IntersectionObserver(function(es){if(es[0].isIntersecting)liga();else desliga();},{threshold:.25}).observe(el);
+  }
+
+  /* 1. implantação: o grupo no WhatsApp, a barra de dias e a lista que a Eve vai cumprindo */
+  (function(){
+    var chat=document.getElementById('cfChat'),etapas=[].slice.call(document.querySelectorAll('#cfEtapas li')),tarefas=[].slice.call(document.querySelectorAll('#cfTarefas li')),
+        barra=document.getElementById('cfBarra'),dias=document.getElementById('cfDias'),eveC=null,parar=null,volta=0;
+    /* [tipo, texto, extra, etapa, dia (0 a 1), tarefas que ficam prontas] */
+    var ROTEIRO=[['s','Time Prisme criou este grupo','',1,.14],['s','Time Prisme adicionou você','',1,.18],
+      ['in','Oi! Sua implantação acontece por aqui. 👋','',1,.24],['out','Ótimo! O que eu preciso fazer?','',1,.28],
+      ['in','Só liberar os acessos. O resto é com a gente.','',2,.36],['in','Canais conectados',ICS,2,.5,[0]],
+      ['in','Filas, usuários e fluxos criados.','',2,.72,[1,2,3]],['in','Treinamento na quinta, 14h. Pode ser?','',3,.84],
+      ['out','Fechado!','',3,.9],['in','Pronto. Sua operação está no ar.','',3,1,[4]]];
+    function etapa(n,fim){etapas.forEach(function(li,i){li.classList.toggle('feito',i<n||(fim&&i===n));li.classList.toggle('on',i===n&&!fim);});}
+    function zerar(){chat.innerHTML='';tarefas.forEach(function(t){t.className='';});barra.style.transform='scaleX(.04)';dias.classList.remove('fim');etapa(0);}
+    function fazendo(){var t=tarefas.filter(function(x){return !x.classList.contains('ok');})[0];if(t)t.classList.add('fazendo');}
+    function rodar(){
+      zerar();if(eveC)eveC.setState('idle');
+      parar=conversar(chat,ROTEIRO,['in','out'],function(i,m){
+        etapa(m[3]);barra.style.transform='scaleX('+m[4]+')';
+        if(m[3]===2&&eveC)eveC.setState('typing');
+        (m[5]||[]).forEach(function(k,n){setTimeout(function(){tarefas[k].className='ok';if(m[4]<1)fazendo();},n*260);});
+        if(m[3]===2&&!m[5])fazendo();
+        if(m[4]===1){dias.classList.add('fim');etapa(3,true);if(eveC){eveC.setState('idle');eveC.play('celebrate');}}
+        else if(m[3]===3&&eveC)eveC.setState('idle');
+      },function(){volta=setTimeout(rodar,4200);},'10:02');
+    }
+    if(reduz){ROTEIRO.slice(4).forEach(function(m){chat.appendChild(balao(m[0],m[1],m[2],'10:02'));});tarefas.forEach(function(t){t.className='ok';});barra.style.transform='none';dias.classList.add('fim');etapa(3,true);return;}
+    aoVer(document.getElementById('cfVis'),function(){
+      if(!eveC){try{if(window.EveCharacter)eveC=window.EveCharacter.mount(document.getElementById('cfEve'),{forma:'prisma',tema:'light',spawn:true});}catch(e){}}
+      if(!parar)rodar();
+    },function(){if(parar){parar();parar=null;}clearTimeout(volta);});
+  })();
+
+  /* 2. coexistência: a mesma mensagem aparece no app e na plataforma */
+  (function(){
+    var a=document.getElementById('cfSincA'),b=document.getElementById('cfSincB'),falas=['Posso retirar hoje?','Tem no tamanho M?','Aceita Pix?','Qual o horário de vocês?'],n=0,t=0;
+    function pisca(el,txt){el.classList.remove('novo');void el.offsetWidth;el.textContent=txt;el.classList.add('novo');}
+    if(reduz)return;
+    aoVer(a,function(){clearInterval(t);t=setInterval(function(){n=(n+1)%falas.length;pisca(a,falas[n]);setTimeout(function(){pisca(b,falas[n]);},260);},3200);},function(){clearInterval(t);});
+  })();
+
+  /* 3. na prática: três cenas por porte, que avançam sozinhas ou no clique */
+  var prat=null,pratN=0,pratPara=null,pratT=0,pratVisivel=false;
+  function cenaPratica(n){
+    if(!prat)return;pratN=n;if(pratPara)pratPara();clearTimeout(pratT);
+    var c=prat.cenas[n],conv=document.getElementById('cfConv'),res=document.getElementById('cfRes'),abas=[].slice.call(document.querySelectorAll('#cfAbas button'));
+    abas.forEach(function(b,i){b.setAttribute('aria-selected',i===n?'true':'false');var u=b.querySelector('u');u.classList.remove('anda');});
+    conv.innerHTML='';conv.appendChild(balao('s',c.gat));res.classList.remove('on');res.textContent=c.res;
+    if(reduz||!pratVisivel){c.msgs.forEach(function(m){conv.appendChild(balao(m[0],m[1],m[2],c.hora));});res.classList.add('on');return;}
+    var dur=450+c.msgs.reduce(function(s,m){return s+(m[0]==='p'||m[0]==='b'?850:0)+(m[2]&&m[2].toca!==undefined?520:0)+(m[0]==='s'||m[0]==='a'?750:1250);},0)+3000,u=abas[n].querySelector('u');
+    u.style.setProperty('--dur',dur+'ms');void u.offsetWidth;u.classList.add('anda');
+    pratPara=conversar(conv,c.msgs,['p','b'],null,function(){res.classList.add('on');pratT=setTimeout(function(){cenaPratica((pratN+1)%prat.cenas.length);},3000);},c.hora);
+  }
+  function montarPratica(p){
+    prat=p;document.getElementById('cfPratH').textContent=p.h;
+    var abas=document.getElementById('cfAbas');
+    abas.innerHTML=p.cenas.map(function(c,i){return '<button type="button" role="tab" aria-selected="false" data-n="'+i+'"><b>'+esc(c.aba[0])+'</b><span><i>'+esc(c.aba[1])+'</i></span><u></u></button>';}).join('');
+    [].forEach.call(abas.children,function(b,i){b.addEventListener('click',function(){cenaPratica(i);});});
+    cenaPratica(0);
+  }
+  aoVer(document.querySelector('.cf-palco'),function(){if(!pratVisivel){pratVisivel=true;cenaPratica(pratN);}},function(){pratVisivel=false;if(pratPara)pratPara();clearTimeout(pratT);});
+
+  /* ---------- a Eve sai do canto, pousa ao lado da fala do cliente e responde ---------- */
+  var eveR=null,eveRAqui=false,respT=[],balaoR=document.getElementById('jrSub'),hostR=document.getElementById('jrEve'),textoR='';
+  function responder(txt){
+    textoR=txt;respT.forEach(clearTimeout);respT=[];
+    if(reduz||!eveRAqui){balaoR.textContent=txt;balaoR.classList.remove('some');return;}
+    balaoR.classList.add('some');if(eveR){eveR.lookAtElement(document.getElementById('jrDor'));eveR.setState('listening');}
+    respT.push(setTimeout(function(){balaoR.innerHTML='<span style="visibility:hidden">'+esc(textoR)+'</span><span class="wa-dig jr-dig"><i></i><i></i><i></i></span>';balaoR.classList.remove('some');if(eveR)eveR.setState('typing');},520));
+    respT.push(setTimeout(function(){balaoR.textContent=textoR;if(eveR){eveR.lookFree();eveR.setState('speaking');}},1750));
+    respT.push(setTimeout(function(){if(eveR)eveR.setState('idle');},4300));
+  }
+  function eveChega(){
+    if(eveRAqui)return;eveRAqui=true;
+    if(!eveR){try{if(window.EveCharacter)eveR=window.EveCharacter.mount(hostR,{forma:'prisma',tema:'light',spawn:false});}catch(e){}}
+    var d=document.getElementById('edEve').getBoundingClientRect(),h=hostR.getBoundingClientRect(),veio=dock.classList.contains('is-on')&&d.width>0&&!reduz;
+    hostR.style.transition='none';
+    if(veio)hostR.style.transform='translate('+(d.left+d.width/2-h.left-h.width/2)+'px,'+(d.top+d.height/2-h.top-h.height/2)+'px) scale('+(d.width/h.width)+')';
+    else hostR.style.transform=reduz?'none':'translateY(30px) scale(.6)';
+    hostR.classList.add('aqui');dockFora(1);void hostR.offsetWidth;
+    hostR.style.transition='transform .95s cubic-bezier(.3,1.25,.5,1)';hostR.style.transform='none';
+    balaoR.classList.add('some');respT.forEach(clearTimeout);respT=[setTimeout(function(){responder(textoR);},veio?620:300)];
+  }
+  function eveVolta(){
+    if(!eveRAqui)return;eveRAqui=false;respT.forEach(clearTimeout);
+    hostR.classList.remove('aqui');dockFora(-1);balaoR.textContent=textoR;balaoR.classList.remove('some');
+  }
+  if('IntersectionObserver' in window)new IntersectionObserver(function(es){if(es[0].isIntersecting)eveChega();else eveVolta();},{threshold:.55}).observe(document.getElementById('jrResp'));
+  else{hostR.classList.add('aqui');}
+
+  /* ---------- custos: Modo Híbrido e Concatenador, a mesma conversa nos dois lados ---------- */
+  (function(){
+    var TAXA=.035,MES=12000,PCT=70,$=function(id){return document.getElementById(id);};
+    var app=$('csApp'),msgs=$('csMsgs'),fone=$('csFone'),tray=$('csTray'),itens=$('csTrayItens'),comp=$('csComp'),notif=$('csNotif'),kpis=$('csKpis'),
+        passos=[].slice.call($('csPassos').children),abas=[].slice.call($('csAbas').children),modo=0,ger=0,visivel=false;
+    var brl=function(v,d){return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:d||2,maximumFractionDigits:d||2});};
+    var PASSOS=[['Você define o percentual uma vez','A regra vale para toda a equipe','Cada mensagem sai por uma rota','O cliente recebe tudo igual'],
+                ['O atendente escreve em rajada','As mensagens esperam na bandeja','A janela de 3 segundos fecha','Sai uma mensagem, uma cobrança']];
+    var CONVERSA=[['c','Oi! Chegou aquele remédio que eu pedi?'],['s','Oi, Marina! Chegou sim, acabou de entrar.','hib'],['s','Quer que eu já separe uma caixa?','hib'],['c','Quero sim, por favor'],
+                  ['s','Separado! Retira hoje até as 18h?','ofi'],['s','Te mando o código do Pix por aqui.','hib'],['s','Pix enviado. Qualquer coisa é só chamar.','hib'],['s','Pedido 4821 confirmado.','ofi']];
+    var LOTE=['Oi, Marina! Tudo certo por aqui.','Seu pedido já está separado.','São 2 caixas do genérico e 1 do xarope.','Total deu R$ 47,80.','Pode retirar hoje até as 18h.','Qualquer coisa é só me chamar.'];
+    function dorme(ms,g){return new Promise(function(ok,nao){(function espera(resta){
+      if(g!==ger)return nao(0);
+      if(!visivel||document.hidden)return setTimeout(function(){espera(resta);},250);
+      if(resta<=0)return ok();
+      setTimeout(function(){espera(resta-Math.min(resta,200));},Math.min(resta,200));
+    })(ms);});}
+    var onda='M0 8';for(var k=0;k<14;k++)onda+=(k?' T':' Q'+(100/28).toFixed(2)+' '+(k%2?15:1))+' '+((k+1)*100/14).toFixed(2)+' 8';
+    passos.forEach(function(li){li.innerHTML='<svg viewBox="0 0 100 16" preserveAspectRatio="none"><path d="'+onda+'"/></svg><span></span>';});
+    /* quanto dura cada etapa, para a onda terminar junto com ela */
+    var DUR=[[4200,920,7500,6900],[3250,3650,2760,4550]];
+    function passo(n){
+      passos.forEach(function(li,i){li.lastChild.textContent=PASSOS[modo][i];li.className='';if(i===n){li.style.setProperty('--dur',DUR[modo][n]+'ms');void li.offsetWidth;}li.className=i===n?'on':i<n?'feito':'';});
+      $('csLegenda').textContent=(n+1)+'. '+PASSOS[modo][n];
+    }
+    function kpi(lista){kpis.innerHTML=lista.map(function(k){return '<div'+(k[2]?' class="bom"':'')+'><dt>'+k[0]+'</dt><dd>'+k[1]+'</dd></div>';}).join('');}
+    function linha(onde,lado,html,tag,max){
+      var d=document.createElement('div');d.className='cs-l '+lado;d.innerHTML='<span>'+html+'</span>'+(tag||'');onde.appendChild(d);
+      while(onde.children.length>max)onde.removeChild(onde.firstChild);return d;
+    }
+    function noFone(lado,html){var d=document.createElement('div');d.className='wa '+(lado==='in'?'wa-in':'wa-out');d.innerHTML=html+'<small>'+(modo?'14:03':'09:13')+(lado==='in'?'':TIQUES)+'</small>';fone.appendChild(d);while(fone.children.length>5)fone.removeChild(fone.firstChild);}
+    function limpar(){msgs.innerHTML='';fone.innerHTML='';itens.innerHTML='';tray.className='cs-tray';notif.classList.remove('on');app.classList.remove('modal');comp.textContent='Mensagem';comp.className='';}
+    function pct(p){
+      var f=p/100,n=Math.round(p);$('csPct').textContent=n+'%';$('csFill').style.width=p+'%';$('csKnob').style.left=p+'%';
+      $('csExpl').textContent=n+' de cada 100 mensagens passam pela conexão do app. O restante segue pela API Oficial.';
+      kpi([['Pela conexão do app',n+'%'],['Sem Modo Híbrido',brl(MES*TAXA)],['Custo atual',brl(MES*(1-f)*TAXA)],['Economia no mês',brl(MES*f*TAXA),1]]);
+    }
+    function kpiLote(n,fim){kpi([['Sem concatenador',brl(Math.max(1,n)*TAXA,n>1?2:3)],['Com concatenador',brl(TAXA,3)],['Economia por atendimento',fim?brl((n-1)*TAXA,3):brl(0),fim],['Em 1.000 atendimentos',fim?'<s>R$ 210</s>R$ 35,00':'R$ 210,00',fim]]);}
+    function sobe(g){return new Promise(function(ok,nao){var t0=performance.now();(function q(agora){
+      if(g!==ger)return nao(0);var k=Math.min(1,(agora-t0)/2200);pct(PCT*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(q);else ok();
+    })(t0);});}
+    async function hibrido(g){
+      limpar();pct(0);passo(0);$('csModo').textContent='Modo Híbrido';
+      await dorme(700,g);app.classList.add('modal');await dorme(700,g);await sobe(g);await dorme(600,g);
+      passo(1);$('csSalvar').classList.add('aperta');await dorme(220,g);$('csSalvar').classList.remove('aperta');app.classList.remove('modal');await dorme(700,g);
+      passo(2);
+      for(var i=0;i<CONVERSA.length;i++){
+        var m=CONVERSA[i],tag=m[2]==='hib'?'<b class="cs-tag hib">Conexão do app, R$ 0,00</b>':m[2]==='ofi'?'<b class="cs-tag ofi">API Oficial, R$ 0,035</b>':'';
+        linha(msgs,m[0]==='c'?'in':'out',esc(m[1]),tag,4);await dorme(420,g);noFone(m[0]==='c'?'out':'in',esc(m[1]));
+        if(i===CONVERSA.length-3)passo(3);
+        await dorme(1000,g);
+      }
+      await dorme(3000,g);
+    }
+    async function concatenador(g){
+      limpar();passo(0);kpiLote(0);$('csModo').textContent='Concatenador';$('csAnel').style.strokeDashoffset='0';$('csTimer').textContent='3s';
+      await dorme(600,g);linha(msgs,'in','Oi! Meu pedido já está pronto?','',4);await dorme(350,g);noFone('out','Oi! Meu pedido já está pronto?');await dorme(900,g);
+      tray.classList.add('on');
+      for(var i=0;i<LOTE.length;i++){
+        comp.textContent=LOTE[i];comp.className='dig';await dorme(560,g);comp.textContent='Mensagem';comp.className='';
+        var li=document.createElement('div');li.className='cs-ti';li.innerHTML='<span>'+esc(LOTE[i])+'</span><s>'+brl(TAXA,3)+'</s>';itens.appendChild(li);
+        $('csTrayN').textContent=(i+1)+(i?' mensagens agrupadas':' mensagem agrupada');kpiLote(i+1);if(i===1)passo(1);
+        await dorme(280,g);
+      }
+      passo(2);
+      for(var c=3;c>=1;c--){$('csTimer').textContent=c+'s';$('csAnel').style.strokeDashoffset=String(50.3*(1-(c-1)/3));await dorme(760,g);}
+      tray.classList.add('junta');await dorme(480,g);tray.className='cs-tray';passo(3);
+      var todas=LOTE.map(function(t){return '<i>'+esc(t)+'</i>';}).join('');
+      linha(msgs,'out',todas,'<b class="cs-tag hib">1 mensagem, R$ 0,035</b>',2).classList.add('pulso');kpiLote(LOTE.length,1);
+      await dorme(450,g);noFone('in',LOTE.map(function(t){return esc(t);}).join('<br>'));await dorme(500,g);notif.classList.add('on');
+      await dorme(3600,g);
+    }
+    function rodar(n){
+      modo=n;var g=++ger;abas.forEach(function(b,i){b.setAttribute('aria-selected',i===n?'true':'false');});
+      (n?concatenador:hibrido)(g).then(function(){rodar(1-n);},function(){});
+    }
+    abas.forEach(function(b,i){b.addEventListener('click',function(){rodar(i);});});
+    if(reduz){
+      modo=0;passo(3);pct(PCT);CONVERSA.slice(-4).forEach(function(m){linha(msgs,m[0]==='c'?'in':'out',esc(m[1]),m[2]==='hib'?'<b class="cs-tag hib">Conexão do app, R$ 0,00</b>':m[2]==='ofi'?'<b class="cs-tag ofi">API Oficial, R$ 0,035</b>':'',4);noFone(m[0]==='c'?'out':'in',esc(m[1]));});
+      return;
+    }
+    passo(0);pct(0);
+    aoVer($('csCena'),function(){var era=visivel;visivel=true;$('csCena').classList.remove('cs-pausa');if(!era&&!ger)rodar(0);},function(){visivel=false;$('csCena').classList.add('cs-pausa');});
+  })();
+
+  /* ---------- planos: balão de explicação em cada item, com passeio automático ---------- */
+  (function(){
+    var itens=[].slice.call(document.querySelectorAll('.jr-plano [data-dica]')),aberto=null,auto=0,n=-1,visto=false,mexeu=0,fecha=0,abriuEm=0;
+    itens.forEach(function(li,i){
+      var d=document.createElement('span');d.className='jr-dica';d.id='jrDica'+i;d.setAttribute('role','tooltip');
+      d.innerHTML=(li.getAttribute('data-dica-t')?'<b>'+esc(li.getAttribute('data-dica-t'))+'</b>':'')+esc(li.getAttribute('data-dica'))+
+        (li.getAttribute('data-lista')?'<ul>'+li.getAttribute('data-lista').split('|').map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'')+
+        (li.getAttribute('data-call')?'<button type="button" class="hx-btn hx-btn--sm" data-agendar>'+esc(li.getAttribute('data-call'))+'</button>':'')+
+        (li.getAttribute('data-link')?'<br><a href="'+li.getAttribute('data-link')+'"'+(li.getAttribute('data-link').charAt(0)==='#'?'':' target="_blank" rel="noopener"')+'>'+esc(li.getAttribute('data-link-txt'))+'</a>':'');
+      li.appendChild(d);li.tabIndex=0;li.setAttribute('aria-describedby',d.id);
+      li.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){clearTimeout(fecha);parar();abrir(li);}});
+      li.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){clearTimeout(fecha);fecha=setTimeout(function(){if(aberto===li&&!li.matches(':hover')&&!li.contains(document.activeElement)){abrir(null);retomar();}},320);}});
+      li.addEventListener('focus',function(){parar();abrir(li);});
+      li.addEventListener('focusout',function(e){if(li.contains(e.relatedTarget)||li.matches(':hover'))return;abrir(null);retomar();});
+      /* no toque, o foco abre o balão um instante antes do clique: esse clique não pode fechá-lo de volta */
+      li.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.jr-dica'))return;parar();if(!(aberto===li&&Date.now()-abriuEm<600))abrir(aberto===li?null:li);retomar();});
+    });
+    function abrir(li){if(aberto)aberto.classList.remove('aberto');aberto=li;if(li){li.classList.add('aberto');abriuEm=Date.now();}}
+    function parar(){clearInterval(auto);auto=0;clearTimeout(mexeu);}
+    function retomar(){clearTimeout(mexeu);if(reduz)return;mexeu=setTimeout(function(){if(visto&&!auto&&!(aberto&&aberto.matches(':hover,:focus,:focus-within')))ligar();},7000);}
+    function ligar(){if(reduz||auto)return;var passo=function(){for(var k=0;k<itens.length;k++){n=(n+1)%itens.length;var r=itens[n].getBoundingClientRect();if(r.top>90&&r.bottom<window.innerHeight-110){abrir(itens[n]);return;}}abrir(null);};passo();auto=setInterval(passo,3200);}
+    aoVer(document.querySelector('.jr-planos'),function(){visto=true;ligar();},function(){visto=false;parar();abrir(null);});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&aberto){parar();abrir(null);}});
+  })();
+
+{{SP_JS}}
+{{FIM_JS}}
+  /* ================= ÁUDIO POR SEÇÃO: a Eve do canto fala, com ondas atrás e a transcrição no balão ================= */
+  (function(){
+    /* seg: [início, fim, bloco, texto, reação]. Reação: e = estado da Eve no trecho (padrão: falando), f = gesto, olha = para onde ela olha, clica = aba que acompanha a fala. */
+    var AUD={
+      coex:{src:'{{DIR_AUDIO}}coex.mp3',rotulo:'a explicação sobre coexistência',convite:'🔊 Quer que eu te explique a coexistência? Toca em mim.',
+        seg:[
+          [0,1.78,0,"Deixa eu te explicar a coexistência. 👋",{"f":"wave"}],
+          [2.43,4.31,1,"Antes, a empresa tinha que escolher: 🤔",{"e":"thinking"}],
+          [4.68,7.31,1,"ou ficava no aplicativo do WhatsApp, no celular, 📱",{"olha":".cf-coex"}],
+          [7.72,10.93,1,"ou migrava para a API Oficial e perdia o aplicativo. 😕",{"e":"error","f":"shake"}],
+          [11.35,14,2,"Com a coexistência, você não escolhe mais. 🎉",{"e":"happy","f":"celebrate"}],
+          [14.32,17.86,2,"O mesmo número funciona nos dois lugares ao mesmo tempo. 🤝",{"f":"nod","olha":"#cfSincA"}],
+          [18.19,24.72,3,"Você continua respondendo pelo celular, com seus áudios, seu status e suas conversas, do jeito que sempre fez. 💬",{"olha":".cf-coex"}],
+          [25.08,31.24,4,"E, na Prisme, esse mesmo número ganha equipe, setores, automação e inteligência artificial. 🚀",{"f":"celebrate","olha":"#cfSincB"}],
+          [31.62,33.63,5,"Tudo pela API Oficial da Meta. ✅",{"f":"nod","olha":".cf-selo"}],
+          [33.99,37.94,5,"Sem gambiarra e sem aquele medo de perder o número de uma hora para outra. 🔒",{"e":"happy"}],
+          [38.32,44.66,6,"A Prisme é provedora de tecnologia habilitada pela Meta e faz essa conexão para você, do começo ao fim. 🤝",{"f":"nod","olha":".cf-selo"}],
+          [45.03,51.07,7,"É só abrir o WhatsApp no celular pelo menos uma vez a cada 14 dias, e os dois seguem juntos. 📲",{"f":"wave"}]],
+        env:'0236929274027526983589444115422014310000000000004665642232001356547846533553341168765210000006996115116955654034251342324530035665013641134344566520000000998644346895541666897138646513210557885451454455666514245123542221000000029562177523201764320243112413667986543113755466432000000000698886763366687657552157215555553344896535637995539867878344305755401551000001571615534554564341045456561444214444567875101421343379998742442004431017985134341352034257741023002354434755133151004421441165210000000002566025556244410001711587767524566755755325434410166630354101640068765342013984054563004653115765265795555432743227203699864000000057646406679996116445551430169836556530132000000000665345357899973551361103322215554677646341663755544566763566677966147657311321000000660155462445116747737667434153155444423475354550486551556456453034212411188545315154411044345445101765101340167666663016521154220000002621168544564577104861443024443675124444444432342444365533413533143027663763444574100000375553459887157454437755334100000'},
+      'na-pratica':{src:'{{DIR_AUDIO}}pratica-media.mp3',rotulo:'a explicação sobre menu, rodízio e remarketing',convite:'🔊 Quer que eu te explique menu, rodízio e remarketing? Toca em mim.',
+        /* as cenas desta faixa mudam com o porte: este áudio é o da média empresa */
+        quando:function(){return (visaoAtual<0?VISAO_PADRAO:visaoAtual)===1;},
+        seg:[
+          [0,2.69,0,"Deixa eu te mostrar como isso funciona no dia a dia. 👀",{"f":"wave"}],
+          [3.28,8.57,1,"O cliente chama e já recebe um menu com botões: vendas, suporte, financeiro. 🔘",{"f":"tick","clica":"#cfAbas button:nth-child(1)","olha":"#cfConv"}],
+          [8.84,14.94,2,"Ele toca em uma opção e a conversa cai direto no setor certo, sem ninguém precisar transferir. 🎯",{"f":"nod","olha":"#cfConv"}],
+          [15.31,20.16,3,"Dentro do setor, o rodízio distribui os atendimentos entre a equipe, de forma equilibrada. ⚖️",{"e":"sending","clica":"#cfAbas button:nth-child(2)","olha":"#cfConv"}],
+          [20.49,25.75,4,"Você escolhe se entra só quem está online, e o atendente ainda pode ser avisado no WhatsApp dele. 🔔",{"f":"nod","olha":"#cfConv"}],
+          [26.12,27.25,5,"E quando o cliente some? 👻",{"e":"searching","clica":"#cfAbas button:nth-child(3)"}],
+          [27.55,29.31,5,"É só colocar uma tag na conversa. 🏷️",{"f":"tick","olha":"#cfConv"}],
+          [29.61,35.61,6,"Depois do tempo que você definir, a Prisme dispara o remarketing sozinha, respeitando o seu horário de atendimento. ⏰",{"e":"sending","olha":"#cfConv"}],
+          [35.94,39.68,7,"Se o cliente responder antes, você tira a tag e o envio é cancelado. ✅",{"e":"happy","f":"nod"}]],
+        env:'01443362335510157751268731411671114765555433654223322110000000000162775335444489966543166684741676556666832675511552210000000223544456841000001330157762022443114655315743420000362162101122221179651059971456666111066544313881565982141256635857995145624516620488510320000433323459742441336841562154553100000038641454413513678521045697355354351026335555465157755444435565345531154203312233176342165267754431000001393355212699654105552451003883133311764369843332104688164446544234456107965417663653895555730395162598543100000043154392465635312664332100000000883378819865733884665164387610131000003923552640444132344314352134455310054004543663441001887554567841423441047644446544321174034306655416665894547346764654301000000056146663475125458697541441012651840227465059996474058446665741641658985452000000'},
+      'modo-hibrido':{src:'{{DIR_AUDIO}}custos.mp3',rotulo:'a explicação sobre Concatenador e Modo Híbrido',convite:'🔊 Quer entender o Concatenador e o Modo Híbrido? Toca em mim.',
+        seg:[
+          [0,6.65,0,"Agora a Meta cobra cada mensagem de serviço na API Oficial, até dentro da janela de 24 horas. 💸",{"e":"error"}],
+          [7.58,10.98,1,"Para essa conta não pesar, a Prisme tem dois recursos. ✌️",{"e":"happy","f":"wave"}],
+          [11.36,13.2,2,"O primeiro é o Concatenador. 🧩",{"f":"tick","clica":"#csAbas button:nth-child(2)","olha":"#csAbas button:nth-child(2)"}],
+          [13.62,17.2,2,"Sua equipe escreve em rajada, e ele junta tudo em uma mensagem só. 📦",{"e":"typing","olha":"#csCena"}],
+          [17.6,21.93,3,"O cliente lê do mesmo jeito, e você paga uma cobrança em vez de seis. 💰",{"e":"happy","f":"celebrate"}],
+          [22.31,26.69,4,"Esse você pode ligar sem medo: continua tudo dentro da API Oficial. ✅",{"f":"nod"}],
+          [27.17,28.97,5,"O segundo é o Modo Híbrido. 🔀",{"f":"tick","clica":"#csAbas button:nth-child(1)","olha":"#csAbas button:nth-child(1)"}],
+          [29.36,35.78,5,"Você define um percentual, e essa parte das mensagens sai pela conexão do aplicativo, sem custo por mensagem. 🎚️",{"olha":"#csCena"}],
+          [36.2,37.99,6,"Mas aqui vai um aviso sincero: ⚠️",{"e":"error","f":"shake"}],
+          [38.51,39.93,6,"o híbrido é um paliativo. 🩹",{"e":"error"}],
+          [40.43,44.04,7,"A conexão do aplicativo não tem as garantias da API Oficial, 🛡️",{"e":"thinking"}],
+          [44.42,46.91,7,"então use com cuidado e em dose moderada. 🤏",{"f":"nod"}],
+          [47.36,49.62,8,"Na dúvida, comece pelo Concatenador, 👉",{"olha":"#csAbas button:nth-child(2)"}],
+          [49.87,53.47,8,"e a gente te ajuda a achar o ponto certo do híbrido para a sua operação. 🤝",{"e":"happy","f":"wave"}]],
+        env:'0664689878657514325746510027954534431488658552143223411445662254353133015677631018410077424854234455365554553633443221463146554231000000000000000000000486641532663555565316532699741001072056648624556439754155114411111000000000085177468979644999202995359268576456421000000001761174451156845544764458983353113886746326500056655334634413884420079610000001624577532467855667977424444776411320001436154298573017435126368654154034487543136532000000000079931637464396465549921006534576633410000565436575100366467258553345897237646713401576431000000004414635654675531797778666776433242332000000045164531353321631454137887753100268651351487223452433115875233102651455235541115566335235122553331000002542015410415565531553322200000001452430115532544543453320156101243322100000001122121321223210442123214421111110000000432675111565631412312255246676553105777633555523354325541254452131015454310000004325445544156315445445434421445434434544535443321221000000049954666454664102994597415177636846627575667620000399655221387545557973379416533400077711526656544454155117725664017533100'},
+      planos:{src:'{{DIR_AUDIO}}planos.mp3',rotulo:'a explicação sobre os planos',convite:'🔊 Quer que eu te explique os planos? Toca em mim.',
+        seg:[
+          [0,2.12,0,"Aqui a gente simplificou tudo. ✨",{"f":"wave"}],
+          [2.64,3.79,0,"Sem letras miúdas. 🔍",{"e":"searching"}],
+          [4.24,8.27,1,"São três planos, que atendem do pequeno negócio à grande operação. 📈",{"f":"nod","olha":".jr-planos-grade, .jr-plano"}],
+          [8.65,12.54,2,"Não tem fidelidade, e em até sete dias você já está no ar. 🚀",{"e":"happy","f":"celebrate"}],
+          [12.98,14.89,3,"Mas o plano é só o começo. 😉",{"f":"tick"}],
+          [15.29,23.12,4,"O nosso jeito de trabalhar é entrar na sua operação, entender a sua situação, implementar com você e continuar ajudando a melhorar. 🤝",{"f":"nod"}],
+          [23.54,26.93,5,"A nossa cultura é humanizada e focada em resultado. 💚",{"e":"happy"}],
+          [27.33,31.93,6,"Mais do que um chatbot, a Prisme é uma empresa de relacionamento e vendas. 💬",{"f":"celebrate"}],
+          [32.25,34.17,7,"Quer saber qual plano combina com você? 🤔",{"e":"thinking"}],
+          [34.52,37.72,7,"Toca no botão \"Saber mais\" e marca uma reunião com a gente. 👉📅",{"e":"happy","f":"wave","olha":".jr-plano button[data-plano=\"Integrador\"]"}]],
+        env:'0077201577855435415539717402871000277733522000000000000666782463634654431000000000000075414558110686532200101750554444341330166443534899510442147555996777355651056332000000167520643152555358986323200156666306521116762256444558633612675578541077357887310000000255242036999443114310005674154464210011000000025871265674364414534545787422445412688545315614542001544431006825577499763145121143001554320001663877561499214546300776510043124521323468975534465565647655421000000016595351442046856513564555552246885564235105501278455636735510454222210000003589764471565378133399851111000640045664454654441686472441476741465855554316269349965445210000000003611858740187404787624545763243520577410000007953654672363301743864579754201034479833566674455347646544111000'}
+    };
+    var bt=document.getElementById('edSom'),cv=document.getElementById('edOndas');if(!bt||!cv||!cv.getContext)return;
+    var cx=cv.getContext('2d'),atual=null,A=null,sons={},som=null,tocando=false,raf=0,amp=0,blocoV=-1,segV=-1,us=[],lado=0,conviteT=0;
+    function estado(s){if(eveD){try{eveD.setState(s);}catch(e){}}}
+    function rotulo(){bt.setAttribute('aria-label',(tocando?'Pausar ':'Ouvir ')+A.rotulo);bt.setAttribute('aria-pressed',tocando?'true':'false');}
+    function entra(k){
+      if(atual===k)return;if(atual)sai();
+      atual=k;A=AUD[k];somGuarda={txt:edFala.textContent,on:dock.classList.contains('tem-fala')&&!falaTemp};somLock=true;clearTimeout(falaT);
+      som=sons[k]||null;blocoV=-1;bt.tabIndex=0;
+      edFala.textContent=A.convite;recolhe(k);
+      dock.classList.add('tem-audio','tem-fala');rotulo();if(!raf)raf=requestAnimationFrame(quadro);
+    }
+    function sai(){
+      if(!atual)return;
+      /* saiu da seção: o áudio volta ao começo, tocando ou pausado. Vale para todo áudio cadastrado em AUD. */
+      if(som){if(!som.paused)som.pause();try{som.currentTime=0;}catch(e){}}
+      tocando=false;amp=0;blocoV=-1;segV=-1;
+      atual=null;somLock=false;bt.tabIndex=-1;dock.classList.remove('tem-audio','tocando');
+      clearTimeout(conviteT);somGuarda=null;falaTemp=false;dock.classList.remove('tem-fala');balaoBase();
+    }
+    /* o convite aparece por alguns segundos e depois recolhe: fica só o botão pulsando na Eve, sem cobrir a seção */
+    function recolhe(k){clearTimeout(conviteT);conviteT=setTimeout(function(){if(atual===k&&!tocando&&(!som||som.currentTime===0))dock.classList.remove('tem-fala');},6500);}
+    function alterna(){
+      if(!atual)return;clearTimeout(conviteT);dock.classList.add('tem-fala');
+      if(!som){
+        som=sons[atual]=new Audio(A.src);som.preload='auto';
+        som.addEventListener('play',function(){tocando=true;segV=-1;dock.classList.add('tocando');estado('speaking');rotulo();});
+        som.addEventListener('pause',function(){tocando=false;dock.classList.remove('tocando');estado('idle');try{if(eveD)eveD.lookFree();}catch(e){}if(A)rotulo();});
+        som.addEventListener('ended',function(){blocoV=-1;if(atual){edFala.textContent='🔁 Quer ouvir de novo? Toca em mim.';recolhe(atual);}try{if(eveD)eveD.play('nod');}catch(e){}});
+        som.addEventListener('error',function(){if(atual)edFala.textContent='Não consegui carregar o áudio agora. Tenta de novo daqui a pouco.';});
+      }
+      if(som.paused){var p=som.play();if(p&&p.catch)p.catch(function(){if(atual)edFala.textContent='Não consegui tocar o áudio. Toca em mim de novo.';});}
+      else som.pause();
+    }
+    /* reação do trecho: ela muda de expressão, faz um gesto, olha para o que está citando e troca a aba da cena */
+    function reage(r){
+      estado(r.e||'speaking');
+      try{
+        if(eveD){if(r.f)eveD.play(r.f);var alvo=r.olha?document.querySelector(r.olha):null;if(alvo)eveD.lookAtElement(alvo);else eveD.lookFree();}
+        if(r.clica){var aba=document.querySelector(r.clica);if(aba&&aba.getAttribute('aria-selected')!=='true')aba.click();}
+      }catch(e){}
+    }
+    /* transcrição: o balão mostra o bloco da vez e as palavras escurecem conforme são ditas */
+    function transcreve(t){
+      var S=A.seg,k=0;for(var i=0;i<S.length;i++)if(t>=S[i][0])k=i;
+      if(k!==segV){segV=k;reage(S[k][4]||{});}
+      var b=S[k][2];
+      if(b!==blocoV){
+        blocoV=b;var html='';
+        S.forEach(function(s,i){if(s[2]===b)html+=s[3].split(' ').map(function(w){return '<u data-s="'+i+'">'+esc(w)+'</u>';}).join(' ')+' ';});
+        edFala.innerHTML=html;us=[].slice.call(edFala.querySelectorAll('u'));
+      }
+      var doSeg=us.filter(function(u){return +u.getAttribute('data-s')===k;}),f=Math.min(1,Math.max(0,(t-S[k][0])/(S[k][1]-S[k][0]))),ate=Math.ceil(f*doSeg.length);
+      us.forEach(function(u){var s=+u.getAttribute('data-s');u.classList.toggle('dito',s<k||(s===k&&doSeg.indexOf(u)<ate));});
+    }
+    /* ondas: barras em volta da Eve, com a altura puxada pelo volume real do áudio naquele instante */
+    function quadro(agora){
+      raf=0;if(!atual){cx.clearRect(0,0,cv.width,cv.height);return;}
+      var r=cv.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1),L=Math.round(r.width*d);
+      if(L&&L!==lado){lado=cv.width=cv.height=L;}
+      var t=som?som.currentTime:0,alvo=0;
+      if(tocando){transcreve(t);var e=A.env,i=Math.min(e.length-1,Math.floor(t*20));alvo=(+e.charAt(i)+(+e.charAt(Math.min(e.length-1,i+1))))/18;}
+      amp+=(alvo-amp)*(alvo>amp?.5:.14);
+      cx.clearRect(0,0,lado,lado);
+      var c=lado/2,r0=lado*.262,N=54,seg=agora/1000,vivo=reduz?0:1;
+      for(var n=0;n<N;n++){
+        var a=n/N*Math.PI*2-Math.PI/2,onda=.55+.45*Math.sin(n*1.9+seg*5.2*vivo)*Math.cos(n*.7-seg*2.3*vivo);
+        var h=lado*(.012+(tocando?.02:0)+amp*.2*Math.max(.12,onda)+(tocando?0:.008*(1+Math.sin(seg*2+n*.5)*vivo)));
+        cx.strokeStyle='hsla('+(205-n/N*55)+',78%,'+(tocando?48:62)+'%,'+(tocando?.9:.45)+')';cx.lineWidth=Math.max(2,lado*.014);cx.lineCap='round';
+        cx.beginPath();cx.moveTo(c+Math.cos(a)*r0,c+Math.sin(a)*r0);cx.lineTo(c+Math.cos(a)*(r0+h),c+Math.sin(a)*(r0+h));cx.stroke();
+      }
+      raf=requestAnimationFrame(quadro);
+    }
+    bt.addEventListener('click',alterna);edFala.addEventListener('click',function(){if(atual)alterna();});
+    if(!('IntersectionObserver' in window))return;
+    /* quem manda é a seção visível; se ela tiver condição (quando), o áudio só é oferecido enquanto a condição valer */
+    var dentro={};
+    function rever(){var alvo=null;Object.keys(AUD).forEach(function(k){if(!alvo&&dentro[k]&&(!AUD[k].quando||AUD[k].quando()))alvo=k;});if(alvo===atual)return;if(atual)sai();if(alvo)entra(alvo);}
+    somRever=rever;
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){dentro[e.target.id]=e.isIntersecting;});rever();},{rootMargin:'-30% 0px -30% 0px'});
+    Object.keys(AUD).forEach(function(k){var s=document.getElementById(k);if(s)io.observe(s);});
+  })();
+
+  /* símbolo ao lado do nome, nos chips e nos títulos dos módulos */
+  var SV='<svg class="jr-sim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+  var SIMBOLO={
+    'Copiloto':SV+'<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.500A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4M22 5h-4"/></svg>',
+    'API pública e webhooks':SV+'<path d="M18 16.98h-5.990c-1.100 0-1.950.940-2.480 1.900A4 4 0 0 1 2 17c.010-.700.200-1.400.570-2"/><path d="m6 17 3.130-5.780c.530-.970.100-2.180-.500-3.100a4 4 0 1 1 6.890-4.060"/><path d="m12 6 3.130 5.730C15.660 12.700 16.900 13 18 13a4 4 0 0 1 0 8"/></svg>',
+    'Transcrição de áudio':SV+'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.400 1.400 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.400 1.400 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>',
+    'MCP':'<svg class="jr-sim" viewBox="0 0 195 195" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" aria-hidden="true"><path d="M25 97.8528L92.8823 29.9706C102.255 20.598 117.451 20.598 126.823 29.9706V29.9706C136.196 39.3431 136.196 54.5391 126.823 63.9117L75.5581 115.177"/><path d="M76.2653 114.47L126.823 63.9117C136.196 54.5391 151.392 54.5391 160.765 63.9117L161.118 64.2652C170.491 73.6378 170.491 88.8338 161.118 98.2063L99.7248 159.6C96.6006 162.724 96.6006 167.789 99.7248 170.913L112.331 183.52"/><path d="M109.853 46.9411L59.6482 97.1457C50.2757 106.518 50.2757 121.714 59.6482 131.087V131.087C69.0208 140.459 84.2168 140.459 93.5894 131.087L143.794 80.8822"/></svg>'
+  };
+  var FAMILIAS=['Atendimento','Vendas e CRM','Automação e IA','Canais e integrações'];
+  /* [nome, família, títulos dos módulos de cima que já cobrem o item] */
+  var TODOS=[
+    ['Setores e rodízio',0,['Setores e rodízio']],['Respostas rápidas',0,['Respostas rápidas']],['Mensagem de ausência',0,['Mensagem de ausência']],
+    ['Tarefas e avaliações',0,['Tarefas e avaliações']],['Carteira de clientes',0,['Carteira de clientes']],['Tags automáticas',0,[]],
+    ['Permissões por perfil',0,['Permissões por perfil']],['App no celular',0,[]],['Transcrição de áudio',0,[]],
+    ['CRM com funis',1,['CRM Kanban','CRM com vários funis']],['Carrinho no WhatsApp',1,['Carrinho no WhatsApp']],['Campanhas e remarketing',1,['Campanhas e remarketing']],
+    ['Leads de anúncio',1,[]],['Agendamentos',1,['Agendamentos']],['Follow-up por inatividade',1,['Follow-up por inatividade']],
+    ['Flowbuilder',2,['Flowbuilder']],['IA treinada',2,['IA treinada no seu negócio']],['Análise de atendimento',2,['Análise de atendimento']],['MCP',2,['MCP']],['Copiloto',2,[]],
+    ['Instagram "Eu quero"',3,['Instagram "Eu quero"']],['Web Chat',3,[]],['API pública e webhooks',3,['API pública e webhooks']],['Ligações PABX e VoIP',3,[]]
+  ];
+  var VISAO_PADRAO=1, visaoAtual=-2, trocas=[].slice.call(document.querySelectorAll('.jr-troca')), segs=[].slice.call(document.querySelectorAll('.jr-seg button'));
+  function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+  function pintarVisao(i){
+    var v=VISOES[i<0?VISAO_PADRAO:i],$=function(id){return document.getElementById(id);};
+    $('jrDor').textContent='\u201C'+v.dor+'\u201D';responder(v.sub);
+    montarPratica(v.prat);
+    $('jrModsH').textContent='O que entra primeiro para '+NOMES[i<0?VISAO_PADRAO:i]+'.';
+    $('jrMods').innerHTML=v.mods.map(function(m){return '<div><h3>'+esc(m[0])+(SIMBOLO[m[0]]||'')+(m[2]?'<em>conforme o plano</em>':'')+'</h3><p>'+esc(m[1])+'</p></div>';}).join('');
+    /* a lista completa aparece para todo porte, colorida por família; some só o que já está nos seis de cima */
+    var tem=v.mods.map(function(m){return m[0];});
+    $('jrExtras').innerHTML='<span>Também disponível:</span>'+TODOS.filter(function(t){return !t[2].some(function(x){return tem.indexOf(x)>=0;});}).map(function(t){return '<i data-f="'+t[1]+'">'+esc(t[0])+(SIMBOLO[t[0]]||'')+'</i>';}).join('')+
+      '<p class="jr-leg">'+FAMILIAS.map(function(f,k){return '<b data-f="'+k+'">'+f+'</b>';}).join('')+'</p>';
+    $('jrCustoH').textContent=v.custo;
+    $('jrAviso').textContent=i<0?'Você ainda não escolheu um porte. Por enquanto a página mostra a leitura de média empresa.':'';
+    segs.forEach(function(b,n){b.setAttribute('aria-pressed',n===i?'true':'false');});
+  }
+  function mostrarVisao(i){
+    if(i===visaoAtual)return;var primeira=visaoAtual===-2;visaoAtual=i;if(somRever)somRever();
+    if(primeira||reduz){pintarVisao(i);return;}
+    trocas.forEach(function(t){t.classList.add('saindo');});
+    setTimeout(function(){pintarVisao(visaoAtual);trocas.forEach(function(t){t.classList.remove('saindo');});},220);
+  }
+  mostrarVisao(-1);
+  segs.forEach(function(b,n){b.addEventListener('click',function(){escolher(n);});});
+  var fino=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  ops.forEach(function(b,i){
+    if(fino){b.addEventListener('pointerenter',function(){apontar(i);});}
+    b.addEventListener('focus',function(){apontar(i);});
+    b.addEventListener('click',function(){escolher(porte===i?-1:i);});
+  });
+  pm.querySelector('.pm-opcoes').addEventListener('pointerleave',function(){apontar(-1);});
+  /* a cena 3D só é baixada quando o módulo está chegando na tela */
+  var carregou=false;
+  function carregar3d(){
+    if(carregou)return;carregou=true;
+    import(new URL('{{DIR_3D}}cena-porte.js{{V}}',document.baseURI).href).then(function(m){cena3d=m.iniciar(document.getElementById('pmCanvas'));if(porte>=0)cena3d.escolher(porte);})
+      .catch(function(){pm.classList.add('sem-3d');});
+  }
+  if('IntersectionObserver' in window){var io3=new IntersectionObserver(function(es){if(es[0].isIntersecting){carregar3d();io3.disconnect();}},{rootMargin:'700px'});io3.observe(pm);}
+  else carregar3d();
+
+  /* todo botão com data-agendar abre o agendamento */
+  [].forEach.call(document.querySelectorAll('[data-agendar]'),function(ag){ag.addEventListener('click',function(){if(typeof window.toggleScheduler==='function')window.toggleScheduler();});});
+})();
+</script>
+</body>
+</html>
