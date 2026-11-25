@@ -297,6 +297,22 @@ function ateContato(quem) {
     check('os três portes mudam o conteúdo', b.length === 3 && new Set(t).size === 3);
   }
 
+  console.log('\n[15] Busca e robôs de IA');
+  {
+    const robots = ler('robots.txt'), mapa = ler('sitemap.xml'), llms = ler('llms.txt');
+    check('robots.txt libera o site e aponta o sitemap', /Allow: \//.test(robots) && !/Disallow: \/\s*$/m.test(robots) && robots.includes('https://chatbot.prismeapp.com.br/sitemap.xml'));
+    check('sitemap.xml lista a página inicial', mapa.includes('<loc>https://chatbot.prismeapp.com.br/</loc>'));
+    check('llms.txt com os três preços da página', ['599,90', '799,90', '999,90'].every(p => llms.includes(p)));
+    check('llms.txt sem travessão e sem Prisme Lite', !llms.includes(String.fromCharCode(0x2014)) && !/prisme\s*lite/i.test(llms));
+    /* o que um robô sem JavaScript enxerga: o HTML cru, sem executar nada */
+    const cru = new JSDOM(html).window.document;
+    const txt = id => (cru.getElementById(id).textContent || '').trim();
+    check('sem JavaScript: dor e resposta da Eve no HTML', txt('jrDor').length > 20 && txt('jrSub').length > 20);
+    check('sem JavaScript: seis módulos e a lista "Também disponível"', cru.querySelectorAll('#jrMods > div').length === 6 && cru.querySelectorAll('#jrExtras i').length >= 15);
+    check('sem JavaScript: exemplos na prática e argumento de custo', cru.querySelectorAll('#cfAbas button').length === 3 && txt('cfPratH').length > 10 && txt('jrCustoH').length > 10);
+    check('sem JavaScript: planos e preços no HTML', ['599,90', '799,90', '999,90'].every(p => cru.body.textContent.includes(p)));
+  }
+
   console.log('\n========================================');
   console.log(`PÁGINA/FLUXO: ${pass} passou, ${fail} falhou`);
   console.log('========================================');

@@ -5,7 +5,7 @@
 
 O index.html da raiz é GERADO. Edite os arquivos .src.* desta pasta e rode o build de novo.
 """
-import base64, glob, hashlib, json, os, shutil, sys
+import base64, glob, hashlib, json, os, re, shutil, subprocess, sys
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(AQUI)
 D = AQUI + '/dados'
@@ -200,6 +200,13 @@ else:
     h = h.replace('{{HEAD}}', ler('cabecalho-producao.html')).replace('{{CSS_IMAGENS}}', link)
     h = h.replace('{{SCRIPTS}}', '<script>\n' + ler('rastreamento.js') + '</script>\n<script src="assets/site.js?v=' + vjs + '" defer></script>\n'
                   '<!-- Tag Klicou: atribuição de origem e leads (workspace FAZQVENDE) -->\n<script async src="https://go.klicou.com.br/tag.js?k=kt_e527dcc9a4672020"></script>\n')
+    h = fecha(h)
+    # conteúdo da visão padrão gravado no HTML: quem não executa JavaScript (robôs de IA) lê o mesmo texto
+    r = subprocess.run(['node', AQUI + '/prerender.cjs'], input=json.dumps({'html': h, 'js': js}), capture_output=True, text=True, cwd=RAIZ)
+    assert r.returncode == 0, 'prerender falhou (rode npm install): ' + r.stderr[-400:]
+    for ident, miolo in json.loads(r.stdout).items():
+        h, n = re.subn(r'(<[a-z0-9]+\b[^>]*\bid="%s"[^>]*>)(</)' % ident, lambda m: m.group(1) + miolo + m.group(2), h)
+        assert n == 1, 'prerender: #%s não está vazio no fonte' % ident
     h = fecha(h)
     open(RAIZ + '/index.html', 'w', encoding='utf-8').write(h)
     print('produção: index.html %d KB, site.js %d KB, imagens.css %d KB' % (len(h.encode()) // 1024, len(js.encode()) // 1024, len(css_img.encode()) // 1024))
